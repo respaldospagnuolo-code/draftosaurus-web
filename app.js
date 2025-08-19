@@ -49,7 +49,9 @@ class AppState {
             'btn-volver-jugadores': () => this.showScreen('lobby'),
             'btn-modo-asistente': () => this.showToast('Modo asistente activado', 'info'),
             'btn-comenzar-juego': () => this.iniciarJuego(),
-            'btn-limpiar-partidas': () => this.limpiarPartidas() // Nuevo botón
+            'btn-limpiar-partidas': () => this.limpiarPartidas(), // Nuevo botón
+            'btn-empezar-turno': () => this.empezarTurno(),
+            'btn-continuar-turno': () => this.continuarTurno()
         };
 
         if (actions[target.id]) {
@@ -546,13 +548,325 @@ class AppState {
 
             if (response.success) {
                 this.showToast('¡Partida iniciada!', 'success');
-                // Aquí iríamos al tablero del juego
-                this.showScreen('partida');
+                // Cargar estado del juego y mostrar tablero
+                this.loadGameState(response.game_state);
+                this.showIndicadorTurno();
             }
         } catch (error) {
             console.error('Game start error:', error);
             this.showToast('Error al iniciar el juego', 'error');
         }
+    }
+
+    // ==================== TABLERO Y TURNOS ==================== 
+    loadGameState(gameState) {
+        this.gameState = gameState;
+        this.updateGameUI();
+    }
+
+    updateGameUI() {
+        if (!this.gameState) return;
+
+        // Actualizar nombres de jugadores
+        const player1Name = document.getElementById('player1-name');
+        const player2Name = document.getElementById('player2-name');
+        if (player1Name) player1Name.textContent = this.gameState.player1.name;
+        if (player2Name) player2Name.textContent = this.gameState.player2.name;
+
+        // Actualizar puntuaciones
+        const player1Points = document.getElementById('player1-points');
+        const player2Points = document.getElementById('player2-points');
+        if (player1Points) player1Points.textContent = `${this.gameState.player1.score} ptos`;
+        if (player2Points) player2Points.textContent = `${this.gameState.player2.score} ptos`;
+
+        // Actualizar información de ronda
+        const rondaActual = document.getElementById('ronda-actual');
+        if (rondaActual) rondaActual.textContent = `Ronda ${this.gameState.current_round}`;
+
+        // Actualizar información del dado
+        if (this.gameState.current_restriction) {
+            const dadoActual = document.getElementById('dado-actual');
+            const dadoDescripcion = document.getElementById('dado-descripcion');
+            if (dadoActual) dadoActual.src = this.gameState.current_restriction.imagen;
+            if (dadoDescripcion) dadoDescripcion.textContent = this.gameState.current_restriction.titulo;
+        }
+
+        // Cargar dinosaurios en mano
+        this.loadPlayerHand();
+        
+        // Cargar estado del tablero
+        this.loadBoardState();
+    }
+
+    showIndicadorTurno() {
+        const currentPlayer = this.gameState.current_player;
+        const isMyTurn = currentPlayer === this.gameState.user_player_number;
+        
+        const turnoTitulo = document.getElementById('turno-titulo');
+        const turnoDescripcion = document.getElementById('turno-descripcion');
+        const turnoAvatar = document.getElementById('turno-avatar');
+
+        if (isMyTurn) {
+            if (turnoTitulo) turnoTitulo.textContent = 'Tu turno';
+            if (turnoDescripcion) turnoDescripcion.textContent = 'Es tu turno para colocar un dinosaurio';
+            if (turnoAvatar) turnoAvatar.src = 'img/foto_usuario-1.png';
+        } else {
+            const otherPlayerName = currentPlayer === 1 ? this.gameState.player1.name : this.gameState.player2.name;
+            if (turnoTitulo) turnoTitulo.textContent = `Sigue ${otherPlayerName}`;
+            if (turnoDescripcion) turnoDescripcion.textContent = 'Esperando al otro jugador...';
+            if (turnoAvatar) turnoAvatar.src = 'img/foto_usuario-2.png';
+        }
+
+        this.showScreen('turno');
+    }
+
+    empezarTurno() {
+        this.showScreen('tablero');
+        this.initializeDragDrop();
+    }
+
+    loadPlayerHand() {
+        const dinosauriosContainer = document.querySelector('.dinosaurios');
+        if (!dinosauriosContainer || !this.gameState) return;
+
+        const currentPlayerNumber = this.gameState.user_player_number;
+        const playerHand = currentPlayerNumber === 1 ? this.gameState.player1.hand : this.gameState.player2.hand;
+        
+        dinosauriosContainer.innerHTML = '<h3 class="titulos-accesibles">Dinosaurios para colocar</h3>';
+
+        playerHand.forEach((dinosaur, index) => {
+            if (!dinosaur.is_played) {
+                const dinoImg = document.createElement('img');
+                dinoImg.src = dinosaur.icon;
+                dinoImg.id = `dino-${dinosaur.type_id}-${index}`;
+                dinoImg.className = 'dinosaurio';
+                dinoImg.draggable = true;
+                dinoImg.alt = dinosaur.name;
+                dinoImg.title = `${dinosaur.name} - Arrastra para colocar`;
+                dinoImg.width = 60;
+                dinoImg.height = 60;
+                dinoImg.tabIndex = 0;
+                dinoImg.dataset.dinosaurTypeId = dinosaur.type_id;
+                dinoImg.dataset.handPosition = dinosaur.position;
+                dinoImg.dataset.menuSrc = dinosaur.icon;
+                dinoImg.dataset.boardSrc = dinosaur.icon; // Ajustar si tienes imágenes diferentes
+
+                dinosauriosContainer.appendChild(dinoImg);
+            }
+        });
+    }
+
+    loadBoardState() {
+        if (!this.gameState) return;
+
+        // Limpiar recintos
+        document.querySelectorAll('.recinto').forEach(recinto => {
+            const dinosaurios = recinto.querySelectorAll('.dinosaurio');
+            dinosaurios.forEach(dino => dino.remove());
+        });
+
+        // Cargar dinosaurios del jugador actual
+        const currentPlayerNumber = this.gameState.user_player_number;
+        const boardState = currentPlayerNumber === 1 ? this.gameState.player1.board : this.gameState.player2.board;
+
+        boardState.forEach(placement => {
+            const recinto = document.querySelector(`[data-enclosure-id="${placement.enclosure_id}"]`);
+            if (recinto) {
+                const dinoImg = document.createElement('img');
+                dinoImg.src = placement.dinosaur.icon;
+                dinoImg.className = 'dinosaurio';
+                dinoImg.alt = placement.dinosaur.name;
+                dinoImg.width = 30;
+                dinoImg.height = 30;
+                
+                recinto.appendChild(dinoImg);
+            }
+        });
+
+        // Aplicar restricciones del dado
+        this.applyDiceRestrictions();
+    }
+
+    applyDiceRestrictions() {
+        // Limpiar restricciones previas
+        document.querySelectorAll('.recinto').forEach(recinto => {
+            recinto.classList.remove('bloqueado');
+        });
+
+        if (!this.gameState.current_restriction || 
+            this.gameState.restricted_player !== this.gameState.user_player_number) {
+            return;
+        }
+
+        const restriction = this.gameState.current_restriction;
+        
+        switch (restriction.restriction_type) {
+            case 'zone':
+                // Bloquear recintos que no estén en la zona permitida
+                document.querySelectorAll('.recinto').forEach(recinto => {
+                    const zone = recinto.dataset.zone;
+                    if (zone !== restriction.restriction_value && zone !== 'rio') {
+                        recinto.classList.add('bloqueado');
+                    }
+                });
+                break;
+                
+            case 'empty':
+                // Bloquear recintos que no estén vacíos
+                document.querySelectorAll('.recinto').forEach(recinto => {
+                    const hasDinosaurs = recinto.querySelectorAll('.dinosaurio').length > 0;
+                    if (hasDinosaurs && recinto.dataset.zone !== 'rio') {
+                        recinto.classList.add('bloqueado');
+                    }
+                });
+                break;
+                
+            case 'no_trex':
+                // Bloquear recintos que tengan T-Rex
+                document.querySelectorAll('.recinto').forEach(recinto => {
+                    const hasTrex = Array.from(recinto.querySelectorAll('.dinosaurio')).some(dino => 
+                        dino.alt && dino.alt.toLowerCase().includes('t-rex')
+                    );
+                    if (hasTrex && recinto.dataset.zone !== 'rio') {
+                        recinto.classList.add('bloqueado');
+                    }
+                });
+                break;
+        }
+    }
+
+    initializeDragDrop() {
+        // Limpiar listeners previos
+        this.cleanupDragDrop();
+
+        // Configurar drag & drop
+        const dinosaurios = document.querySelectorAll('.menu_partida .dinosaurio');
+        const recintos = document.querySelectorAll('.recinto:not(.bloqueado)');
+
+        dinosaurios.forEach(dino => {
+            dino.addEventListener('dragstart', this.handleDragStart.bind(this));
+        });
+
+        recintos.forEach(recinto => {
+            recinto.addEventListener('dragover', this.handleDragOver.bind(this));
+            recinto.addEventListener('drop', this.handleDrop.bind(this));
+            recinto.addEventListener('click', this.handleRecintoClick.bind(this));
+        });
+    }
+
+    handleDragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.id);
+        e.target.classList.add('dragging');
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+        e.target.classList.add('drag-over');
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        e.target.classList.remove('drag-over');
+        
+        const dinoId = e.dataTransfer.getData('text/plain');
+        const dinosaurio = document.getElementById(dinoId);
+        
+        if (dinosaurio && this.validatePlacement(dinosaurio, e.target)) {
+            this.placeDinosaur(dinosaurio, e.target);
+        }
+    }
+
+    handleRecintoClick(e) {
+        const selectedDino = document.querySelector('.dinosaurio.selected');
+        if (selectedDino && this.validatePlacement(selectedDino, e.target)) {
+            this.placeDinosaur(selectedDino, e.target);
+        }
+    }
+
+    validatePlacement(dinosaurio, recinto) {
+        // Verificar que no esté bloqueado
+        if (recinto.classList.contains('bloqueado')) {
+            this.showToast('No puedes colocar en esta zona restringida', 'error');
+            return false;
+        }
+
+        // Verificar capacidad
+        const capacity = parseInt(recinto.dataset.capacity);
+        const currentCount = recinto.querySelectorAll('.dinosaurio').length;
+        
+        if (currentCount >= capacity && capacity !== 999) {
+            this.showToast('Este recinto está lleno', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    async placeDinosaur(dinosaurio, recinto) {
+        const dinosaurTypeId = parseInt(dinosaurio.dataset.dinosaurTypeId);
+        const handPosition = parseInt(dinosaurio.dataset.handPosition);
+        const enclosureId = parseInt(recinto.dataset.enclosureId);
+
+        try {
+            const response = await this.apiRequest('/api/game/place-dinosaur.php', {
+                method: 'POST',
+                body: {
+                    game_id: this.gameSession.id,
+                    enclosure_id: enclosureId,
+                    dinosaur_type_id: dinosaurTypeId,
+                    hand_position: handPosition
+                }
+            });
+
+            if (response.success) {
+                // Mover dinosaurio visualmente
+                const boardSrc = dinosaurio.dataset.boardSrc;
+                if (boardSrc) dinosaurio.src = boardSrc;
+                
+                dinosaurio.className = 'dinosaurio';
+                dinosaurio.draggable = false;
+                dinosaurio.style.width = '30px';
+                dinosaurio.style.height = '30px';
+                
+                recinto.appendChild(dinosaurio);
+                
+                // Habilitar botón continuar
+                const btnContinuar = document.getElementById('btn-continuar-turno');
+                if (btnContinuar) btnContinuar.disabled = false;
+
+                this.showToast('Dinosaurio colocado correctamente', 'success');
+            } else {
+                this.showToast(response.message || 'Error al colocar dinosaurio', 'error');
+            }
+        } catch (error) {
+            console.error('Placement error:', error);
+            this.showToast('Error de conexión', 'error');
+        }
+    }
+
+    async continuarTurno() {
+        // Verificar si quedan dinosaurios
+        const remainingDinos = document.querySelectorAll('.menu_partida .dinosaurio').length;
+        
+        if (remainingDinos > 0) {
+            // Lanzar dado para el siguiente jugador
+            this.showScreen('dado-animacion');
+            setTimeout(() => this.animarDado(), 500);
+        } else {
+            // Fin de ronda
+            this.showToast('Fin de ronda', 'info');
+            // Aquí iría la lógica de fin de ronda
+        }
+    }
+
+    cleanupDragDrop() {
+        document.querySelectorAll('.dinosaurio').forEach(dino => {
+            dino.classList.remove('dragging', 'selected');
+        });
+        
+        document.querySelectorAll('.recinto').forEach(recinto => {
+            recinto.classList.remove('drag-over');
+        });
     }
 
     // ==================== LOBBY DATA ==================== 

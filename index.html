@@ -1,348 +1,132 @@
-<!DOCTYPE html>
-<html lang="es">
+<!-- Agregar después de la pantalla dado-resultado en tu index.html -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draftosaurus</title>
-    <meta name="description" content="Draftosaurus - El increíble juego de dinosaurios">
-    <meta name="theme-color" content="#628107">
+<!-- ==================== PANTALLA TABLERO ==================== -->
+<div id="pantalla-tablero" class="pantalla" style="display: none;">
+    <!-- Header con puntajes -->
+    <header class="puntajes">
+        <h1 class="titulos-accesibles">Puntajes de jugadores</h1>
+        <ul class="jugadores">
+            <li class="jugador" id="player1-score">
+                <img src="img/foto_usuario-1.png" class="icono-mapa" alt="Avatar Jugador 1" width="40" height="40">
+                <div class="contenedor">
+                    <span class="nombre oswald" id="player1-name">Jugador 1</span>
+                    <span class="puntos" id="player1-points">0 ptos</span>
+                </div>
+            </li>
+            <li class="jugador" id="player2-score">
+                <img src="img/foto_usuario-2.png" class="icono-mapa" alt="Avatar Jugador 2" width="40" height="40">
+                <div class="contenedor">
+                    <span class="nombre oswald" id="player2-name">Jugador 2</span>
+                    <span class="puntos" id="player2-points">0 ptos</span>
+                </div>
+            </li>
+        </ul>
+    </header>
 
-    <!-- Preconnect para optimización -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- Fuentes optimizadas -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Oswald:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="estilos.css">
-</head>
-
-<body>
-    <!-- ==================== PANTALLA DE CARGA ==================== -->
-    <div id="pantalla-carga" class="pantalla-inicio fondo-inicio" style="display: flex;">
-        <div class="superposicion">
-            <img src="img/Logo-draftosaurus.png" alt="Draftosaurus" class="logo fade-in">
-        </div>
-
-        <div class="loader-container">
-            <p class="texto texto--base texto--blanco texto--weight-semibold texto-carga">Cargando...</p>
-            <div class="progress">
-                <div class="progress__bar progress__bar--animated" id="barra-progreso" role="progressbar"
-                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <!-- Tablero principal del juego -->
+    <main class="tablero">
+        <h2 class="titulos-accesibles">Tablero de juego</h2>
+        <div class="recintos" role="region" aria-label="Área de juego">
+            <!-- Lado izquierdo (Comidas) -->
+            <div class="lado_izquierdo">
+                <div class="recinto" id="recinto1" role="button" tabindex="0" 
+                     aria-label="Bosque de Iguales 1" 
+                     data-enclosure-id="1" data-zone="bosques" data-type="bosque_iguales" data-capacity="4">
+                </div>
+                <div class="recinto" id="recinto2" role="button" tabindex="0" 
+                     aria-label="Bosque de Iguales 2" 
+                     data-enclosure-id="2" data-zone="bosques" data-type="bosque_iguales" data-capacity="6">
+                </div>
+                <div class="recinto" id="recinto3" role="button" tabindex="0" 
+                     aria-label="Trío del Bosque" 
+                     data-enclosure-id="3" data-zone="bosques" data-type="trio_bosque" data-capacity="3">
+                </div>
+            </div>
+            
+            <!-- Río (centro) -->
+            <div class="recinto" id="rio" role="button" tabindex="0" 
+                 aria-label="Río" 
+                 data-enclosure-id="9" data-zone="rio" data-type="rio" data-capacity="999">
+            </div>
+            
+            <!-- Lado derecho (Baños) -->
+            <div class="lado_derecho">
+                <div class="recinto" id="recinto4" role="button" tabindex="0" 
+                     aria-label="Rey de la Selva" 
+                     data-enclosure-id="7" data-zone="comidas" data-type="rey_selva" data-capacity="1">
+                </div>
+                <div class="recinto" id="recinto5" role="button" tabindex="0" 
+                     aria-label="Pradera Diferentes 1" 
+                     data-enclosure-id="4" data-zone="praderas" data-type="pradera_diferentes" data-capacity="4">
+                </div>
+                <div class="recinto" id="recinto6" role="button" tabindex="0" 
+                     aria-label="Isla Solitaria" 
+                     data-enclosure-id="8" data-zone="banos" data-type="isla_solitaria" data-capacity="1">
+                </div>
             </div>
         </div>
+    </main>
+
+    <!-- Menú inferior con controles del juego -->
+    <footer class="menu_partida">
+        <!-- Dinosaurios disponibles para arrastrar -->
+        <section class="dinosaurios" role="region" aria-label="Dinosaurios disponibles">
+            <h3 class="titulos-accesibles">Dinosaurios para colocar</h3>
+            <!-- Los dinosaurios se cargarán dinámicamente desde JavaScript -->
+        </section>
+
+        <!-- Navegación con información del juego -->
+        <nav class="datos" role="navigation" aria-label="Información del juego">
+            <ul>
+                <li id="usuario" class="item">
+                    <img src="img/foto_usuario-1.png" alt="Foto de usuario" width="32" height="32">
+                    <span class="oswald" id="current-player-name">Jugador</span>
+                </li>
+                <li id="dado" class="item">
+                    <img src="img/dado-1.png" alt="Resultado del dado" width="32" height="32" id="dado-actual">
+                    <span id="dado-descripcion">Sin restricción</span>
+                </li>
+                <li id="puntos" class="item">
+                    <img src="img/icono_partidas-ganadas.png" alt="Trofeo" width="32" height="32">
+                    <span id="puntos-actuales">0 Puntos</span>
+                </li>
+                <li id="ronda-info" class="item">
+                    <img src="img/icono_informacion.png" alt="Información" width="32" height="32">
+                    <span id="ronda-actual">Ronda 1</span>
+                </li>
+                <li id="continuar-turno" class="item">
+                    <button type="button" class="item-boton btn" id="btn-continuar-turno" disabled>
+                        <img src="img/siguiente.svg" alt="" width="32" height="32">
+                        <span>Continuar</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- Instrucciones accesibles -->
+    <div class="titulos-accesibles">
+        <p>Instrucciones: Arrastra los dinosaurios desde la parte inferior a los recintos del tablero. Usa las teclas de flecha para navegar y Enter para seleccionar.</p>
     </div>
+</div>
 
-    <!-- ==================== PANTALLA DE LOGIN ==================== -->
-    <div id="pantalla-login" class="pantalla fondo-inicio" style="display: none;">
-        <div class="botones-idioma">
-            <button class="btn-idioma" data-lang="es" aria-label="Cambiar a español">
-                <img src="img/bandera-uruguay.png" alt="Español" loading="lazy">
-            </button>
-            <button class="btn-idioma" data-lang="en" aria-label="Change to English">
-                <img src="img/bandera-en.png" alt="English" loading="lazy">
-            </button>
-        </div>
-
-        <div class="contenedor-centrado fade-in-up">
-            <div class="contenedor-titulo">
-                <h1 class="titulo titulo--sm titulo-contenedor">INGRESAR</h1>
-                <p class="texto texto--xs texto--blanco subtitulo-contenedor">Ingresá tu email y contraseña</p>
-            </div>
-
-            <form id="login-form" novalidate>
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/foto_usuario-1.png" alt="Usuario" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="login-username">Usuario</label>
-                        <input type="text" id="login-username" class="form-input" placeholder="Ingresá tu correo..."
-                            required autocomplete="username">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/icono_contrasena.png" alt="Contraseña" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="login-password">Contraseña</label>
-                        <input type="password" id="login-password" class="form-input"
-                            placeholder="Ingresa tu contraseña..." required autocomplete="current-password">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn" id="btn-login">
-                    <span class="btn-text">Iniciar sesión</span>
-                </button>
-            </form>
-
-            <div class="footer">
-                ¿Aún no tenés cuenta? <a href="#" id="link-registro">Registrate ahora</a>
+<!-- ==================== PANTALLA INDICADOR DE TURNO ==================== -->
+<div id="pantalla-turno" class="pantalla fondo-interfaz-normal" style="display: none;">
+    <div class="overlay-fondo"></div>
+    <div class="popup-dado fade-in">
+        <div class="popup-header">
+            <div class="dado-resultado-container">
+                <img src="img/foto_usuario-1.png" alt="Avatar del jugador" class="dado-resultado" id="turno-avatar">
             </div>
         </div>
-    </div>
-
-    <!-- ==================== PANTALLA DE REGISTRO ==================== -->
-    <div id="pantalla-registro" class="pantalla fondo-inicio" style="display: none;">
-        <div class="botones-idioma">
-            <button class="btn-idioma" data-lang="es" aria-label="Cambiar a español">
-                <img src="img/bandera-uruguay.png" alt="Español" loading="lazy">
-            </button>
-            <button class="btn-idioma" data-lang="en" aria-label="Change to English">
-                <img src="img/bandera-en.png" alt="English" loading="lazy">
-            </button>
-        </div>
-
-        <div class="contenedor-centrado fade-in-up">
-            <div class="contenedor-titulo">
-                <h1 class="titulo titulo--sm titulo-contenedor">Registrate</h1>
-                <p class="texto texto--xs texto--blanco subtitulo-contenedor">
-                    Unite al increíble mundo de Draftosaurus
-                </p>
-            </div>
-
-            <form id="register-form" novalidate>
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/foto_usuario-1.png" alt="Usuario" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="register-username">Nombre de usuario</label>
-                        <input type="text" id="register-username" class="form-input" placeholder="Ingresá tu nombre..."
-                            required autocomplete="username" minlength="3" maxlength="20">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/icono_mail.png" alt="Email" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="register-email">Email</label>
-                        <input type="email" id="register-email" class="form-input" placeholder="Ingresá tu correo..."
-                            required autocomplete="email">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/foto_usuario-1.png" alt="Fecha de nacimiento" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="register-fecha">Fecha de nacimiento</label>
-                        <input type="date" id="register-fecha" class="form-input" required autocomplete="bday">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/icono_contrasena.png" alt="Contraseña" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="register-password">Contraseña</label>
-                        <input type="password" id="register-password" class="form-input"
-                            placeholder="Ingresá tu contraseña..." required autocomplete="new-password" minlength="6">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-icon">
-                        <img src="img/icono_contrasena.png" alt="Confirmar Contraseña" loading="lazy">
-                    </div>
-                    <div class="form-divider"></div>
-                    <div class="form-campo">
-                        <label class="form-label" for="register-password-confirm">Confirmar contraseña</label>
-                        <input type="password" id="register-password-confirm" class="form-input"
-                            placeholder="Confirmá tu contraseña..." required autocomplete="new-password" minlength="6">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn" id="btn-registro">
-                    <span class="btn-text">Crear cuenta</span>
-                </button>
-            </form>
-
-            <div class="footer">
-                ¿Ya tenés cuenta? <a href="#" id="link-login">Iniciá sesión</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== PANTALLA PRINCIPAL / LOBBY ==================== -->
-    <div id="pantalla-lobby" class="pantalla fondo-interfaz fade-in" style="display: none;">
-        <button class="btn-icon boton-salir" id="btn-logout" aria-label="Cerrar sesión">
-            <img src="img/icono-salir.svg" alt="Cerrar sesión" loading="lazy">
-        </button>
-
-        <div class="contenedor-centrado">
-            <div class="perfil-lobby">
-                <div class="avatar">
-                    <img src="img/marco_usuario.png" alt="Marco del avatar" class="avatar__marco" loading="lazy">
-                    <img src="img/foto_usuario-1.png" alt="Avatar del usuario" class="avatar__imagen" loading="lazy">
-                </div>
-                <h2 class="titulo titulo--lg titulo--beige">PEPEKING</h2>
-            </div>
-
-            <div class="stats">
-                <div class="stat-card">
-                    <img src="img/icono_partidas-ganadas.png" alt="Partidas ganadas" class="stat-card__icon"
-                        loading="lazy">
-                    <div class="stat-content">
-                        <h3 class="stat-card__value" id="partidas-ganadas">0</h3>
-                        <p class="stat-card__label">Partidas ganadas</p>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <img src="img/icono_partidas-perdidas.png" alt="Partidas perdidas" class="stat-card__icon"
-                        loading="lazy">
-                    <div class="stat-content">
-                        <h3 class="stat-card__value" id="partidas-perdidas">0</h3>
-                        <p class="stat-card__label">Partidas perdidas</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <button class="btn" id="btn-jugar-app">
-                    <span class="btn-text">Jugar en la app</span>
-                </button>
-                <button class="btn btn--naranja" id="btn-modo-asistente">
-                    <span class="btn-text">Modo asistente</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== PANTALLA LISTAR JUGADORES ==================== -->
-    <div id="pantalla-jugadores" class="pantalla fondo-interfaz" style="display: none;">
-        <button type="button" id="btn-volver-jugadores" class="btn-icon btn-icon--lg boton-salir">‹</button>
-
-        <div class="contenedor-centrado fade-in-up">
-            <div class="contenedor-titulo">
-                <h1 class="titulo titulo--sm titulo-contenedor">Listado jugadores</h1>
-                <p class="texto texto--xs texto--blanco subtitulo-contenedor">2 jugadores</p>
-            </div>
-
-            <form id="form-jugadores" novalidate>
-                <div id="lista-jugadores">
-                    <!-- Jugador 1: usuario logueado (readonly) -->
-                    <div class="form-group form-group--jugador">
-                        <div class="jugador-avatar">
-                            <img src="img/foto_usuario-1.png" alt="Avatar Jugador 1" class="jugador-foto">
-                        </div>
-                        <div class="form-campo">
-                            <label class="form-label" for="jugador-1">Jugador #1 (tú)</label>
-                            <input type="text" id="jugador-1" class="form-input" value="" readonly aria-readonly="true">
-                        </div>
-                    </div>
-
-                    <!-- Jugador 2: selector de tipo -->
-                    <div class="form-group">
-                        <div class="tipo-jugador-selector">
-                            <label class="form-label">Tipo de Jugador #2</label>
-                            <div class="radio-group">
-                                <label class="radio-option" for="radio-invitado">
-                                    <input type="radio" name="tipo-jugador-2" value="invitado" id="radio-invitado"
-                                        checked>
-                                    <span class="radio-custom"></span>
-                                    Invitado
-                                </label>
-                                <label class="radio-option" for="radio-usuario">
-                                    <input type="radio" name="tipo-jugador-2" value="usuario" id="radio-usuario">
-                                    <span class="radio-custom"></span>
-                                    Usuario existente
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Jugador 2: datos -->
-                    <div class="form-group form-group--jugador">
-                        <div class="jugador-avatar">
-                            <img id="avatar-jugador-2" src="img/invitado.png" alt="Avatar Jugador 2"
-                                class="jugador-foto">
-                        </div>
-                        <div class="form-campo">
-                            <label class="form-label" for="jugador-2">Jugador #2</label>
-                            <input type="text" id="jugador-2" class="form-input"
-                                placeholder="Ingrese nombre de jugador #2" autocomplete="off">
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn" id="btn-comenzar-partida" disabled>
-                    <span class="btn-text">Jugar en la app</span>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ==================== PANTALLA DADO ANIMACION ==================== -->
-    <div id="pantalla-dado-animacion" class="pantalla fondo-interfaz-oscuro" style="display: none;">
-        <div class="contenedor-dado-animacion">
-            <div class="dado-container">
-                <div class="dado-animado" id="dado-animado">
-                    <img src="img/dado-1.png" alt="Dado" class="dado-imagen" id="dado-imagen">
-                </div>
-            </div>
-            <p class="texto texto--lg texto--blanco texto--weight-semibold dado-texto">
-                Lanzando dado...
+        <div class="popup-content">
+            <h2 class="titulo titulo--md titulo--marron" id="turno-titulo">Sigue Ana</h2>
+            <p class="texto texto--base texto--marron popup-descripcion" id="turno-descripcion">
+                Es tu turno para colocar un dinosaurio
             </p>
+            <button class="btn btn--verde" id="btn-empezar-turno">
+                <span class="btn-text">Empezar</span>
+            </button>
         </div>
     </div>
-
-    <!-- ==================== PANTALLA DADO RESULTADO ==================== -->
-    <div id="pantalla-dado-resultado" class="pantalla fondo-interfaz-normal" style="display: none;">
-        <div class="overlay-fondo"></div>
-        <div class="popup-dado fade-in" id="popup-dado">
-            <div class="popup-header">
-                <div class="dado-resultado-container">
-                    <img src="img/dado-1.png" alt="Dado resultado" class="dado-resultado" id="dado-resultado-img">
-                </div>
-            </div>
-
-            <div class="popup-content">
-                <h2 class="titulo titulo--md titulo--marron" id="titulo-dado">CUIDADO CON EL T-REX</h2>
-                <p class="texto texto--base texto--marron popup-descripcion" id="descripcion-dado">
-                    Los dinosaurios deben colocarse en un recinto que no contenga un T-Rex.
-                    <br><br>
-                    Aún puedes jugar un T-Rex este turno, siempre que en el recinto en cuestión no haya ya uno.
-                </p>
-                <button class="btn btn--verde" id="btn-comenzar-juego">
-                    <span class="btn-text">Comenzar partida</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== PANTALLA PARTIDA (placeholder) ==================== -->
-    <div id="pantalla-partida" class="pantalla fondo-interfaz" style="display: none;">
-        <div class="contenedor-centrado fade-in-up">
-            <div class="contenedor-titulo">
-                <h1 class="titulo titulo--sm titulo-contenedor">Partida</h1>
-                <p class="texto texto--xs texto--blanco subtitulo-contenedor">Pantalla en construcción</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== TOAST NOTIFICATIONS ==================== -->
-    <div id="toast-container" class="toast-container" aria-live="polite"></div>
-
-    <!-- JavaScript -->
-    <script src="app.js"></script>
-</body>
-
-</html>
+</div>
