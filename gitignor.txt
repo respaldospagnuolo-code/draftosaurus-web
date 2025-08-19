@@ -1,0 +1,104 @@
+# ==================== DRAFTOSAURUS GITIGNORE ==================== 
+
+# Logs y archivos de depuración
+logs/*.log
+logs/*.txt
+*.log
+error.log
+debug.log
+
+# Archivos de configuración local
+config.local.php
+.env
+.env.local
+.env.production
+
+# Archivos temporales del sistema
+*.tmp
+*.cache
+*.bak
+*.swp
+*~
+
+# Archivos del sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.atom/
+.brackets.json
+
+# Dependencias de Node.js (si las usas en el futuro)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Archivos de PHP
+*.phpunit.result.cache
+vendor/
+composer.lock
+
+# Archivos de base de datos
+*.sql.backup
+*.db.backup
+dump.sql
+
+# Archivos de subida de usuarios
+uploads/
+temp/
+
+# Archivos de caché
+cache/
+*.cache
+
+# Archivos de sesión
+sessions/
+
+# Archivos de compilación y distribución
+dist/
+build/
+*.min.js
+*.min.css
+
+# Archivos de imagen temporales
+*.psd
+*.ai
+*.sketch
+
+# Archivos de backup
+backup/
+*.backup
+
+# Variables de entorno específicas
+.htaccess.local
+.htpasswd
+
+# Archivos específicos de Windows
+$RECYCLE.BIN/
+
+# Archivos específicos de macOS
+.AppleDouble
+.LSOverride
+
+# Archivos específicos de Linux
+*~
+
+# Archivos de log específicos del proyecto
+php_errors.log
+access.log
+error_log
+
+# Archivos temporales de la aplicación
+tmp/
+temporary/
