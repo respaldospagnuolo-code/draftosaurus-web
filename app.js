@@ -630,30 +630,47 @@ class AppState {
         if (!dinosauriosContainer || !this.gameState) return;
 
         const currentPlayerNumber = this.gameState.user_player_number;
-        const playerHand = currentPlayerNumber === 1 ? this.gameState.player1.hand : this.gameState.player2.hand;
+        let playerHand = [];
+        
+        // Verificar que existe la mano del jugador
+        if (this.gameState.player1 && this.gameState.player1.hand && currentPlayerNumber === 1) {
+            playerHand = this.gameState.player1.hand;
+        } else if (this.gameState.player2 && this.gameState.player2.hand && currentPlayerNumber === 2) {
+            playerHand = this.gameState.player2.hand;
+        }
         
         dinosauriosContainer.innerHTML = '<h3 class="titulos-accesibles">Dinosaurios para colocar</h3>';
 
-        playerHand.forEach((dinosaur, index) => {
-            if (!dinosaur.is_played) {
-                const dinoImg = document.createElement('img');
-                dinoImg.src = dinosaur.icon;
-                dinoImg.id = `dino-${dinosaur.type_id}-${index}`;
-                dinoImg.className = 'dinosaurio';
-                dinoImg.draggable = true;
-                dinoImg.alt = dinosaur.name;
-                dinoImg.title = `${dinosaur.name} - Arrastra para colocar`;
-                dinoImg.width = 60;
-                dinoImg.height = 60;
-                dinoImg.tabIndex = 0;
-                dinoImg.dataset.dinosaurTypeId = dinosaur.type_id;
-                dinoImg.dataset.handPosition = dinosaur.position;
-                dinoImg.dataset.menuSrc = dinosaur.icon;
-                dinoImg.dataset.boardSrc = dinosaur.icon; // Ajustar si tienes imágenes diferentes
+        // Solo procesar si hay mano del jugador
+        if (playerHand && Array.isArray(playerHand)) {
+            playerHand.forEach((dinosaur, index) => {
+                if (dinosaur && !dinosaur.is_played) {
+                    const dinoImg = document.createElement('img');
+                    dinoImg.src = dinosaur.icon || 'img/dino-default.png';
+                    dinoImg.id = `dino-${dinosaur.type_id}-${index}`;
+                    dinoImg.className = 'dinosaurio';
+                    dinoImg.draggable = true;
+                    dinoImg.alt = dinosaur.name || 'Dinosaurio';
+                    dinoImg.title = `${dinosaur.name || 'Dinosaurio'} - Arrastra para colocar`;
+                    dinoImg.width = 60;
+                    dinoImg.height = 60;
+                    dinoImg.tabIndex = 0;
+                    dinoImg.dataset.dinosaurTypeId = dinosaur.type_id;
+                    dinoImg.dataset.handPosition = dinosaur.position;
+                    dinoImg.dataset.menuSrc = dinosaur.icon || 'img/dino-default.png';
+                    dinoImg.dataset.boardSrc = dinosaur.icon || 'img/dino-default.png';
 
-                dinosauriosContainer.appendChild(dinoImg);
-            }
-        });
+                    dinosauriosContainer.appendChild(dinoImg);
+                }
+            });
+        } else {
+            // Si no hay dinosaurios, mostrar mensaje
+            const mensaje = document.createElement('p');
+            mensaje.textContent = 'No hay dinosaurios disponibles';
+            mensaje.style.color = 'white';
+            mensaje.style.textAlign = 'center';
+            dinosauriosContainer.appendChild(mensaje);
+        }
     }
 
     loadBoardState() {
@@ -667,21 +684,31 @@ class AppState {
 
         // Cargar dinosaurios del jugador actual
         const currentPlayerNumber = this.gameState.user_player_number;
-        const boardState = currentPlayerNumber === 1 ? this.gameState.player1.board : this.gameState.player2.board;
+        let boardState = [];
+        
+        // Verificar que existe el estado del tablero
+        if (this.gameState.player1 && this.gameState.player1.board && currentPlayerNumber === 1) {
+            boardState = this.gameState.player1.board;
+        } else if (this.gameState.player2 && this.gameState.player2.board && currentPlayerNumber === 2) {
+            boardState = this.gameState.player2.board;
+        }
 
-        boardState.forEach(placement => {
-            const recinto = document.querySelector(`[data-enclosure-id="${placement.enclosure_id}"]`);
-            if (recinto) {
-                const dinoImg = document.createElement('img');
-                dinoImg.src = placement.dinosaur.icon;
-                dinoImg.className = 'dinosaurio';
-                dinoImg.alt = placement.dinosaur.name;
-                dinoImg.width = 30;
-                dinoImg.height = 30;
-                
-                recinto.appendChild(dinoImg);
-            }
-        });
+        // Solo procesar si hay datos del tablero
+        if (boardState && Array.isArray(boardState)) {
+            boardState.forEach(placement => {
+                const recinto = document.querySelector(`[data-enclosure-id="${placement.enclosure_id}"]`);
+                if (recinto && placement.dinosaur) {
+                    const dinoImg = document.createElement('img');
+                    dinoImg.src = placement.dinosaur.icon || 'img/dino-default.png';
+                    dinoImg.className = 'dinosaurio';
+                    dinoImg.alt = placement.dinosaur.name || 'Dinosaurio';
+                    dinoImg.width = 30;
+                    dinoImg.height = 30;
+                    
+                    recinto.appendChild(dinoImg);
+                }
+            });
+        }
 
         // Aplicar restricciones del dado
         this.applyDiceRestrictions();
