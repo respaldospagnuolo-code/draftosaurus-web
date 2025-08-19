@@ -3,11 +3,11 @@
 
 class DatabaseConfig {
     // Configuración de base de datos
-    const DB_HOST = 'localhost';
-    const DB_NAME = 'draftosaurus';
-    const DB_USER = 'root';
-    const DB_PASS = '';
-    const DB_CHARSET = 'utf8mb4';
+const DB_HOST = 'localhost';
+const DB_NAME = 'draftosaurus';
+const DB_USER = 'root';
+const DB_PASS = '';  // XAMPP usa contraseña vacía por defecto
+const DB_CHARSET = 'utf8mb4';
     
     // Configuración de sesión
     const SESSION_LIFETIME = 86400; // 24 horas
