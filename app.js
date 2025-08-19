@@ -811,12 +811,3 @@ class AppState {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new AppState();
 });
-
-// ==================== PWA FEATURES ==================== 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => console.log('SW registered'))
-            .catch(error => console.log('SW registration failed'));
-    });
-}
