@@ -553,6 +553,7 @@ class AppState {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
+            credentials: 'same-origin', // ¡CRÍTICO! Incluir cookies de sesión
             ...options
         };
 
@@ -564,12 +565,18 @@ class AppState {
         const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
         
         console.log('API Request:', fullUrl, config); // Debug
+        console.log('Request body:', config.body); // Debug del body
         
         try {
             const response = await fetch(fullUrl, config);
             
+            console.log('Response status:', response.status); // Debug del status
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                // Intentar leer el error del servidor
+                const errorText = await response.text();
+                console.error('Server error response:', errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
             }
             
             const data = await response.json();
