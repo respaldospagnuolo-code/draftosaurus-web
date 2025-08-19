@@ -1,5 +1,5 @@
 <?php
-// ==================== API CREAR PARTIDA CON LIMPIEZA AUTOMÁTICA ==================== 
+// ==================== API CREAR PARTIDA - VERSIÓN PERMISIVA ==================== 
 require_once '../../config.php';
 
 // Solo permitir POST
@@ -56,60 +56,32 @@ try {
     
     $db = Database::getInstance()->getConnection();
     
-    // 🧹 LIMPIEZA AUTOMÁTICA: Eliminar partidas abandonadas del usuario
+    // 🧹 LIMPIEZA AUTOMÁTICA: Eliminar TODAS las partidas activas del usuario
     $stmt = $db->prepare("
         DELETE FROM games 
         WHERE (player1_id = ? OR player2_id = ?) 
         AND game_state IN ('waiting', 'in_progress')
-        AND created_at < DATE_SUB(NOW(), INTERVAL 24 HOUR)
     ");
     $stmt->execute([$player1Id, $player1Id]);
     $partidasLimpiadas = $stmt->rowCount();
+    $stmt->closeCursor(); // ¡IMPORTANTE! Cerrar cursor
     
-    Utils::logActivity("Auto-cleaned $partidasLimpiadas abandoned games for user $player1Id", $player1Id);
-    
-    // Verificar si el usuario tiene partidas activas recientes (menos de 24h)
-    $stmt = $db->prepare("
-        SELECT COUNT(*) as active_games, 
-               MAX(created_at) as last_game_time
-        FROM games 
-        WHERE (player1_id = ? OR player2_id = ?) 
-        AND game_state IN ('waiting', 'in_progress')
-    ");
-    $stmt->execute([$player1Id, $player1Id]);
-    $result = $stmt->fetch();
-    
-    if ($result['active_games'] > 0) {
-        $lastGameTime = new DateTime($result['last_game_time']);
-        $now = new DateTime();
-        $timeDiff = $now->diff($lastGameTime);
-        
-        // Si la partida es muy reciente (menos de 1 hora), permitir que el usuario la termine o la abandone
-        if ($timeDiff->h < 1 && $timeDiff->days == 0) {
-            Utils::errorResponse('Tienes una partida activa reciente. Termínala o espera 1 hora para crear una nueva.');
-        } else {
-            // Si es más antigua, eliminarla automáticamente
-            $stmt = $db->prepare("
-                DELETE FROM games 
-                WHERE (player1_id = ? OR player2_id = ?) 
-                AND game_state IN ('waiting', 'in_progress')
-            ");
-            $stmt->execute([$player1Id, $player1Id]);
-            
-            Utils::logActivity("Force-cleaned active games for user $player1Id due to new game creation", $player1Id);
-        }
+    if ($partidasLimpiadas > 0) {
+        Utils::logActivity("Auto-cleaned $partidasLimpiadas active games for user $player1Id", $player1Id);
     }
     
-    // Crear la partida usando el procedimiento almacenado
-    $stmt = $db->prepare("CALL CreateGame(?, ?, ?, ?)");
-    $stmt->execute([$player1Id, $player2Name, $player2Type, $player2Id]);
-    $result = $stmt->fetch();
+    // Crear la partida directamente (sin procedimiento almacenado)
+    $stmt = $db->prepare("
+        INSERT INTO games (player1_id, player2_name, player2_type, player2_id, game_state)
+        VALUES (?, ?, ?, ?, 'waiting')
+    ");
     
-    if ($result['status'] !== 'success') {
+    if (!$stmt->execute([$player1Id, $player2Name, $player2Type, $player2Id])) {
         Utils::errorResponse('Error al crear la partida');
     }
     
-    $gameId = $result['game_id'];
+    $gameId = $db->lastInsertId();
+    $stmt->closeCursor(); // ¡IMPORTANTE! Cerrar cursor
     
     // Obtener información completa de la partida creada
     $stmt = $db->prepare("
@@ -143,15 +115,14 @@ try {
         'current_turn' => $game['current_turn'],
         'current_player' => $game['current_player'],
         'game_state' => $game['game_state'],
-        'created_at' => $game['created_at'],
-        'auto_cleaned' => $partidasLimpiadas > 0 ? "Se limpiaron $partidasLimpiadas partidas abandonadas" : null
+        'created_at' => $game['created_at']
     ];
     
-    Utils::logActivity("Game created: ID {$gameId}", $player1Id);
+    Utils::logActivity("Game created: ID {$gameId} (auto-cleaned $partidasLimpiadas old games)", $player1Id);
     
     Utils::successResponse([
         'game' => $gameData,
-        'message' => 'Partida creada exitosamente'
+        'message' => 'Partida creada exitosamente' . ($partidasLimpiadas > 0 ? " (se limpiaron $partidasLimpiadas partidas anteriores)" : '')
     ]);
     
 } catch (Exception $e) {
