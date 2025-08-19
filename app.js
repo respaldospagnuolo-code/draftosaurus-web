@@ -1,3 +1,6 @@
+// ==================== CONFIGURACIÓN DE RUTAS ==================== 
+const API_BASE_URL = '/Draftosaurus - Devance'; // Cambiar por tu carpeta
+
 // ==================== SISTEMA DE MANEJO DE ESTADOS ==================== 
 class AppState {
     constructor() {
@@ -102,6 +105,7 @@ class AppState {
                 this.showToast(response.message || 'Error al iniciar sesión', 'error');
             }
         } catch (error) {
+            console.error('Login error:', error);
             this.showToast('Error de conexión', 'error');
         } finally {
             this.setLoading(false);
@@ -154,6 +158,7 @@ class AppState {
                 this.showToast(response.message || 'Error al crear la cuenta', 'error');
             }
         } catch (error) {
+            console.error('Register error:', error);
             this.showToast('Error de conexión', 'error');
         } finally {
             this.setLoading(false);
@@ -399,6 +404,7 @@ class AppState {
                 this.showToast(response.message || 'Error al crear la partida', 'error');
             }
         } catch (error) {
+            console.error('Game creation error:', error);
             this.showToast('Error de conexión', 'error');
         } finally {
             this.setLoading(false);
@@ -483,6 +489,7 @@ class AppState {
                 }, 800);
             }
         } catch (error) {
+            console.error('Dice roll error:', error);
             this.showToast('Error al lanzar el dado', 'error');
         }
     }
@@ -516,6 +523,7 @@ class AppState {
                 this.showScreen('partida');
             }
         } catch (error) {
+            console.error('Game start error:', error);
             this.showToast('Error al iniciar el juego', 'error');
         }
     }
@@ -552,13 +560,25 @@ class AppState {
             config.body = JSON.stringify(config.body);
         }
 
-        const response = await fetch(url, config);
+        // Construir URL completa
+        const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        console.log('API Request:', fullUrl, config); // Debug
+        
+        try {
+            const response = await fetch(fullUrl, config);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('API Response:', data); // Debug
+            return data;
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
         }
-        
-        return await response.json();
     }
 
     // ==================== SISTEMA DE FORMULARIOS ==================== 
