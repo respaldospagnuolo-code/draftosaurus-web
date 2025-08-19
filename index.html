@@ -1,6 +1,47 @@
-<!-- Agregar después de la pantalla dado-resultado en tu index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Draftosaurus 1v1 (App)</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
 
-<!-- ==================== PANTALLA TABLERO ==================== -->
+  <!-- =================== PANTALLA: DADO (animación) =================== -->
+  <div id="pantalla-dado-animacion" class="pantalla" style="display:none;">
+    <div class="overlay"></div>
+    <div class="popup">
+      <div class="dado grande girando"></div>
+    </div>
+  </div>
+
+  <!-- =================== PANTALLA: DADO (resultado) =================== -->
+  <div id="pantalla-dado-resultado" class="pantalla" style="display:none;">
+    <div class="overlay"></div>
+    <div class="popup">
+      <h2 id="dado-titulo">Cuidado con el T‑Rex</h2>
+      <div class="dado grande" id="dado-cara"></div>
+      <p class="nota" id="dado-descripcion">
+        Los dinosaurios deben colocarse en un recinto que no contenga un T‑Rex.
+      </p>
+      <button id="btn-comenzar-juego" class="btn btn-primario"><span class="btn-text">Comenzar partida</span></button>
+    </div>
+  </div>
+
+  <!-- =================== PANTALLA: SIGUE / INICIO DE TURNO =================== -->
+  <div id="pantalla-turno" class="pantalla" style="display:none;">
+    <div class="overlay"></div>
+    <div class="popup">
+      <p class="tit">Sigue</p>
+      <div class="avatar"></div>
+      <p class="tit" id="turno-nombre">Jugador</p>
+      <button id="btn-iniciar-turno" class="btn btn-primario"><span class="btn-text">Empezar</span></button>
+      <p class="nota">El resultado del dado restringirá al jugador que entra.</p>
+    </div>
+  </div>
+
+  <!-- ==================== PANTALLA TABLERO ==================== -->
 <div id="pantalla-tablero" class="pantalla" style="display: none;">
     <!-- Header con puntajes -->
     <header class="puntajes">
@@ -130,3 +171,35 @@
         </div>
     </div>
 </div>
+
+  <!-- =================== PANTALLA: RESUMEN RONDA =================== -->
+  <div id="pantalla-resumen-ronda" class="pantalla" style="display:none;">
+    <div class="overlay"></div>
+    <div class="popup">
+      <h2>Resumen de la ronda</h2>
+      <p><span id="resumen-nombre-j1">J1</span>: <b id="resumen-puntos-j1">0</b> pts</p>
+      <p><span id="resumen-nombre-j2">J2</span>: <b id="resumen-puntos-j2">0</b> pts</p>
+      <p class="nota">En la siguiente ronda se usarán <b>los dinosaurios restantes</b> de cada jugador.</p>
+      <button id="btn-siguiente-ronda" class="btn btn-primario"><span class="btn-text">Siguiente ronda</span></button>
+    </div>
+  </div>
+
+  <!-- =================== PANTALLA: FIN JUEGO =================== -->
+  <div id="pantalla-fin-juego" class="pantalla" style="display:none;">
+    <div class="overlay"></div>
+    <div class="popup">
+      <h2>Fin del juego</h2>
+      <p id="final-n1"><span id="final-nombre-1">—</span>: <b id="final-puntos-1">0</b> pts (1.º)</p>
+      <p id="final-n2"><span id="final-nombre-2">—</span>: <b id="final-puntos-2">0</b> pts (2.º)</p>
+      <div class="fila">
+        <button id="btn-revancha" class="btn">Revancha</button>
+        <button id="btn-nueva-partida" class="btn btn-primario">Nueva partida</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
