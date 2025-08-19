@@ -48,7 +48,8 @@ class AppState {
             'btn-agregar-jugador': () => this.showToast('Solo se permiten 2 jugadores', 'info'),
             'btn-volver-jugadores': () => this.showScreen('lobby'),
             'btn-modo-asistente': () => this.showToast('Modo asistente activado', 'info'),
-            'btn-comenzar-juego': () => this.iniciarJuego()
+            'btn-comenzar-juego': () => this.iniciarJuego(),
+            'btn-limpiar-partidas': () => this.limpiarPartidas() // Nuevo botón
         };
 
         if (actions[target.id]) {
@@ -507,6 +508,32 @@ class AppState {
         if (dadoResultadoImg) dadoResultadoImg.src = config.imagen;
         if (tituloDado) tituloDado.textContent = config.titulo;
         if (descripcionDado) descripcionDado.textContent = config.descripcion;
+    }
+
+    // ==================== LIMPIAR PARTIDAS ==================== 
+    async limpiarPartidas() {
+        if (!confirm('¿Estás seguro de que quieres eliminar tus partidas activas?')) {
+            return;
+        }
+
+        this.setLoading(true);
+
+        try {
+            const response = await this.apiRequest('/api/game/cleanup.php', {
+                method: 'POST'
+            });
+
+            if (response.success) {
+                this.showToast('Partidas eliminadas correctamente', 'success');
+            } else {
+                this.showToast(response.message || 'Error al eliminar partidas', 'error');
+            }
+        } catch (error) {
+            console.error('Cleanup error:', error);
+            this.showToast('Error de conexión', 'error');
+        } finally {
+            this.setLoading(false);
+        }
     }
 
     // ==================== INICIO DEL JUEGO ==================== 
