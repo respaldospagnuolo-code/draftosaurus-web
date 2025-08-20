@@ -12,8 +12,6 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2b 50%, #4a6b47 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -33,10 +31,6 @@
             grid-template-rows: 1fr 1fr 1fr;
             gap: 12px;
             padding: 20px;
-            background: rgba(26, 46, 26, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .recintos-izquierda {
@@ -65,7 +59,7 @@
         }
 
         .recinto {
-            background-size: cover;
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             border-radius: 15px;
@@ -76,12 +70,6 @@
             align-items: center;
             padding: 8px;
             position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 3px solid rgba(218, 165, 32, 0.6);
-            box-shadow: 
-                0 6px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 3px rgba(255, 255, 255, 0.2);
             min-height: 80px;
         }
 
@@ -96,26 +84,9 @@
         .rio {
             width: 70px;
             height: 100%;
-            background-size: cover;
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            border-radius: 35px;
-            border: 3px solid rgba(64, 144, 208, 0.6);
-            box-shadow: 
-                0 6px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 3px rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .rio:hover {
-            transform: scale(1.03);
-            box-shadow: 
-                0 8px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1px 3px rgba(255, 255, 255, 0.3);
-            border-color: rgba(64, 144, 208, 0.8);
         }
 
         /* Asignación de imágenes de fondo */
@@ -153,22 +124,12 @@
             display: block;
             z-index: 10;
             position: relative;
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
         }
 
-        .dinosaurio:focus,
-        .recinto:focus {
-            outline: 3px solid #007acc;
-            outline-offset: 2px;
-        }
 
-        .dinosaurio:hover {
-            transform: scale(1.15);
-            transition: transform 0.2s ease;
-        }
 
         .recinto.bloqueado {
-            background-color: rgba(0, 0, 0, 0.85) !important;
+            background-color: rgba(0, 0, 0, 0.248) !important;
             background-image: none !important;
             color: #F8C94E;
             border: 3px dashed #F8C94E;
