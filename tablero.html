@@ -2,489 +2,489 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Juego de mesa Draftosaurus - Partida en curso">
-  <title>Partida en curso — Draftosaurus</title>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
-    as="style">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
-    as="style">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Juego de mesa Draftosaurus - Partida en curso">
+    <title>Partida en curso — Draftosaurus</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+        as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+        as="style">
 
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
-    rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* Estilos para accesibilidad */
-    .titulos-accesibles {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
+    <style>
+        /* Estilos para accesibilidad */
+        .titulos-accesibles {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Ubuntu', sans-serif;
-      background: url('img/bosque.jpg') center / cover no-repeat;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            background: url('img/bosque.jpg') center / cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* ----------------- MENU PUNTAJES ----------------- */
-    .puntajes {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 0.5rem;
-      background: linear-gradient(to bottom,
-          rgba(0, 0, 0, 1) 0%,
-          rgba(0, 0, 0, 0) 100%);
-      z-index: 2;
-    }
+        /* ----------------- MENU PUNTAJES ----------------- */
+        .puntajes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 0) 100%);
+            z-index: 2;
+        }
 
-    .puntajes .jugadores {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      height: 100%;
-    }
+        .puntajes .jugadores {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            height: 100%;
+        }
 
-    @media screen and (min-width: 768px) {
-      .puntajes .jugadores {
-        justify-content: center;
-        gap: 50px;
-      }
-    }
+        @media screen and (min-width: 768px) {
+            .puntajes .jugadores {
+                justify-content: center;
+                gap: 50px;
+            }
+        }
 
-    .puntajes .jugadores .jugador {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 0.8rem;
-      color: #FFF1C7;
-    }
+        .puntajes .jugadores .jugador {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.8rem;
+            color: #FFF1C7;
+        }
 
-    .jugador .contenedor {
-      text-align: left;
-    }
+        .jugador .contenedor {
+            text-align: left;
+        }
 
-    .jugador .nombre {
-      display: inline-block;
-      font-size: 0.8rem;
-      max-width: auto;
-    }
+        .jugador .nombre {
+            display: inline-block;
+            font-size: 0.8rem;
+            max-width: auto;
+        }
 
-    @media screen and (max-width: 767px) {
-      .jugador .nombre {
-        max-width: 50px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 0.75rem;
-      }
-    }
+        @media screen and (max-width: 767px) {
+            .jugador .nombre {
+                max-width: 50px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 0.75rem;
+            }
+        }
 
-    .jugador .puntos {
-      display: block;
-      font-size: 0.75rem;
-    }
+        .jugador .puntos {
+            display: block;
+            font-size: 0.75rem;
+        }
 
-    .jugador .icono-mapa {
-      width: 32px;
-      height: 32px;
-    }
+        .jugador .icono-mapa {
+            width: 32px;
+            height: 32px;
+        }
 
-    /* ----------------- TABLERO DE JUEGO ----------------- */
-    main.tablero {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 20px 200px;
-    }
+        /* ----------------- TABLERO DE JUEGO ----------------- */
+        main.tablero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px 200px;
+        }
 
-    .tablero-container {
-      width: 90vmin;
-      height: 90vmin;
-      max-width: 600px;
-      max-height: 600px;
-      display: grid;
-      grid-template-columns: 33.33% 33.33% 33.33%;
-      gap: 20px;
-    }
+        .tablero-container {
+            width: 90vmin;
+            height: 90vmin;
+            max-width: 600px;
+            max-height: 600px;
+            display: grid;
+            grid-template-columns: 33.33% 33.33% 33.33%;
+            gap: 20px;
+        }
 
-    .recintos-izquierda,
-    .recintos-derecha {
-      display: grid;
-      grid-template-rows: 1fr 1fr 1fr;
-      gap: 20px;
-    }
+        .recintos-izquierda,
+        .recintos-derecha {
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 20px;
+        }
 
-    .rio-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .rio-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .recinto {
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      border-radius: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1px;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 4px;
-    }
+        .recinto {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 4px;
+        }
 
-    .rio {
-      height: 100%;
-      width: 100%;
-      background: url('img/rio.png') center / contain no-repeat;
-      border-radius: 10px;
-    }
+        .rio {
+            height: 100%;
+            width: 100%;
+            background: url('img/rio.png') center / contain no-repeat;
+            border-radius: 10px;
+        }
 
-    #recinto1 {
-      background-image: url('img/Bosque-de-la-Semejanza.png');
-    }
+        #recinto1 {
+            background-image: url('img/Bosque-de-la-Semejanza.png');
+        }
 
-    #recinto2 {
-      background-image: url('img/Bosque-de-la-Semejanza.png');
-    }
+        #recinto2 {
+            background-image: url('img/Bosque-de-la-Semejanza.png');
+        }
 
-    #recinto3 {
-      background-image: url('img/Bosque-de-la-Semejanza.png');
-    }
+        #recinto3 {
+            background-image: url('img/Bosque-de-la-Semejanza.png');
+        }
 
-    #recinto4 {
-      background-image: url('img/Bosque-de-la-Semejanza.png');
-    }
+        #recinto4 {
+            background-image: url('img/Bosque-de-la-Semejanza.png');
+        }
 
-    #recinto5 {
-      background-image: url('img/Bosque-de-la-Semejanza.png');
-    }
+        #recinto5 {
+            background-image: url('img/Bosque-de-la-Semejanza.png');
+        }
 
-    #recinto6 {
-      background-image: url('img/Bosque-de-la-Semejanza.png');
-    }
+        #recinto6 {
+            background-image: url('img/Bosque-de-la-Semejanza.png');
+        }
 
-    .recinto .dinosaurio {
-      width: 20px;
-      height: auto;
-      display: block;
-    }
+        .recinto .dinosaurio {
+            width: 20px;
+            height: auto;
+            display: block;
+        }
 
-    .dinosaurio:focus,
-    .recinto:focus {
-      outline: 2px solid #007acc;
-      outline-offset: 2px;
-    }
+        .dinosaurio:focus,
+        .recinto:focus {
+            outline: 2px solid #007acc;
+            outline-offset: 2px;
+        }
 
-    .dinosaurio:hover {
-      transform: scale(1.1);
-      transition: transform 0.2s ease;
-    }
+        .dinosaurio:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
 
-    @media screen and (min-width: 768px) {
-      .recinto {
-        gap: 7px;
-      }
+        @media screen and (min-width: 768px) {
+            .recinto {
+                gap: 7px;
+            }
 
-      .recinto .dinosaurio {
-        width: 30px;
-      }
-    }
+            .recinto .dinosaurio {
+                width: 30px;
+            }
+        }
 
-    .recinto.bloqueado {
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background-color: rgba(0, 0, 0, 0.78) !important;
-      color: #F8C94E;
-      outline: 1px dashed #F8C94E;
-      opacity: 1 !important;
-      cursor: not-allowed;
-      position: relative;
-    }
+        .recinto.bloqueado {
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            position: relative;
+        }
 
-    .recinto.bloqueado::after {
-      content: "Bloqueada";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+        .recinto.bloqueado::after {
+            content: "Bloqueada";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.78) !important;
+            color: #F8C94E;
+            outline: 1px dashed #F8C94E;
+            opacity: 1 !important;
+            cursor: not-allowed;
+        }
 
-    .recinto:hover:not(.bloqueado) {
-      background-color: rgba(0, 122, 204, 0.1);
-      transition: background-color 0.2s ease;
-    }
+        .recinto:hover:not(.bloqueado) {
+            background-color: rgba(0, 122, 204, 0.1);
+            transition: background-color 0.2s ease;
+        }
 
-    /* ------------- MENU INFERIOR DE PARTIDA ------------- */
-    .menu_partida {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-image: linear-gradient(to top,
-          #0e1402 0%,
-          rgba(23, 31, 3, 0.44) 100%);
-    }
+        /* ------------- MENU INFERIOR DE PARTIDA ------------- */
+        .menu_partida {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-image: linear-gradient(to top,
+                    #0e1402 0%,
+                    rgba(23, 31, 3, 0.44) 100%);
+        }
 
-    .menu_partida .dinosaurios {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      padding: 0.5rem;
-      border-top: 1px solid rgba(255, 225, 0, 0.16);
-      height: 50px;
-    }
+        .menu_partida .dinosaurios {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0.5rem;
+            border-top: 1px solid rgba(255, 225, 0, 0.16);
+            height: 50px;
+        }
 
-    .menu_partida .dinosaurios .dinosaurio {
-      cursor: grab;
-      width: 50px;
-      height: auto;
-      touch-action: none;
-      will-change: transform;
-    }
+        .menu_partida .dinosaurios .dinosaurio {
+            cursor: grab;
+            width: 50px;
+            height: auto;
+            touch-action: none;
+            will-change: transform;
+        }
 
-    @media screen and (min-width: 768px) {
-      .menu_partida .dinosaurios {
-        justify-content: center;
-        gap: 20px;
-      }
+        @media screen and (min-width: 768px) {
+            .menu_partida .dinosaurios {
+                justify-content: center;
+                gap: 20px;
+            }
 
-      .menu_partida .dinosaurios .dinosaurio {
-        width: 60px;
-      }
-    }
+            .menu_partida .dinosaurios .dinosaurio {
+                width: 60px;
+            }
+        }
 
-    .menu_partida .datos {
-      padding: 0.15rem 0.5rem 0.5rem;
-      border-top: 1px solid rgba(255, 225, 0, 0.16);
-      color: #FFF1C7;
-    }
+        .menu_partida .datos {
+            padding: 0.15rem 0.5rem 0.5rem;
+            border-top: 1px solid rgba(255, 225, 0, 0.16);
+            color: #FFF1C7;
+        }
 
-    .menu_partida .datos ul {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
+        .menu_partida .datos ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
 
-    @media screen and (min-width: 768px) {
-      .menu_partida .datos ul {
-        justify-content: center;
-        gap: 30px;
-        align-items: center;
-      }
-    }
+        @media screen and (min-width: 768px) {
+            .menu_partida .datos ul {
+                justify-content: center;
+                gap: 30px;
+                align-items: center;
+            }
+        }
 
-    .menu_partida .datos ul .item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-    }
+        .menu_partida .datos ul .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
-    @media screen and (min-width: 768px) {
-      .menu_partida .datos ul .item {
-        flex-direction: row;
-      }
-    }
+        @media screen and (min-width: 768px) {
+            .menu_partida .datos ul .item {
+                flex-direction: row;
+            }
+        }
 
-    .menu_partida .datos ul .item img {
-      height: 35px;
-    }
+        .menu_partida .datos ul .item img {
+            height: 35px;
+        }
 
-    .menu_partida .datos ul .item span {
-      font-size: 0.75rem;
-    }
+        .menu_partida .datos ul .item span {
+            font-size: 0.75rem;
+        }
 
-    .menu_partida .datos ul .item .item-boton {
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: inherit;
-      font: inherit;
-      display: flex;
-      flex-direction: column;
-    }
+        .menu_partida .datos ul .item .item-boton {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: inherit;
+            font: inherit;
+            display: flex;
+            flex-direction: column;
+        }
 
-    @media screen and (min-width: 768px) {
-      .menu_partida .datos ul .item .item-boton {
-        flex-direction: row;
-      }
-    }
+        @media screen and (min-width: 768px) {
+            .menu_partida .datos ul .item .item-boton {
+                flex-direction: row;
+            }
+        }
 
-    .menu_partida .datos ul .item .item-boton:hover,
-    .menu_partida .datos ul .item .item-boton:focus {
-      opacity: 0.8;
-      outline: 2px solid #007acc;
-      outline-offset: 2px;
-    }
+        .menu_partida .datos ul .item .item-boton:hover,
+        .menu_partida .datos ul .item .item-boton:focus {
+            opacity: 0.8;
+            outline: 2px solid #007acc;
+            outline-offset: 2px;
+        }
 
-    #usuario img {
-      height: 50px;
-      width: auto;
-    }
+        #usuario img {
+            height: 50px;
+            width: auto;
+        }
 
-    #usuario span {
-      font-size: 0.8rem;
-    }
+        #usuario span {
+            font-size: 0.8rem;
+        }
 
-    .oswald {
-      font-family: 'Oswald', sans-serif;
-    }
-  </style>
+        .oswald {
+            font-family: 'Oswald', sans-serif;
+        }
+    </style>
 </head>
 
 <body>
-  <header class="puntajes">
-    <h1 class="titulos-accesibles">Puntajes de jugadores</h1>
-    <ul class="jugadores">
-      <li class="jugador">
-        <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Anita" width="40" height="40">
-        <div class="contenedor">
-          <span class="nombre oswald">Anita</span>
-          <span class="puntos" aria-label="Puntos de Anita">0 ptos</span>
-        </div>
-      </li>
-      <li class="jugador">
-        <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Juan Andrés" width="40" height="40">
-        <div class="contenedor">
-          <span class="nombre oswald">Juan Andrés</span>
-          <span class="puntos" aria-label="Puntos de Juan Andrés">0 ptos</span>
-        </div>
-      </li>
-      <li class="jugador">
-        <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de José Luis" width="40" height="40">
-        <div class="contenedor">
-          <span class="nombre oswald">José Luis</span>
-          <span class="puntos" aria-label="Puntos de José Luis">0 ptos</span>
-        </div>
-      </li>
-      <li class="jugador">
-        <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Pepe King" width="40" height="40">
-        <div class="contenedor">
-          <span class="nombre oswald">Pepe King</span>
-          <span class="puntos" aria-label="Puntos de Pepe King">0 ptos</span>
-        </div>
-      </li>
-    </ul>
-  </header>
+    <header class="puntajes">
+        <h1 class="titulos-accesibles">Puntajes de jugadores</h1>
+        <ul class="jugadores">
+            <li class="jugador">
+                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Anita" width="40" height="40">
+                <div class="contenedor">
+                    <span class="nombre oswald">Anita</span>
+                    <span class="puntos" aria-label="Puntos de Anita">0 ptos</span>
+                </div>
+            </li>
+            <li class="jugador">
+                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Juan Andrés" width="40" height="40">
+                <div class="contenedor">
+                    <span class="nombre oswald">Juan Andrés</span>
+                    <span class="puntos" aria-label="Puntos de Juan Andrés">0 ptos</span>
+                </div>
+            </li>
+            <li class="jugador">
+                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de José Luis" width="40" height="40">
+                <div class="contenedor">
+                    <span class="nombre oswald">José Luis</span>
+                    <span class="puntos" aria-label="Puntos de José Luis">0 ptos</span>
+                </div>
+            </li>
+            <li class="jugador">
+                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Pepe King" width="40" height="40">
+                <div class="contenedor">
+                    <span class="nombre oswald">Pepe King</span>
+                    <span class="puntos" aria-label="Puntos de Pepe King">0 ptos</span>
+                </div>
+            </li>
+        </ul>
+    </header>
 
-  <!-- Tablero principal del juego -->
-  <main class="tablero">
-    <h2 class="titulos-accesibles">Tablero de juego</h2>
-    <div class="tablero-container">
-      <!-- Recintos Izquierda -->
-      <div class="recintos-izquierda">
-        <div class="recinto" id="recinto1" role="button" tabindex="0" aria-label="Recinto 1, vacío"></div>
-        <div class="recinto" id="recinto2" role="button" tabindex="0" aria-label="Recinto 2, vacío"></div>
-        <div class="recinto" id="recinto3" role="button" tabindex="0" aria-label="Recinto 3, vacío"></div>
-      </div>
+    <!-- Tablero principal del juego -->
+    <main class="tablero">
+        <h2 class="titulos-accesibles">Tablero de juego</h2>
+        <div class="tablero-container">
+            <!-- Recintos Izquierda -->
+            <div class="recintos-izquierda">
+                <div class="recinto" id="recinto1" role="button" tabindex="0" aria-label="Recinto 1, vacío"></div>
+                <div class="recinto" id="recinto2" role="button" tabindex="0" aria-label="Recinto 2, vacío"></div>
+                <div class="recinto" id="recinto3" role="button" tabindex="0" aria-label="Recinto 3, vacío"></div>
+            </div>
 
-      <!-- Río Central -->
-      <div class="rio-container">
-        <div class="rio" id="rio" role="button" tabindex="0" aria-label="Río, vacío"></div>
-      </div>
+            <!-- Río Central -->
+            <div class="rio-container">
+                <div class="rio" id="rio" role="button" tabindex="0" aria-label="Río, vacío"></div>
+            </div>
 
-      <!-- Recintos Derecha -->
-      <div class="recintos-derecha">
-        <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1" aria-label="Recinto 4, bloqueado"
-          aria-disabled="true"></div>
-        <div class="recinto" id="recinto5" role="button" tabindex="0" aria-label="Recinto 5, vacío"></div>
-        <div class="recinto" id="recinto6" role="button" tabindex="0" aria-label="Recinto 6, vacío"></div>
-      </div>
+            <!-- Recintos Derecha -->
+            <div class="recintos-derecha">
+                <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1"
+                    aria-label="Recinto 4, bloqueado" aria-disabled="true"></div>
+                <div class="recinto" id="recinto5" role="button" tabindex="0" aria-label="Recinto 5, vacío"></div>
+                <div class="recinto" id="recinto6" role="button" tabindex="0" aria-label="Recinto 6, vacío"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Menú inferior con controles del juego -->
+    <footer class="menu_partida">
+        <!-- Dinosaurios disponibles para arrastrar -->
+        <section class="dinosaurios" role="region" aria-label="Dinosaurios disponibles">
+            <h3 class="titulos-accesibles">Dinosaurios para colocar</h3>
+            <img src="img/dino-1-perfil.png" id="dino1" class="dinosaurio" draggable="true" alt="Dinosaurio Verde"
+                title="Dinosaurio Verde - Arrastra para colocar" data-menu-src="img/dino-1-perfil.png"
+                data-board-src="img/dino-1-arriba.png" width="60" height="60" tabindex="0">
+            <img src="img/dino-2-perfil.png" id="dino2" class="dinosaurio" draggable="true" alt="Dinosaurio Azul"
+                title="Dinosaurio Azul - Arrastra para colocar" data-menu-src="img/dino-2-perfil.png"
+                data-board-src="img/dino-2-arriba.png" width="60" height="60" tabindex="0">
+            <img src="img/dino-3-perfil.png" id="dino3" class="dinosaurio" draggable="true" alt="Dinosaurio Amarillo"
+                title="Dinosaurio Amarillo - Arrastra para colocar" data-menu-src="img/dino-3-perfil.png"
+                data-board-src="img/dino-3-arriba.png" width="60" height="60" tabindex="0">
+            <img src="img/dino-4-perfil.png" id="dino4" class="dinosaurio" draggable="true" alt="Dinosaurio Rojo"
+                title="Dinosaurio Rojo - Arrastra para colocar" data-menu-src="img/dino-4-perfil.png"
+                data-board-src="img/dino-4-arriba.png" width="60" height="60" tabindex="0">
+            <img src="img/dino-5-perfil.png" id="dino5" class="dinosaurio" draggable="true" alt="Dinosaurio Naranja"
+                title="Dinosaurio Naranja - Arrastra para colocar" data-menu-src="img/dino-5-perfil.png"
+                data-board-src="img/dino-5-arriba.png" width="60" height="60" tabindex="0">
+            <img src="img/dino-6-perfil.png" id="dino6" class="dinosaurio" draggable="true" alt="Dinosaurio Rosa"
+                title="Dinosaurio Rosa - Arrastra para colocar" data-menu-src="img/dino-6-perfil.png"
+                data-board-src="img/dino-6-arriba.png" width="60" height="60" tabindex="0">
+        </section>
+
+        <!-- Navegación con información del juego -->
+        <nav class="datos" role="navigation" aria-label="Información del juego">
+            <ul>
+                <li id="usuario" class="item">
+                    <img src="img/foto_usuario-1.png" alt="Foto de usuario" width="32" height="32">
+                    <span class="oswald">Pepeking</span>
+                </li>
+                <li id="dado" class="item">
+                    <img src="img/cara-dado-2.png" alt="Cara del dado mostrando T-Rex" width="32" height="32">
+                    <span>T-Rex</span>
+                </li>
+                <li id="puntos" class="item">
+                    <img src="img/icono_partidas-ganadas.png" alt="Trofeo" width="32" height="32">
+                    <span aria-label="Puntos actuales">0 Puntos</span>
+                </li>
+                <li id="informacion" class="item">
+                    <button type="button" class="item-boton" aria-label="Mostrar información del juego">
+                        <img src="img/icono_informacion.png" alt="" width="32" height="32">
+                        <span>Información</span>
+                    </button>
+                </li>
+                <li id="fisica" class="item">
+                    <button type="button" class="item-boton" aria-label="Mostrar configuración de física">
+                        <img src="img/icono_datos_fisica.png" alt="" width="32" height="32">
+                        <span>Física</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- Contenido para lectores de pantalla -->
+    <div class="titulos-accesibles">
+        <p>Instrucciones: Arrastra los dinosaurios desde la parte inferior a los recintos del tablero. Usa las teclas de
+            flecha para navegar y Enter para seleccionar.</p>
     </div>
-  </main>
-
-  <!-- Menú inferior con controles del juego -->
-  <footer class="menu_partida">
-    <!-- Dinosaurios disponibles para arrastrar -->
-    <section class="dinosaurios" role="region" aria-label="Dinosaurios disponibles">
-      <h3 class="titulos-accesibles">Dinosaurios para colocar</h3>
-      <img src="img/dino-1-perfil.png" id="dino1" class="dinosaurio" draggable="true" alt="Dinosaurio Verde"
-        title="Dinosaurio Verde - Arrastra para colocar" data-menu-src="img/dino-1-perfil.png"
-        data-board-src="img/dino-1-arriba.png" width="60" height="60" tabindex="0">
-      <img src="img/dino-2-perfil.png" id="dino2" class="dinosaurio" draggable="true" alt="Dinosaurio Azul"
-        title="Dinosaurio Azul - Arrastra para colocar" data-menu-src="img/dino-2-perfil.png"
-        data-board-src="img/dino-2-arriba.png" width="60" height="60" tabindex="0">
-      <img src="img/dino-3-perfil.png" id="dino3" class="dinosaurio" draggable="true" alt="Dinosaurio Amarillo"
-        title="Dinosaurio Amarillo - Arrastra para colocar" data-menu-src="img/dino-3-perfil.png"
-        data-board-src="img/dino-3-arriba.png" width="60" height="60" tabindex="0">
-      <img src="img/dino-4-perfil.png" id="dino4" class="dinosaurio" draggable="true" alt="Dinosaurio Rojo"
-        title="Dinosaurio Rojo - Arrastra para colocar" data-menu-src="img/dino-4-perfil.png"
-        data-board-src="img/dino-4-arriba.png" width="60" height="60" tabindex="0">
-      <img src="img/dino-5-perfil.png" id="dino5" class="dinosaurio" draggable="true" alt="Dinosaurio Naranja"
-        title="Dinosaurio Naranja - Arrastra para colocar" data-menu-src="img/dino-5-perfil.png"
-        data-board-src="img/dino-5-arriba.png" width="60" height="60" tabindex="0">
-      <img src="img/dino-6-perfil.png" id="dino6" class="dinosaurio" draggable="true" alt="Dinosaurio Rosa"
-        title="Dinosaurio Rosa - Arrastra para colocar" data-menu-src="img/dino-6-perfil.png"
-        data-board-src="img/dino-6-arriba.png" width="60" height="60" tabindex="0">
-    </section>
-
-    <!-- Navegación con información del juego -->
-    <nav class="datos" role="navigation" aria-label="Información del juego">
-      <ul>
-        <li id="usuario" class="item">
-          <img src="img/foto_usuario-1.png" alt="Foto de usuario" width="32" height="32">
-          <span class="oswald">Pepeking</span>
-        </li>
-        <li id="dado" class="item">
-          <img src="img/cara-dado-2.png" alt="Cara del dado mostrando T-Rex" width="32" height="32">
-          <span>T-Rex</span>
-        </li>
-        <li id="puntos" class="item">
-          <img src="img/icono_partidas-ganadas.png" alt="Trofeo" width="32" height="32">
-          <span aria-label="Puntos actuales">0 Puntos</span>
-        </li>
-        <li id="informacion" class="item">
-          <button type="button" class="item-boton" aria-label="Mostrar información del juego">
-            <img src="img/icono_informacion.png" alt="" width="32" height="32">
-            <span>Información</span>
-          </button>
-        </li>
-        <li id="fisica" class="item">
-          <button type="button" class="item-boton" aria-label="Mostrar configuración de física">
-            <img src="img/icono_datos_fisica.png" alt="" width="32" height="32">
-            <span>Física</span>
-          </button>
-        </li>
-      </ul>
-    </nav>
-  </footer>
-
-  <!-- Contenido para lectores de pantalla -->
-  <div class="titulos-accesibles">
-    <p>Instrucciones: Arrastra los dinosaurios desde la parte inferior a los recintos del tablero. Usa las teclas de
-      flecha para navegar y Enter para seleccionar.</p>
-  </div>
 </body>
 
 </html>
