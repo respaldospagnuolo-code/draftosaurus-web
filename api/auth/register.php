@@ -1,129 +1,96 @@
 <?php
-// ==================== API REGISTRO ==================== 
-require_once '../../config.php';
+require_once 'config.php';
 
-// Solo permitir POST
+SessionManager::start();
+
+// Validar método
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     Utils::errorResponse('Método no permitido', 405);
 }
 
+// Obtener datos JSON
+$input = file_get_contents('php://input');
+$data = json_decode($input, true);
+
+if (!$data) {
+    Utils::errorResponse('Datos inválidos', 400);
+}
+
+$username = trim($data['username'] ?? '');
+$email = trim($data['email'] ?? '');
+$password = $data['password'] ?? '';
+$birthdate = $data['birthdate'] ?? '';
+
+// Validaciones
+if (empty($username) || empty($email) || empty($password) || empty($birthdate)) {
+    Utils::errorResponse('Todos los campos son requeridos', 400);
+}
+
+if (!Utils::validateUsername($username)) {
+    Utils::errorResponse('Nombre de usuario inválido (3-20 caracteres, solo letras, números y _)', 400);
+}
+
+if (!Utils::validateEmail($email)) {
+    Utils::errorResponse('Email inválido', 400);
+}
+
+if (!Utils::validatePassword($password)) {
+    Utils::errorResponse('La contraseña debe tener al menos 6 caracteres', 400);
+}
+
+if (!Utils::validateAge($birthdate)) {
+    Utils::errorResponse('Debes tener al menos 8 años para registrarte', 400);
+}
+
 try {
-    // Obtener datos de entrada
-    $input = json_decode(file_get_contents('php://input'), true);
-    
-    if (!$input) {
-        Utils::errorResponse('Datos inválidos');
-    }
-    
-    $username = Utils::sanitizeInput($input['username'] ?? '');
-    $email = Utils::sanitizeInput($input['email'] ?? '');
-    $birthdate = $input['birthdate'] ?? '';
-    $password = $input['password'] ?? '';
-    $passwordConfirm = $input['passwordConfirm'] ?? '';
-    
-    // Validaciones
-    $errors = [];
-    
-    if (empty($username)) {
-        $errors[] = 'El nombre de usuario es requerido';
-    } elseif (!Utils::validateUsername($username)) {
-        $errors[] = 'El nombre de usuario debe tener entre 3 y 20 caracteres y solo contener letras, números y guiones bajos';
-    }
-    
-    if (empty($email)) {
-        $errors[] = 'El email es requerido';
-    } elseif (!Utils::validateEmail($email)) {
-        $errors[] = 'El email no tiene un formato válido';
-    }
-    
-    if (empty($birthdate)) {
-        $errors[] = 'La fecha de nacimiento es requerida';
-    } elseif (!Utils::validateAge($birthdate)) {
-        $errors[] = 'Debes tener al menos ' . DatabaseConfig::MIN_AGE . ' años para registrarte';
-    }
-    
-    if (empty($password)) {
-        $errors[] = 'La contraseña es requerida';
-    } elseif (!Utils::validatePassword($password)) {
-        $errors[] = 'La contraseña debe tener al menos ' . DatabaseConfig::PASSWORD_MIN_LENGTH . ' caracteres';
-    }
-    
-    if ($password !== $passwordConfirm) {
-        $errors[] = 'Las contraseñas no coinciden';
-    }
-    
-    if (!empty($errors)) {
-        Utils::errorResponse('Errores de validación', 422, $errors);
-    }
-    
-    // Verificar si el usuario ya existe
     $db = Database::getInstance()->getConnection();
     
-    $stmt = $db->prepare("
-        SELECT COUNT(*) as count 
-        FROM users 
-        WHERE username = ? OR email = ?
-    ");
-    $stmt->execute([$username, $email]);
-    $result = $stmt->fetch();
-    
-    if ($result['count'] > 0) {
-        // Verificar qué campo específico está duplicado
-        $stmt = $db->prepare("SELECT username, email FROM users WHERE username = ? OR email = ?");
-        $stmt->execute([$username, $email]);
-        $existing = $stmt->fetch();
-        
-        if ($existing['username'] === $username) {
-            Utils::errorResponse('El nombre de usuario ya está en uso');
-        } else {
-            Utils::errorResponse('El email ya está registrado');
-        }
+    // Verificar si el username ya existe
+    $stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    if ($stmt->fetch()) {
+        Utils::errorResponse('El nombre de usuario ya está en uso', 409);
     }
     
-    // Crear nuevo usuario
+    // Verificar si el email ya existe
+    $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    if ($stmt->fetch()) {
+        Utils::errorResponse('El email ya está registrado', 409);
+    }
+    
+    // Hashear contraseña
     $passwordHash = Utils::hashPassword($password);
     
+    // Insertar usuario
     $stmt = $db->prepare("
-        INSERT INTO users (username, email, password_hash, birthdate, name)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO users (username, email, password_hash, birthdate, name, created_at) 
+        VALUES (?, ?, ?, ?, ?, NOW())
     ");
     
-    $name = ucfirst($username); // Nombre por defecto
-    
-    if (!$stmt->execute([$username, $email, $passwordHash, $birthdate, $name])) {
-        Utils::errorResponse('Error al crear la cuenta');
-    }
+    $stmt->execute([
+        $username,
+        $email,
+        $passwordHash,
+        $birthdate,
+        $username // Usar username como name por defecto
+    ]);
     
     $userId = $db->lastInsertId();
     
-    // Iniciar sesión automáticamente
-    SessionManager::setUser($userId, [
-        'username' => $username,
-        'email' => $email,
-        'name' => $name
-    ]);
+    Utils::logActivity("New user registered", $userId);
     
-    // Preparar respuesta
-    $userData = [
-        'id' => $userId,
-        'username' => $username,
-        'email' => $email,
-        'name' => $name,
-        'stats' => [
-            'won' => 0,
-            'lost' => 0,
-            'total_score' => 0
-        ]
-    ];
-    
-    Utils::logActivity("New user registered: $username", $userId);
-    
+    // Respuesta exitosa
     Utils::successResponse([
-        'user' => $userData,
-        'message' => 'Cuenta creada exitosamente'
-    ]);
+        'user' => [
+            'id' => $userId,
+            'username' => $username,
+            'email' => $email
+        ]
+    ], 'Usuario registrado exitosamente');
     
 } catch (Exception $e) {
     Utils::logError("Registration error: " . $e->getMessage());
     Utils::errorResponse('Error interno del servidor', 500);
 }
+?>
