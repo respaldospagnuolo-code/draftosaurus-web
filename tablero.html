@@ -15,306 +15,298 @@
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #2d4a2b 0%, #4a6b47 50%, #6b8c66 100%);
             min-height: 100vh;
-            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .game-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(139, 115, 85, 0.9);
+        .tablero-container {
+            width: 90vmin;
+            height: 90vmin;
+            max-width: 600px;
+            max-height: 600px;
+            min-width: 300px;
+            min-height: 300px;
+            background: rgba(139, 115, 85, 0.1);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
-            border: 3px solid #8b7355;
+            border: 3px solid rgba(139, 115, 85, 0.3);
         }
 
-        .board-grid {
+        .tablero-grid {
+            width: 100%;
+            height: 100%;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 15px;
-            align-items: center;
-            min-height: 60vh;
-        }
-
-        .enclosures-left, .enclosures-right {
-            display: grid;
-            grid-template-rows: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr 1fr;
             gap: 10px;
-            height: 100%;
+            align-items: stretch;
         }
 
-        .enclosure {
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            border: 2px solid rgba(139, 115, 85, 0.5);
-            border-radius: 10px;
-            min-height: 140px;
+        .recintos-izquierda {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .rio-container {
+            grid-column: 2;
+            grid-row: 1 / -1;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0 15px;
+        }
+
+        .recintos-derecha {
+            grid-column: 3;
+            grid-row: 1 / -1;
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .recinto {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 8px;
             position: relative;
             transition: all 0.3s ease;
             cursor: pointer;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            border: 2px solid rgba(139, 115, 85, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .enclosure:hover {
-            transform: translateY(-2px) scale(1.02);
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+        .recinto:hover:not(.bloqueado) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            border-color: rgba(139, 115, 85, 0.6);
         }
 
-        /* Asignación específica de imágenes usando window.fs.readFile */
-        .enclosure:nth-child(1) {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==');
-        }
-
-        .river-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 10px;
-            min-height: 400px;
-        }
-
-        .river {
-            width: 100px;
+        .rio {
+            width: 60px;
             height: 100%;
-            background-size: contain;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            border-radius: 30px;
+            border: 2px solid rgba(139, 115, 85, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .rio:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Asignación de imágenes de fondo */
+        #recinto1 {
+            background-image: url('img/bosque-1.png');
+        }
+
+        #recinto2 {
+            background-image: url('img/Bosque-de-la-Semejanza-2.png');
+        }
+
+        #recinto3 {
+            background-image: url('img/isla-solitaria-3.png');
+        }
+
+        #rio {
+            background-image: url('img/rio.png');
+        }
+
+        #recinto4 {
+            background-image: url('img/Pradera-del-Amor-vs2-5.png');
+        }
+
+        #recinto5 {
+            background-image: url('img/Prado-de-la-Diferencia-6.png');
+        }
+
+        #recinto6 {
+            background-image: url('img/recinto-t-rex-7.png');
+        }
+
+        .recinto .dinosaurio {
+            width: 20px;
+            height: auto;
+            display: block;
+            z-index: 10;
             position: relative;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
-            min-height: 300px;
         }
 
-        .enclosure-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .dinosaurio:focus,
+        .recinto:focus {
+            outline: 2px solid #007acc;
+            outline-offset: 2px;
         }
 
-        .enclosure-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
+        .dinosaurio:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
         }
 
-        .river-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+        .recinto.bloqueado {
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.78);
+            color: #F8C94E;
+            border: 2px dashed #F8C94E;
+            opacity: 1 !important;
+            cursor: not-allowed;
+            background-image: none !important;
         }
 
-        /* Mobile First Responsive */
-        @media (max-width: 768px) {
-            .game-container {
-                padding: 15px;
-                border-radius: 15px;
-            }
-            
-            .board-grid {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr auto 1fr;
-                gap: 20px;
-                min-height: 80vh;
-            }
-            
-            .enclosures-left, .enclosures-right {
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: 1fr;
-                gap: 8px;
-            }
-            
-            .river-container {
-                order: 2;
-                flex-direction: row;
-                justify-content: center;
-                padding: 15px;
-                min-height: auto;
-            }
-            
-            .river {
-                width: 100%;
-                max-width: 250px;
-                height: 80px;
-                min-height: 80px;
-            }
-            
-            .enclosure {
-                min-height: 100px;
-            }
-            
-            .enclosures-right {
-                order: 3;
-            }
+        .recinto.bloqueado::after {
+            content: "Bloqueado";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
         }
 
-        @media (max-width: 480px) {
-            .game-container {
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            body {
                 padding: 10px;
             }
             
-            .enclosure {
-                min-height: 80px;
+            .tablero-container {
+                width: 95vmin;
+                height: 95vmin;
+                padding: 15px;
             }
             
-            .river {
-                height: 60px;
-                min-height: 60px;
-                max-width: 200px;
+            .tablero-grid {
+                gap: 8px;
+            }
+            
+            .rio-container {
+                padding: 0 10px;
+            }
+            
+            .rio {
+                width: 50px;
+            }
+            
+            .recinto {
+                padding: 6px;
+                gap: 2px;
+            }
+            
+            .recinto .dinosaurio {
+                width: 16px;
+            }
+            
+            .recinto.bloqueado::after {
+                font-size: 8px;
+                padding: 2px 4px;
             }
         }
 
-        /* Tablet and Desktop */
-        @media (min-width: 769px) {
-            .board-grid {
-                min-height: 70vh;
+        @media screen and (max-width: 480px) {
+            .tablero-container {
+                width: 98vmin;
+                height: 98vmin;
+                padding: 10px;
             }
             
-            .enclosure {
-                min-height: 160px;
+            .tablero-grid {
+                gap: 6px;
+            }
+            
+            .rio-container {
+                padding: 0 8px;
+            }
+            
+            .rio {
+                width: 40px;
+            }
+            
+            .recinto {
+                padding: 4px;
+                gap: 1px;
+            }
+            
+            .recinto .dinosaurio {
+                width: 14px;
             }
         }
 
-        @media (min-width: 1024px) {
-            .game-container {
-                padding: 30px;
+        @media screen and (min-width: 769px) {
+            .recinto .dinosaurio {
+                width: 24px;
             }
             
-            .board-grid {
-                gap: 20px;
-                min-height: 65vh;
-            }
-            
-            .enclosure {
-                min-height: 180px;
-            }
-            
-            .river {
-                width: 120px;
+            .recinto {
+                gap: 5px;
+                padding: 10px;
             }
         }
 
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8b7355;
-            font-style: italic;
+        @media screen and (min-width: 1024px) {
+            .tablero-container {
+                max-width: 700px;
+                max-height: 700px;
+            }
+            
+            .rio {
+                width: 70px;
+            }
+            
+            .recinto .dinosaurio {
+                width: 28px;
+            }
+            
+            .recinto {
+                gap: 6px;
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="board-grid">
+    <div class="tablero-container">
+        <div class="tablero-grid">
             <!-- Recintos Izquierda -->
-            <div class="enclosures-left">
-                <div class="enclosure" id="enclosure-1">
-                    <div class="enclosure-content">
-                        <div class="loading">Cargando...</div>
-                    </div>
-                </div>
-                <div class="enclosure" id="enclosure-2">
-                    <div class="enclosure-content">
-                        <div class="loading">Cargando...</div>
-                    </div>
-                </div>
-                <div class="enclosure" id="enclosure-3">
-                    <div class="enclosure-content">
-                        <div class="loading">Cargando...</div>
-                    </div>
-                </div>
+            <div class="recintos-izquierda">
+                <div class="recinto" id="recinto1" role="button" tabindex="0" aria-label="Recinto 1, vacío"></div>
+                <div class="recinto" id="recinto2" role="button" tabindex="0" aria-label="Recinto 2, vacío"></div>
+                <div class="recinto" id="recinto3" role="button" tabindex="0" aria-label="Recinto 3, vacío"></div>
             </div>
             
             <!-- Río Central -->
-            <div class="river-container">
-                <div class="river" id="river">
-                    <div class="loading">Cargando...</div>
-                </div>
+            <div class="rio-container">
+                <div class="rio" id="rio" role="button" tabindex="0" aria-label="Río, vacío"></div>
             </div>
             
             <!-- Recintos Derecha -->
-            <div class="enclosures-right">
-                <div class="enclosure" id="enclosure-4">
-                    <div class="enclosure-content">
-                        <div class="loading">Cargando...</div>
-                    </div>
-                </div>
-                <div class="enclosure" id="enclosure-5">
-                    <div class="enclosure-content">
-                        <div class="loading">Cargando...</div>
-                    </div>
-                </div>
-                <div class="enclosure" id="enclosure-6">
-                    <div class="enclosure-content">
-                        <div class="loading">Cargando...</div>
-                    </div>
-                </div>
+            <div class="recintos-derecha">
+                <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1" aria-label="Recinto 4, bloqueado" aria-disabled="true"></div>
+                <div class="recinto" id="recinto5" role="button" tabindex="0" aria-label="Recinto 5, vacío"></div>
+                <div class="recinto" id="recinto6" role="button" tabindex="0" aria-label="Recinto 6, vacío"></div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Mapeo de archivos de imágenes a elementos
-        const imageMapping = [
-            { filename: 'img/bosque-1.png', elementId: 'enclosure-1' },
-            { filename: 'img/Bosque-de-la-Semejanza-2.png', elementId: 'enclosure-2' },
-            { filename: 'img/isla-solitaria-3.png', elementId: 'enclosure-3' },
-            { filename: 'img/rio-4.png', elementId: 'river' },
-            { filename: 'img/Pradera-del-Amor-vs2-5.png', elementId: 'enclosure-4' },
-            { filename: 'img/Prado-de-la-Diferencia-6.png', elementId: 'enclosure-5' },
-            { filename: 'img/recinto-t-rex-7.png', elementId: 'enclosure-6' },
-            { filename: 'img/Trio-Frondoso-8.png', elementId: null } // Extra por si se necesita
-        ];
-
-        async function loadImages() {
-            for (const mapping of imageMapping) {
-                if (!mapping.elementId) continue;
-                
-                try {
-                    const imageData = await window.fs.readFile(mapping.filename);
-                    const blob = new Blob([imageData]);
-                    const imageUrl = URL.createObjectURL(blob);
-                    
-                    const element = document.getElementById(mapping.elementId);
-                    if (element) {
-                        // Crear elemento de imagen
-                        const img = document.createElement('img');
-                        img.src = imageUrl;
-                        
-                        if (mapping.elementId === 'river') {
-                            img.className = 'river-image';
-                        } else {
-                            img.className = 'enclosure-image';
-                        }
-                        
-                        img.onload = () => {
-                            element.innerHTML = '';
-                            element.appendChild(img);
-                        };
-                        
-                        img.onerror = () => {
-                            element.innerHTML = '<div class="loading">Error al cargar</div>';
-                        };
-                    }
-                } catch (error) {
-                    console.error(`Error loading ${mapping.filename}:`, error);
-                    const element = document.getElementById(mapping.elementId);
-                    if (element) {
-                        element.innerHTML = '<div class="loading">No disponible</div>';
-                    }
-                }
-            }
-        }
-
-        // Cargar imágenes al iniciar
-        window.addEventListener('load', loadImages);
-    </script>
 </body>
 </html>
