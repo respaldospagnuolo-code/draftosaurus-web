@@ -328,156 +328,143 @@
         </div>
     </div>
 
-
-
-<!-- ==================== PANTALLA INDICADOR DE TURNO ==================== -->
-<div id="pantalla-turno" class="pantalla fondo-interfaz-normal" style="display: none;">
-    <div class="overlay-fondo"></div>
-    <div class="popup-dado fade-in">
-        <div class="popup-header">
-            <div class="dado-resultado-container">
-                <img src="img/foto_usuario-1.png" alt="Avatar del jugador" class="dado-resultado" id="turno-avatar">
-            </div>
-        </div>
-        <div class="popup-content">
-            <h2 class="titulo titulo--md titulo--marron" id="turno-titulo">Sigue Ana</h2>
-            <p class="texto texto--base texto--marron popup-descripcion" id="turno-descripcion">
-                Es tu turno para colocar un dinosaurio
-            </p>
-            <button class="btn btn--verde" id="btn-empezar-turno">
-                <span class="btn-text">Empezar</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ==================== PANTALLA TABLERO - AGREGAR A INDEX.HTML ==================== -->
-<!-- Agregar después de la pantalla de turno y antes del toast container -->
-
-<!-- ==================== PANTALLA TABLERO ==================== -->
-<div id="pantalla-tablero" class="pantalla fondo-interfaz-normal" style="display: none;">
-    <!-- Header con puntajes -->
-    <header class="puntajes">
-        <h1 class="titulos-accesibles">Puntajes de jugadores</h1>
-        <ul class="jugadores">
-            <li class="jugador" id="player1-score">
-                <img src="img/foto_usuario-1.png" class="icono-mapa" alt="Avatar Jugador 1" width="40" height="40">
-                <div class="contenedor">
-                    <span class="nombre oswald" id="player1-name">Jugador 1</span>
-                    <span class="puntos" id="player1-points">0 ptos</span>
-                </div>
-            </li>
-            <li class="jugador" id="player2-score">
-                <img src="img/foto_usuario-2.png" class="icono-mapa" alt="Avatar Jugador 2" width="40" height="40">
-                <div class="contenedor">
-                    <span class="nombre oswald" id="player2-name">Jugador 2</span>
-                    <span class="puntos" id="player2-points">0 ptos</span>
-                </div>
-            </li>
-        </ul>
-    </header>
-
-    <!-- Tablero principal del juego -->
-    <main class="tablero">
-        <h2 class="titulos-accesibles">Tablero de juego</h2>
-        <div class="recintos" role="region" aria-label="Área de juego">
-            <!-- Lado izquierdo (Bosques) -->
-            <div class="lado_izquierdo">
-                <div class="recinto" id="recinto1" role="button" tabindex="0" 
-                     aria-label="Bosque de Iguales 1" 
-                     data-enclosure-id="1" data-zone="bosques" data-type="bosque_iguales" data-capacity="4">
-                </div>
-                <div class="recinto" id="recinto2" role="button" tabindex="0" 
-                     aria-label="Bosque de Iguales 2" 
-                     data-enclosure-id="2" data-zone="bosques" data-type="bosque_iguales" data-capacity="6">
-                </div>
-                <div class="recinto" id="recinto3" role="button" tabindex="0" 
-                     aria-label="Trío del Bosque" 
-                     data-enclosure-id="3" data-zone="bosques" data-type="trio_bosque" data-capacity="3">
-                </div>
+    <!-- ==================== PANTALLA PARTIDA ==================== -->
+    <div id="pantalla-partida" class="pantalla fondo-interfaz" style="display: none;">
+        <!-- Header del juego -->
+        <div class="game-header">
+            <div class="player-info">
+                <img src="img/foto_usuario-1.png" alt="Jugador 1" class="player-avatar" id="player1-avatar">
+                <span class="player-name" id="player1-name">PEPEKING</span>
+                <div class="player-score" id="player1-score">0 puntos</div>
             </div>
             
-            <!-- Centro (Lado comidas y baños) -->
-            <div class="centro">
-                <!-- Rey de la Selva (lado comidas - izquierda) -->
-                <div class="recinto" id="recinto4" role="button" tabindex="0" 
-                     aria-label="Rey de la Selva" 
-                     data-enclosure-id="7" data-zone="comidas" data-type="rey_selva" data-capacity="1">
+            <div class="game-info">
+                <div class="round-info" id="round-info">Ronda 1/2</div>
+                <div class="turn-info" id="turn-info">Turno 1</div>
+            </div>
+            
+            <div class="player-info">
+                <div class="player-score" id="player2-score">0 puntos</div>
+                <span class="player-name" id="player2-name">ANITA</span>
+                <img src="img/invitado.png" alt="Jugador 2" class="player-avatar" id="player2-avatar">
+            </div>
+        </div>
+
+        <!-- Contenedor principal del tablero -->
+        <div class="board-container">
+            <!-- Mano del jugador 1 -->
+            <div class="player-hand">
+                <div class="hand-title">Tu mano</div>
+                <div class="dinosaur-hand" id="player1-hand">
+                    <!-- Las cartas se generarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Tablero central -->
+            <div class="board-grid">
+                <!-- Fila superior - Bosques -->
+                <div class="enclosure" data-zone="bosques" data-type="bosque_iguales" data-id="1">
+                    <div class="enclosure-header">
+                        Bosque Iguales
+                        <div class="capacity-indicator">4</div>
+                    </div>
+                    <div class="enclosure-content"></div>
+                </div>
+                
+                <div class="enclosure" data-zone="bosques" data-type="bosque_iguales" data-id="2">
+                    <div class="enclosure-header">
+                        Bosque Iguales
+                        <div class="capacity-indicator">6</div>
+                    </div>
+                    <div class="enclosure-content"></div>
+                </div>
+                
+                <div class="enclosure" data-zone="bosques" data-type="trio_bosque" data-id="3">
+                    <div class="enclosure-header">
+                        Trío Bosque
+                        <div class="capacity-indicator">3</div>
+                    </div>
+                    <div class="enclosure-content"></div>
+                </div>
+
+                <!-- Fila media -->
+                <div class="enclosure" data-zone="comidas" data-type="rey_selva" data-id="7">
+                    <div class="enclosure-header">
+                        Rey Selva
+                        <div class="capacity-indicator">1</div>
+                    </div>
+                    <div class="enclosure-content"></div>
                 </div>
                 
                 <!-- Río (centro) -->
-                <div class="recinto" id="rio" role="button" tabindex="0" 
-                     aria-label="Río" 
-                     data-enclosure-id="9" data-zone="rio" data-type="rio" data-capacity="999">
+                <div class="enclosure river" data-zone="rio" data-type="rio" data-id="9">
+                    <div class="enclosure-header">
+                        Río
+                        <div class="capacity-indicator">∞</div>
+                    </div>
+                    <div class="enclosure-content"></div>
                 </div>
                 
-                <!-- Isla Solitaria (lado baños - derecha) -->
-                <div class="recinto" id="recinto6" role="button" tabindex="0" 
-                     aria-label="Isla Solitaria" 
-                     data-enclosure-id="8" data-zone="banos" data-type="isla_solitaria" data-capacity="1">
+                <div class="enclosure" data-zone="banos" data-type="isla_solitaria" data-id="8">
+                    <div class="enclosure-header">
+                        Isla Solitaria
+                        <div class="capacity-indicator">1</div>
+                    </div>
+                    <div class="enclosure-content"></div>
+                </div>
+
+                <!-- Fila inferior - Praderas -->
+                <div class="enclosure" data-zone="praderas" data-type="pradera_diferentes" data-id="4">
+                    <div class="enclosure-header">
+                        Pradera Diferentes
+                        <div class="capacity-indicator">4</div>
+                    </div>
+                    <div class="enclosure-content"></div>
+                </div>
+                
+                <div class="enclosure" data-zone="praderas" data-type="pradera_diferentes" data-id="5">
+                    <div class="enclosure-header">
+                        Pradera Diferentes
+                        <div class="capacity-indicator">5</div>
+                    </div>
+                    <div class="enclosure-content"></div>
+                </div>
+                
+                <div class="enclosure" data-zone="praderas" data-type="pradera_amor" data-id="6">
+                    <div class="enclosure-header">
+                        Pradera Amor
+                        <div class="capacity-indicator">6</div>
+                    </div>
+                    <div class="enclosure-content"></div>
                 </div>
             </div>
-            
-            <!-- Lado derecho (Praderas) -->
-            <div class="lado_derecho">
-                <div class="recinto" id="recinto7" role="button" tabindex="0" 
-                     aria-label="Pradera Diferentes 1" 
-                     data-enclosure-id="4" data-zone="praderas" data-type="pradera_diferentes" data-capacity="4">
-                </div>
-                <div class="recinto" id="recinto8" role="button" tabindex="0" 
-                     aria-label="Pradera Diferentes 2" 
-                     data-enclosure-id="5" data-zone="praderas" data-type="pradera_diferentes" data-capacity="5">
-                </div>
-                <div class="recinto" id="recinto9" role="button" tabindex="0" 
-                     aria-label="Pradera del Amor" 
-                     data-enclosure-id="6" data-zone="praderas" data-type="pradera_amor" data-capacity="6">
+
+            <!-- Mano del jugador 2 -->
+            <div class="player-hand">
+                <div class="hand-title">Mano rival</div>
+                <div class="dinosaur-hand" id="player2-hand">
+                    <!-- Las cartas del rival se muestran ocultas -->
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- Menú inferior con controles del juego -->
-    <footer class="menu_partida">
-        <!-- Dinosaurios disponibles para arrastrar -->
-        <section class="dinosaurios" role="region" aria-label="Dinosaurios disponibles">
-            <h3 class="titulos-accesibles">Dinosaurios para colocar</h3>
-            <!-- Los dinosaurios se cargarán dinámicamente desde JavaScript -->
-        </section>
+        <!-- Indicador de turno -->
+        <div class="turn-indicator" id="turn-indicator">
+            Es tu turno - Lanza el dado
+        </div>
 
-        <!-- Navegación con información del juego -->
-        <nav class="datos" role="navigation" aria-label="Información del juego">
-            <ul>
-                <li id="usuario" class="item">
-                    <img src="img/foto_usuario-1.png" alt="Foto de usuario" width="32" height="32">
-                    <span class="oswald" id="current-player-name">Jugador</span>
-                </li>
-                <li id="dado" class="item">
-                    <img src="img/dado-1.png" alt="Resultado del dado" width="32" height="32" id="dado-actual">
-                    <span id="dado-descripcion">Sin restricción</span>
-                </li>
-                <li id="puntos" class="item">
-                    <img src="img/icono_partidas-ganadas.png" alt="Trofeo" width="32" height="32">
-                    <span id="puntos-actuales">0 Puntos</span>
-                </li>
-                <li id="ronda-info" class="item">
-                    <img src="img/icono_informacion.png" alt="Información" width="32" height="32">
-                    <span id="ronda-actual">Ronda 1</span>
-                </li>
-                <li id="continuar-turno" class="item">
-                    <button type="button" class="item-boton btn" id="btn-continuar-turno" disabled>
-                        <img src="img/siguiente.svg" alt="" width="32" height="32">
-                        <span>Continuar</span>
-                    </button>
-                </li>
-            </ul>
-        </nav>
-    </footer>
+        <!-- Indicador de restricción -->
+        <div class="restriction-indicator" id="restriction-indicator" style="display: none;">
+            <strong>Restricción activa:</strong><br>
+            <span id="restriction-text"></span>
+        </div>
 
-    <!-- Instrucciones accesibles -->
-    <div class="titulos-accesibles">
-        <p>Instrucciones: Arrastra los dinosaurios desde la parte inferior a los recintos del tablero. Usa las teclas de flecha para navegar y Enter para seleccionar.</p>
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+            <button class="btn btn-secondary" id="btn-roll-dice">🎲 Lanzar dado</button>
+            <button class="btn btn-primary" id="btn-end-turn" disabled>Finalizar turno</button>
+        </div>
     </div>
-</div>
 
     <!-- ==================== TOAST NOTIFICATIONS ==================== -->
     <div id="toast-container" class="toast-container" aria-live="polite"></div>
@@ -487,4 +474,3 @@
 </body>
 
 </html>
-
