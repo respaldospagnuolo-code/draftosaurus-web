@@ -1,5 +1,10 @@
+
+
 <?php
 // ==================== CONFIGURACIÓN DE BASE DE DATOS ==================== 
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 class DatabaseConfig {
     // Configuración de base de datos
