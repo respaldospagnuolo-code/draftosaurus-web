@@ -1,551 +1,116 @@
-/* ==================== TABLERO CSS - DRAFTOSAURUS ==================== */
+/* ==================== ESTILOS ADICIONALES PARA EL TABLERO EN INDEX.HTML ==================== */
+/* Agregar al final del archivo estilos.css */
 
-/* ==================== VARIABLES CSS ==================== */
-:root {
-  /* Colores específicos del tablero */
-  --tablero-bg-overlay: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-  --tablero-menu-bg: linear-gradient(to top, #0e1402 0%, rgba(23, 31, 3, 0.44) 100%);
-  --tablero-border-color: rgba(255, 225, 0, 0.16);
-  --tablero-text-color: #FFF1C7;
-  --tablero-blocked-bg: rgba(0, 0, 0, 0.78);
-  --tablero-blocked-color: #F8C94E;
-  --tablero-hover-bg: rgba(0, 122, 204, 0.1);
-  --tablero-drag-bg: rgba(98, 129, 7, 0.3);
-  
-  /* Tamaños y espaciados */
-  --tablero-gap-sm: 1px;
-  --tablero-gap-md: 7px;
-  --tablero-gap-lg: 20px;
-  --tablero-dino-size-sm: 20px;
-  --tablero-dino-size-md: 30px;
-  --tablero-dino-size-lg: 50px;
-  --tablero-dino-size-xl: 60px;
-  --tablero-icon-size: 32px;
-  --tablero-menu-height: 50px;
-  --tablero-header-height: 60px;
-  
-  /* Transiciones */
-  --tablero-transition: 0.2s ease;
-  --tablero-scale-hover: 1.1;
+/* ==================== ESTADOS VISUALES DEL TABLERO ==================== */
+.recinto.highlight {
+  background-color: rgba(98, 129, 7, 0.3) !important;
+  border: 2px solid var(--color-primario) !important;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(98, 129, 7, 0.5);
+  transform: scale(1.02);
+  transition: all var(--tablero-transition);
 }
 
-/* ==================== UTILIDADES ACCESIBILIDAD ==================== */
-.titulos-accesibles {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.recinto.drag-over:not(.bloqueado) {
+  background-color: var(--tablero-drag-bg) !important;
+  border: 2px dashed var(--color-primario) !important;
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(98, 129, 7, 0.6);
 }
 
-/* ==================== HEADER - PUNTAJES ==================== */
-.puntajes {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--tablero-header-height);
-  padding: 0.5rem;
-  background: var(--tablero-bg-overlay);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
+/* ==================== DINOSAURIOS - ESTADOS EN TABLERO ==================== */
+.menu_partida .dinosaurios .dinosaurio.selected {
+  border: 3px solid var(--color-primario);
+  background-color: rgba(98, 129, 7, 0.2);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(98, 129, 7, 0.7);
+  border-radius: 8px;
+  padding: 2px;
 }
 
-.puntajes .jugadores {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  width: 100%;
-  height: 100%;
-}
-
-.puntajes .jugadores .jugador {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--tablero-text-color);
-  transition: opacity var(--tablero-transition);
-}
-
-.puntajes .jugadores .jugador:hover {
+.menu_partida .dinosaurios .dinosaurio.dragging {
   opacity: 0.8;
-}
-
-.jugador .contenedor {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-.jugador .nombre {
-  font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.jugador .puntos {
-  font-size: 0.75rem;
-  opacity: 0.9;
-  line-height: 1;
-}
-
-.jugador .icono-mapa {
-  width: var(--tablero-icon-size);
-  height: var(--tablero-icon-size);
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  object-fit: cover;
-}
-
-/* ==================== RESPONSIVE HEADER ==================== */
-@media screen and (max-width: 767px) {
-  .jugador .nombre {
-    max-width: 50px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 0.75rem;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .puntajes .jugadores {
-    justify-content: center;
-    gap: 50px;
-  }
-}
-
-/* ==================== TABLERO PRINCIPAL ==================== */
-main.tablero {
-  position: relative;
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url('img/mapa_mobile.jpg') center / cover no-repeat;
-  min-height: 100vh;
-  padding-top: var(--tablero-header-height);
-  padding-bottom: calc(var(--tablero-menu-height) * 2);
-}
-
-@media screen and (min-width: 768px) {
-  main.tablero {
-    background-image: url('img/mapa_desktop.jpg');
-  }
-}
-
-/* ==================== CONTENEDOR DE RECINTOS ==================== */
-.recintos {
-  position: absolute;
-  inset: 0;
+  transform: scale(1.1) rotate(5deg);
+  z-index: 1000;
   pointer-events: none;
 }
 
-.recinto {
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--tablero-gap-sm);
-  justify-content: flex-start;
-  align-items: center;
-  cursor: pointer;
-  transition: all var(--tablero-transition);
-  pointer-events: auto;
-  border-radius: 4px;
+.menu_partida .dinosaurios .dinosaurio.placing {
+  animation: dinoPlace 0.6s ease-out;
 }
 
-.recinto:focus {
-  outline: 2px solid var(--color-primario);
-  outline-offset: 2px;
+.recinto .dinosaurio.placing {
+  animation: dinoPlace 0.6s ease-out;
 }
 
-.recinto:hover:not(.bloqueado) {
-  background-color: var(--tablero-hover-bg);
-}
-
-/* ==================== DINOSAURIOS EN TABLERO ==================== */
-.recinto .dinosaurio {
-  width: var(--tablero-dino-size-sm);
-  height: auto;
-  display: block;
-  transition: transform var(--tablero-transition);
-  border-radius: 2px;
-}
-
-.recinto .dinosaurio:hover {
-  transform: scale(var(--tablero-scale-hover));
-}
-
-.recinto .dinosaurio:focus {
-  outline: 2px solid var(--color-primario);
-  outline-offset: 2px;
-}
-
-/* ==================== RESPONSIVE TABLERO ==================== */
-@media screen and (min-width: 768px) {
-  .recinto {
-    gap: var(--tablero-gap-md);
-  }
-
-  .recinto .dinosaurio {
-    width: var(--tablero-dino-size-md);
-  }
-}
-
-/* ==================== POSICIONES DE RECINTOS ==================== */
-/* Base - Mobile */
-#recinto1 {
-  top: 22%;
-  right: 58%;
-  width: 29%;
-  height: 10%;
-}
-
-#recinto2 {
-  top: 43%;
-  right: 68%;
-  width: 19%;
-  height: 11%;
-}
-
-#recinto3 {
-  top: 60%;
-  right: 63%;
-  width: 21%;
-  height: 11%;
-}
-
-#rio {
-  bottom: 14%;
-  right: 39%;
-  width: 20%;
-  height: 23%;
-}
-
-#recinto4 {
-  top: 31%;
-  left: 60%;
-  width: 22%;
-  height: 10%;
-}
-
-#recinto5 {
-  top: 46%;
-  left: 55%;
-  width: 32%;
-  height: 10%;
-}
-
-#recinto6 {
-  top: 62%;
-  left: 62%;
-  width: 23%;
-  height: 9%;
-}
-
-/* ==================== RESPONSIVE BREAKPOINTS ==================== */
-@media screen and (min-width: 360px) {
-  #recinto1 { width: 38%; }
-  #recinto2 { width: 28%; }
-  #recinto3 { width: 30%; }
-  #recinto5 { width: 42%; }
-  #recinto6 { width: 33%; }
-}
-
-@media screen and (min-width: 414px) {
-  #recinto1 { right: 57%; width: 38%; }
-  #recinto2 { right: 69%; width: 26%; }
-  #recinto3 { right: 63%; width: 30%; }
-  #recinto4 { left: 63%; }
-  #recinto5 { left: 58%; width: 37%; }
-  #recinto6 { left: 64%; width: 30%; }
-}
-
-@media screen and (min-width: 540px) and (max-width: 767px) {
-  #recinto1 { top: 15%; right: 57%; width: 28%; height: 15%; }
-  #recinto2 { top: 41%; right: 65%; width: 20%; height: 15%; }
-  #recinto3 { top: 60%; right: 60%; width: 23%; height: 16%; }
-  #rio { right: 42%; width: 14%; }
-  #recinto4 { top: 27%; left: 60%; }
-  #recinto5 { left: 55%; width: 29%; }
-  #recinto6 { top: 63%; left: 59%; width: 25%; height: 14%; }
-}
-
-@media screen and (min-width: 768px) {
-  #recinto1 { top: 19%; right: 56%; width: 28%; height: 14%; }
-  #recinto2 { top: 44%; right: 65%; width: 18%; height: 13%; }
-  #recinto3 { top: 62%; right: 61%; width: 21%; height: 14%; }
-  #rio { bottom: 9%; right: 43%; width: 15%; height: 31%; }
-  #recinto4 { top: 31%; left: 58%; width: 14%; height: 10%; }
-  #recinto5 { top: 48%; left: 52%; width: 29%; height: 10%; }
-  #recinto6 { top: 64%; left: 58%; width: 22%; height: 12%; }
-}
-
-@media screen and (min-width: 1024px) {
-  #recinto1 { right: 57%; width: 27%; }
-  #recinto2 { right: 65%; width: 18%; }
-  #recinto3 { right: 62%; width: 20%; }
-  #rio { bottom: 7%; right: 45%; width: 12%; height: 30%; }
-  #recinto4 { left: 57%; width: 15%; }
-  #recinto5 { width: 29%; }
-  #recinto6 { left: 57%; width: 23%; }
-}
-
-@media screen and (min-width: 1024px) and (max-height: 600px) {
-  #recinto1 { right: 53%; width: 12%; }
-  #recinto2 { right: 56%; width: 9%; }
-  #recinto3 { right: 55%; width: 9%; }
-  #rio { bottom: 15%; right: 48%; width: 6%; height: 26%; }
-  #recinto4 { left: 53%; width: 7%; }
-  #recinto5 { left: 51%; width: 13%; }
-  #recinto6 { left: 53%; width: 10%; }
-}
-
-@media screen and (min-width: 1366px) {
-  #recinto1 { right: 53%; width: 16%; }
-  #recinto2 { right: 58%; width: 11%; }
-  #recinto3 { right: 56%; width: 12%; }
-  #rio { right: 47%; width: 6%; }
-  #recinto4 { left: 55%; width: 7%; }
-  #recinto5 { width: 15%; }
-  #recinto6 { left: 54%; width: 13%; }
-}
-
-@media screen and (min-width: 1920px) {
-  #recinto1 { width: 11%; }
-  #recinto2 { width: 8%; }
-  #recinto3 { width: 8%; }
-  #rio { right: 47%; width: 6%; }
-  #recinto4 { left: 53%; }
-  #recinto5 { left: 51%; width: 12%; }
-  #recinto6 { left: 54%; width: 8%; }
-}
-
-/* ==================== ESTADOS ESPECIALES DE RECINTOS ==================== */
+/* ==================== RECINTOS BLOQUEADOS EN TABLERO ==================== */
 .recinto.bloqueado {
-  background-color: var(--tablero-blocked-bg);
-  color: var(--tablero-blocked-color);
-  border: 1px dashed var(--tablero-blocked-color);
-  border-radius: 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: not-allowed;
-  opacity: 1 !important;
   position: relative;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  overflow: visible;
 }
 
-.recinto.bloqueado::after {
-  content: "Bloqueada";
+.recinto.bloqueado::before {
+  content: '🚫 BLOQUEADO';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-  white-space: nowrap;
-  pointer-events: none;
+  background: rgba(0, 0, 0, 0.9);
+  color: #F8C94E;
+  font-weight: bold;
   font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 2px dashed #F8C94E;
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-.recinto.drag-over:not(.bloqueado) {
-  background-color: var(--tablero-drag-bg);
-  border: 2px dashed var(--color-primario);
-  transform: scale(1.02);
-}
-
-/* ==================== MENU INFERIOR ==================== */
-.menu_partida {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+.recinto.bloqueado::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
   width: 100%;
-  background: var(--tablero-menu-bg);
-  z-index: 999;
-  backdrop-filter: blur(4px);
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(248, 201, 78, 0.3),
+    transparent
+  );
+  animation: blockShimmer 2s infinite;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* ==================== SECCION DINOSAURIOS ==================== */
-.menu_partida .dinosaurios {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 0.5rem;
-  border-top: 1px solid var(--tablero-border-color);
-  min-height: var(--tablero-menu-height);
-  gap: 0.3rem;
+@keyframes blockShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
-.menu_partida .dinosaurios .dinosaurio {
-  cursor: grab;
-  width: var(--tablero-dino-size-lg);
-  height: auto;
-  touch-action: none;
-  will-change: transform;
-  transition: all var(--tablero-transition);
-  border-radius: 6px;
-  padding: 2px;
-  border: 2px solid transparent;
-}
-
-.menu_partida .dinosaurios .dinosaurio:hover {
-  transform: scale(var(--tablero-scale-hover));
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.menu_partida .dinosaurios .dinosaurio:active,
-.menu_partida .dinosaurios .dinosaurio.dragging {
-  cursor: grabbing;
-  opacity: 0.7;
-  transform: scale(0.95) rotate(2deg);
-}
-
-.menu_partida .dinosaurios .dinosaurio:focus {
-  outline: 2px solid var(--color-primario);
-  outline-offset: 2px;
-}
-
-.menu_partida .dinosaurios .dinosaurio.selected {
-  border-color: var(--color-primario);
-  background-color: rgba(98, 129, 7, 0.2);
-  transform: scale(1.05);
-}
-
-/* ==================== SECCION DATOS/CONTROLES ==================== */
-.menu_partida .datos {
-  padding: 0.15rem 0.5rem 0.5rem;
-  border-top: 1px solid var(--tablero-border-color);
-  color: var(--tablero-text-color);
-}
-
-.menu_partida .datos ul {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  gap: 0.5rem;
-}
-
-.menu_partida .datos ul .item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  min-width: 0;
-  flex: 1;
-}
-
-.menu_partida .datos ul .item img {
-  height: 35px;
-  width: auto;
-  object-fit: contain;
-}
-
-.menu_partida .datos ul .item span {
-  font-size: 0.75rem;
-  text-align: center;
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.menu_partida .datos ul .item .item-boton {
-  background: none;
-  border: none;
-  padding: 0.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  color: inherit;
-  font: inherit;
-  flex-direction: column;
-  transition: all var(--tablero-transition);
-  border-radius: 4px;
-  min-height: 44px;
-}
-
-.menu_partida .datos ul .item .item-boton:hover:not(:disabled),
-.menu_partida .datos ul .item .item-boton:focus:not(:disabled) {
-  opacity: 0.8;
-  background-color: rgba(255, 255, 255, 0.1);
-  outline: 2px solid var(--color-primario);
-  outline-offset: 2px;
-}
-
-.menu_partida .datos ul .item .item-boton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: grayscale(50%);
-}
-
-.menu_partida .datos ul .item .item-boton:active:not(:disabled) {
-  transform: scale(0.95);
-}
-
-/* ==================== RESPONSIVE MENU ==================== */
-@media screen and (min-width: 768px) {
-  .menu_partida .dinosaurios {
-    justify-content: center;
-    gap: var(--tablero-gap-lg);
-    min-height: 80px;
-  }
-
-  .menu_partida .dinosaurios .dinosaurio {
-    width: var(--tablero-dino-size-xl);
-  }
-
-  .menu_partida .datos ul {
-    justify-content: center;
-    gap: 30px;
-    align-items: center;
-  }
-
-  .menu_partida .datos ul .item {
-    flex-direction: row;
-    flex: none;
-  }
-
-  .menu_partida .datos ul .item .item-boton {
-    flex-direction: row;
+/* ==================== RESPONSIVE PARA RECINTOS BLOQUEADOS ==================== */
+@media screen and (max-width: 480px) {
+  .recinto.bloqueado::before {
+    content: '🚫';
+    font-size: 1rem;
+    padding: 2px;
+    border-width: 1px;
   }
 }
 
-/* ==================== ELEMENTOS ESPECIALES ==================== */
-#usuario img {
-  height: 40px;
-  width: auto;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-#usuario span {
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-/* ==================== ANIMACIONES ==================== */
+/* ==================== ANIMACIONES DEL TABLERO ==================== */
 @keyframes dinoPlace {
   0% {
-    transform: scale(0.8) rotate(-5deg);
+    transform: scale(0.5) rotate(-10deg);
     opacity: 0.7;
   }
   50% {
-    transform: scale(1.2) rotate(0deg);
+    transform: scale(1.3) rotate(5deg);
     opacity: 1;
   }
   100% {
@@ -554,71 +119,365 @@ main.tablero {
   }
 }
 
-@keyframes dinoHover {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1.1); }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
 }
 
-.dinosaurio.placing {
-  animation: dinoPlace 0.4s ease-out;
+@keyframes successPulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); 
+  }
 }
 
-.dinosaurio.hover-effect {
-  animation: dinoHover 0.3s ease-in-out;
+@keyframes errorPulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); 
+  }
 }
 
-/* ==================== ESTADOS DE INTERACCION ==================== */
-.recinto.highlight {
-  background-color: rgba(98, 129, 7, 0.2);
-  border: 2px solid var(--color-primario);
-  border-radius: 8px;
+/* ==================== CLASES DE FEEDBACK ==================== */
+.success-feedback {
+  animation: successPulse 0.6s ease-out;
+}
+
+.error-feedback {
+  animation: errorPulse 0.6s ease-out;
 }
 
 .dinosaurio.invalid-drop {
   animation: shake 0.5s ease-in-out;
+  border: 2px solid #dc3545;
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+/* ==================== MEJORAS EN INTERACCIONES DEL TABLERO ==================== */
+.menu_partida .dinosaurios .dinosaurio:hover:not(.selected):not(.dragging) {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+  filter: brightness(1.1);
+  cursor: grab;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-/* ==================== ACCESIBILIDAD ==================== */
+.menu_partida .dinosaurios .dinosaurio:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+.recinto:hover:not(.bloqueado) {
+  background-color: rgba(98, 129, 7, 0.1) !important;
+  transition: background-color 0.2s ease;
+  border-radius: 8px;
+}
+
+/* ==================== CONTADOR DE CAPACIDAD ==================== */
+.recinto:not(#rio)::after {
+  content: attr(data-capacity-used) '/' attr(data-capacity);
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #FFF1C7;
+  font-size: 0.6rem;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.recinto:hover::after {
+  opacity: 1;
+}
+
+#rio::after {
+  content: '∞';
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(33, 150, 243, 0.8);
+  color: white;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#rio:hover::after {
+  opacity: 1;
+}
+
+/* ==================== ACCESIBILIDAD MEJORADA ==================== */
+.dinosaurio:focus,
+.recinto:focus {
+  outline: 3px solid var(--color-primario) !important;
+  outline-offset: 2px;
+  z-index: 100;
+}
+
+.menu_partida .dinosaurios .dinosaurio:focus {
+  border-radius: 6px;
+  background-color: rgba(98, 129, 7, 0.1);
+}
+
+/* ==================== ESTADOS DE LOADING DEL TABLERO ==================== */
+.tablero-loading .menu_partida .dinosaurios .dinosaurio {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(50%);
+  cursor: not-allowed;
+}
+
+.tablero-loading .recinto {
+  pointer-events: none;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.tablero-loading .recinto::before {
+  content: '⏳ Procesando...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #FFF1C7;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 200;
+}
+
+/* ==================== INDICADORES DE ZONA ==================== */
+.recinto[data-zone="bosques"] {
+  box-shadow: inset 0 0 0 2px rgba(76, 175, 80, 0.3);
+}
+
+.recinto[data-zone="praderas"] {
+  box-shadow: inset 0 0 0 2px rgba(255, 193, 7, 0.3);
+}
+
+.recinto[data-zone="comidas"] {
+  box-shadow: inset 0 0 0 2px rgba(255, 87, 34, 0.3);
+}
+
+.recinto[data-zone="banos"] {
+  box-shadow: inset 0 0 0 2px rgba(63, 81, 181, 0.3);
+}
+
+.recinto[data-zone="rio"] {
+  box-shadow: inset 0 0 0 2px rgba(33, 150, 243, 0.5);
+}
+
+/* ==================== EFECTOS DE PARTÍCULAS ==================== */
+.dinosaurio.placing::before {
+  content: '✨';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: sparkle 0.6s ease-out;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px) scale(0.8);
+  }
+}
+
+/* ==================== MEJOR CONTRASTE PARA ACCESIBILIDAD ==================== */
+@media (prefers-contrast: high) {
+  .recinto.bloqueado::before {
+    background: rgba(255, 255, 0, 0.9);
+    color: #000;
+    border-color: #000;
+  }
+  
+  .menu_partida .dinosaurios .dinosaurio.selected {
+    border-color: #ffff00;
+    background-color: rgba(255, 255, 0, 0.3);
+  }
+  
+  .recinto.highlight {
+    border-color: #ffff00 !important;
+    background-color: rgba(255, 255, 0, 0.2) !important;
+  }
+}
+
+/* ==================== REDUCCIÓN DE MOVIMIENTO ==================== */
 @media (prefers-reduced-motion: reduce) {
-  .dinosaurio,
+  .menu_partida .dinosaurios .dinosaurio,
   .recinto,
-  .item-boton {
+  .dinosaurio.placing,
+  .menu_partida .dinosaurios .dinosaurio.selected,
+  .recinto.highlight,
+  .recinto.drag-over {
     transition: none;
+    animation: none;
+    transform: none;
+  }
+  
+  .menu_partida .dinosaurios .dinosaurio:hover {
+    transform: none;
+    filter: none;
+  }
+  
+  .recinto.bloqueado::after {
     animation: none;
   }
   
-  .dinosaurio:hover {
-    transform: none;
+  .success-feedback,
+  .error-feedback {
+    animation: none;
+    background-color: rgba(98, 129, 7, 0.3);
   }
 }
 
-/* ==================== PRINT STYLES ==================== */
-@media print {
-  .menu_partida,
-  .puntajes {
-    display: none;
+/* ==================== RESPONSIVE PARA TABLERO ==================== */
+@media screen and (max-width: 480px) {
+  .recinto::after {
+    font-size: 0.5rem;
+    padding: 1px 2px;
   }
   
-  main.tablero {
-    padding: 0;
-    background: white;
+  .menu_partida .dinosaurios .dinosaurio.selected {
+    border-width: 2px;
+    transform: scale(1.05);
+  }
+  
+  .recinto.highlight {
+    border-width: 1px !important;
+    transform: scale(1.01);
+  }
+  
+  .recinto.bloqueado::before {
+    font-size: 0.6rem;
+    padding: 2px 4px;
   }
 }
 
-/* ==================== UTILIDADES ==================== */
+@media screen and (min-width: 768px) {
+  .recinto.bloqueado::before {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+  
+  .menu_partida .dinosaurios .dinosaurio:hover {
+    transform: scale(1.15);
+  }
+  
+  .recinto::after {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+}
+
+/* ==================== MODO OSCURO PARA TABLERO ==================== */
+@media (prefers-color-scheme: dark) {
+  .recinto {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .recinto:hover:not(.bloqueado) {
+    background-color: rgba(98, 129, 7, 0.2) !important;
+  }
+  
+  .recinto::after {
+    background: rgba(20, 20, 20, 0.9);
+    color: #FFF1C7;
+  }
+  
+  .menu_partida .dinosaurios .dinosaurio.selected {
+    background-color: rgba(98, 129, 7, 0.3);
+  }
+}
+
+/* ==================== MEJORAS EN MENU_PARTIDA ==================== */
+.menu_partida .datos ul .item .item-boton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(70%);
+  pointer-events: none;
+}
+
+.menu_partida .datos ul .item .item-boton:not(:disabled):hover {
+  background-color: rgba(98, 129, 7, 0.2);
+  transform: scale(1.05);
+}
+
+.menu_partida .datos ul .item .item-boton:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+/* ==================== INDICADOR DE TURNO EN TABLERO ==================== */
+.tablero-turn-indicator {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #FFF1C7;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  z-index: 500;
+  border: 2px solid var(--color-primario);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tablero-turn-indicator.visible {
+  opacity: 1;
+}
+
+.tablero-turn-indicator.my-turn {
+  border-color: var(--color-primario);
+  background: rgba(98, 129, 7, 0.9);
+}
+
+.tablero-turn-indicator.waiting {
+  border-color: #ff9800;
+  background: rgba(255, 152, 0, 0.9);
+}
+
+/* ==================== UTILIDADES ADICIONALES ==================== */
 .tablero-hidden {
   display: none !important;
 }
 
-.tablero-loading {
+.tablero-disabled {
   pointer-events: none;
   opacity: 0.6;
-  filter: grayscale(20%);
+  filter: grayscale(30%);
 }

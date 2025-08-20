@@ -328,8 +328,34 @@
         </div>
     </div>
 
+
+
+<!-- ==================== PANTALLA INDICADOR DE TURNO ==================== -->
+<div id="pantalla-turno" class="pantalla fondo-interfaz-normal" style="display: none;">
+    <div class="overlay-fondo"></div>
+    <div class="popup-dado fade-in">
+        <div class="popup-header">
+            <div class="dado-resultado-container">
+                <img src="img/foto_usuario-1.png" alt="Avatar del jugador" class="dado-resultado" id="turno-avatar">
+            </div>
+        </div>
+        <div class="popup-content">
+            <h2 class="titulo titulo--md titulo--marron" id="turno-titulo">Sigue Ana</h2>
+            <p class="texto texto--base texto--marron popup-descripcion" id="turno-descripcion">
+                Es tu turno para colocar un dinosaurio
+            </p>
+            <button class="btn btn--verde" id="btn-empezar-turno">
+                <span class="btn-text">Empezar</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== PANTALLA TABLERO - AGREGAR A INDEX.HTML ==================== -->
+<!-- Agregar después de la pantalla de turno y antes del toast container -->
+
 <!-- ==================== PANTALLA TABLERO ==================== -->
-<div id="pantalla-tablero" class="pantalla" style="display: none;">
+<div id="pantalla-tablero" class="pantalla fondo-interfaz-normal" style="display: none;">
     <!-- Header con puntajes -->
     <header class="puntajes">
         <h1 class="titulos-accesibles">Puntajes de jugadores</h1>
@@ -355,7 +381,7 @@
     <main class="tablero">
         <h2 class="titulos-accesibles">Tablero de juego</h2>
         <div class="recintos" role="region" aria-label="Área de juego">
-            <!-- Lado izquierdo (Comidas) -->
+            <!-- Lado izquierdo (Bosques) -->
             <div class="lado_izquierdo">
                 <div class="recinto" id="recinto1" role="button" tabindex="0" 
                      aria-label="Bosque de Iguales 1" 
@@ -371,25 +397,40 @@
                 </div>
             </div>
             
-            <!-- Río (centro) -->
-            <div class="recinto" id="rio" role="button" tabindex="0" 
-                 aria-label="Río" 
-                 data-enclosure-id="9" data-zone="rio" data-type="rio" data-capacity="999">
-            </div>
-            
-            <!-- Lado derecho (Baños) -->
-            <div class="lado_derecho">
+            <!-- Centro (Lado comidas y baños) -->
+            <div class="centro">
+                <!-- Rey de la Selva (lado comidas - izquierda) -->
                 <div class="recinto" id="recinto4" role="button" tabindex="0" 
                      aria-label="Rey de la Selva" 
                      data-enclosure-id="7" data-zone="comidas" data-type="rey_selva" data-capacity="1">
                 </div>
-                <div class="recinto" id="recinto5" role="button" tabindex="0" 
-                     aria-label="Pradera Diferentes 1" 
-                     data-enclosure-id="4" data-zone="praderas" data-type="pradera_diferentes" data-capacity="4">
+                
+                <!-- Río (centro) -->
+                <div class="recinto" id="rio" role="button" tabindex="0" 
+                     aria-label="Río" 
+                     data-enclosure-id="9" data-zone="rio" data-type="rio" data-capacity="999">
                 </div>
+                
+                <!-- Isla Solitaria (lado baños - derecha) -->
                 <div class="recinto" id="recinto6" role="button" tabindex="0" 
                      aria-label="Isla Solitaria" 
                      data-enclosure-id="8" data-zone="banos" data-type="isla_solitaria" data-capacity="1">
+                </div>
+            </div>
+            
+            <!-- Lado derecho (Praderas) -->
+            <div class="lado_derecho">
+                <div class="recinto" id="recinto7" role="button" tabindex="0" 
+                     aria-label="Pradera Diferentes 1" 
+                     data-enclosure-id="4" data-zone="praderas" data-type="pradera_diferentes" data-capacity="4">
+                </div>
+                <div class="recinto" id="recinto8" role="button" tabindex="0" 
+                     aria-label="Pradera Diferentes 2" 
+                     data-enclosure-id="5" data-zone="praderas" data-type="pradera_diferentes" data-capacity="5">
+                </div>
+                <div class="recinto" id="recinto9" role="button" tabindex="0" 
+                     aria-label="Pradera del Amor" 
+                     data-enclosure-id="6" data-zone="praderas" data-type="pradera_amor" data-capacity="6">
                 </div>
             </div>
         </div>
@@ -435,27 +476,6 @@
     <!-- Instrucciones accesibles -->
     <div class="titulos-accesibles">
         <p>Instrucciones: Arrastra los dinosaurios desde la parte inferior a los recintos del tablero. Usa las teclas de flecha para navegar y Enter para seleccionar.</p>
-    </div>
-</div>
-
-<!-- ==================== PANTALLA INDICADOR DE TURNO ==================== -->
-<div id="pantalla-turno" class="pantalla fondo-interfaz-normal" style="display: none;">
-    <div class="overlay-fondo"></div>
-    <div class="popup-dado fade-in">
-        <div class="popup-header">
-            <div class="dado-resultado-container">
-                <img src="img/foto_usuario-1.png" alt="Avatar del jugador" class="dado-resultado" id="turno-avatar">
-            </div>
-        </div>
-        <div class="popup-content">
-            <h2 class="titulo titulo--md titulo--marron" id="turno-titulo">Sigue Ana</h2>
-            <p class="texto texto--base texto--marron popup-descripcion" id="turno-descripcion">
-                Es tu turno para colocar un dinosaurio
-            </p>
-            <button class="btn btn--verde" id="btn-empezar-turno">
-                <span class="btn-text">Empezar</span>
-            </button>
-        </div>
     </div>
 </div>
 

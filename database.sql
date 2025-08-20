@@ -441,3 +441,5 @@ INSERT INTO users (username, email, password_hash, birthdate, name) VALUES
 CREATE INDEX idx_games_active ON games (game_state, current_player);
 CREATE INDEX idx_placements_game_player_enclosure ON board_placements (game_id, player_number, enclosure_id);
 CREATE INDEX idx_hands_available ON player_hands (game_id, player_number, round_number, is_played);
+
+
