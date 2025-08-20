@@ -1,124 +1,307 @@
-/* ==================== TABLERO DE JUEGO - ESTILO ORGÁNICO CON GRID ==================== */
+/* ==================== TABLERO DRAFTOSAURUS - LAYOUT 3x3 CON RÍO CENTRAL ==================== */
 
-/* Fondo principal del juego */
+/* Fondo principal del juego con bosque.jpg */
 #pantalla-partida {
-  background: url('img/fondo-base.jpg') center / cover no-repeat;
+  background: url('img/bosque.jpg') center / cover no-repeat;
   position: relative;
-  overflow: hidden;
-}
-
-#pantalla-partida::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
-  z-index: 0;
+  min-height: 100vh;
 }
 
 /* ==================== HEADER DEL JUEGO ==================== */
 .game-header {
-  background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(92, 51, 23, 0.95));
-  padding: var(--space-md) var(--space-xl);
+  background: rgba(139, 69, 19, 0.95);
+  padding: var(--space-md) var(--space-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 3px solid var(--color-marron);
   position: relative;
   z-index: 20;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.player-info {
+.opponent-info {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-lg);
+  background: rgba(255, 255, 255, 0.15);
+  padding: var(--space-md) var(--space-lg);
   border-radius: var(--border-radius-lg);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.player-avatar {
-  width: 45px;
-  height: 45px;
+.opponent-avatar {
+  width: 50px;
+  height: 50px;
   border-radius: var(--border-radius-circle);
   border: 3px solid var(--color-naranja);
   object-fit: cover;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.player-name {
+.opponent-details h3 {
+  font-size: var(--font-size-lg);
   font-weight: 700;
-  font-size: var(--font-size-sm);
   color: var(--color-beige);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.player-score {
-  background: linear-gradient(135deg, var(--color-naranja), var(--color-naranja-light));
+.opponent-score {
+  background: var(--color-naranja);
   padding: 4px 12px;
   border-radius: var(--border-radius-pill);
   font-weight: 700;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--color-blanco);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: var(--shadow-button);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-top: 2px;
 }
 
 .game-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-lg);
-  background: linear-gradient(135deg, rgba(46, 18, 4, 0.9), rgba(92, 51, 23, 0.8));
-  padding: var(--space-md) var(--space-lg);
+  gap: var(--space-sm);
+  background: rgba(46, 18, 4, 0.9);
+  padding: var(--space-lg);
   border-radius: var(--border-radius-lg);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid var(--color-marron-dark);
 }
 
-.round-info, .turn-info {
-  background: linear-gradient(135deg, var(--color-marron), var(--color-marron-light));
-  padding: 6px 14px;
+.round-info {
+  background: var(--color-marron);
+  padding: 6px 16px;
   border-radius: var(--border-radius-md);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
   color: var(--color-beige);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  box-shadow: var(--shadow-button);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+}
+
+.view-map-btn {
+  background: var(--color-primario);
+  color: var(--color-blanco);
+  border: none;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-transform: uppercase;
+}
+
+.view-map-btn:hover {
+  background: var(--color-primario-hover);
+  transform: translateY(-1px);
 }
 
 /* ==================== CONTENEDOR PRINCIPAL ==================== */
 .board-container {
   flex: 1;
-  display: grid;
-  grid-template-columns: 250px 1fr 250px;
-  gap: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
   padding: var(--space-xl);
   position: relative;
   z-index: 1;
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 140px);
 }
 
-/* ==================== MANOS DE JUGADORES ==================== */
-.player-hand {
-  background: linear-gradient(145deg, rgba(139, 69, 19, 0.95), rgba(92, 51, 23, 0.95));
+/* ==================== TABLERO PRINCIPAL - GRID 3x3 ==================== */
+.board-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: var(--space-lg);
+  max-width: 600px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  background: rgba(0, 0, 0, 0.1);
+  padding: var(--space-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== POSICIONAMIENTO DE RECINTOS ==================== */
+/* Fila superior */
+.enclosure[data-id="pradera-progresiva"] {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.enclosure[data-id="rey-selva"] {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+/* Fila central */
+.enclosure[data-id="trio-bosque"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.enclosure[data-id="rio"] {
+  grid-column: 2;
+  grid-row: 1 / 4; /* Ocupa las 3 filas */
+}
+
+.enclosure[data-id="cine-comida"] {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* Fila inferior */
+.enclosure[data-id="pradera-amor"] {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.enclosure[data-id="banos"] {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+/* ==================== ESTILOS DE RECINTOS ==================== */
+.enclosure {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: var(--border-radius-lg);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+/* Imágenes específicas de cada recinto */
+.enclosure[data-id="pradera-progresiva"] {
+  background-image: url('img/pradera-progresiva.png');
+}
+
+.enclosure[data-id="rey-selva"] {
+  background-image: url('img/rey-selva.png');
+}
+
+.enclosure[data-id="trio-bosque"] {
+  background-image: url('img/trio-bosque.png');
+}
+
+.enclosure[data-id="rio"] {
+  background-image: url('img/rio.png');
+  background-size: cover;
+}
+
+.enclosure[data-id="cine-comida"] {
+  background-image: url('img/cine-comida.png');
+}
+
+.enclosure[data-id="pradera-amor"] {
+  background-image: url('img/pradera-amor.png');
+}
+
+.enclosure[data-id="banos"] {
+  background-image: url('img/banos.png');
+}
+
+/* Estados de interacción */
+.enclosure:hover {
+  transform: scale(1.02);
+  border-color: var(--color-naranja);
+  box-shadow: 0 4px 20px rgba(237, 123, 0, 0.4);
+}
+
+.enclosure.drag-over {
+  transform: scale(1.05);
+  border-color: var(--color-primario);
+  box-shadow: 0 6px 25px rgba(98, 129, 7, 0.5);
+}
+
+.enclosure.restricted {
+  opacity: 0.5;
+  filter: grayscale(70%);
+  cursor: not-allowed;
+}
+
+.enclosure.restricted::after {
+  content: '🚫';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  z-index: 10;
+}
+
+/* ==================== CONTENIDO DE RECINTOS ==================== */
+.enclosure-content {
+  flex: 1;
+  padding: var(--space-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  min-height: 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.capacity-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--color-naranja);
+  color: var(--color-blanco);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--border-radius-circle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  border: 2px solid var(--color-blanco);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+
+.placed-dinosaur {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-sm);
+  background: var(--color-beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-marron-dark);
+  padding: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform var(--transition-fast);
+}
+
+.placed-dinosaur:hover {
+  transform: scale(1.1);
+}
+
+.placed-dinosaur img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ==================== MANO DE DINOSAURIOS ==================== */
+.dinosaur-hand-container {
+  background: rgba(139, 69, 19, 0.95);
   border-radius: var(--border-radius-lg);
   padding: var(--space-lg);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  height: fit-content;
-  z-index: 10;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .hand-title {
@@ -126,16 +309,15 @@
   margin-bottom: var(--space-lg);
   font-weight: 700;
   color: var(--color-beige);
-  font-size: var(--font-size-md);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: var(--font-size-lg);
   text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .dinosaur-hand {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: var(--space-lg);
+  justify-items: center;
 }
 
 .dinosaur-card {
@@ -148,26 +330,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-base);
   position: relative;
-  user-select: none;
   padding: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.dinosaur-card::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(45deg, var(--color-dorado), var(--color-naranja-light));
-  border-radius: var(--border-radius-md);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.dinosaur-card:hover::before {
-  opacity: 1;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .dinosaur-card img {
@@ -175,394 +341,234 @@
   height: 100%;
   object-fit: contain;
   pointer-events: none;
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .dinosaur-card:hover {
-  transform: scale(1.1) translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .dinosaur-card.dragging {
   opacity: 0.7;
   cursor: grabbing;
-  transform: rotate(8deg) scale(1.1);
   z-index: 1000;
+  transform: scale(1.1) rotate(5deg);
 }
 
 .dinosaur-card.played {
   opacity: 0.4;
   cursor: not-allowed;
-  filter: grayscale(80%);
-  transform: scale(0.9);
+  filter: grayscale(100%);
 }
 
-.dinosaur-card.hidden {
-  background: linear-gradient(135deg, #8B4513, #A0522D);
+/* ==================== FOOTER DEL JUEGO ==================== */
+.game-footer {
+  background: rgba(139, 69, 19, 0.95);
+  padding: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 3px solid var(--color-marron);
+  position: relative;
+  z-index: 20;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.current-player-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  background: rgba(255, 255, 255, 0.15);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius-lg);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.current-player-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--border-radius-circle);
+  border: 3px solid var(--color-primario);
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.player-details h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
   color: var(--color-beige);
-  cursor: default;
-  font-size: 28px;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  text-transform: uppercase;
 }
 
-/* ==================== TABLERO PRINCIPAL - GRID ORGÁNICO ==================== */
-.board-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: var(--space-xl);
-  background: transparent;
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-3xl);
-  position: relative;
-  min-height: 600px;
+.turn-status {
+  font-size: var(--font-size-sm);
+  color: var(--color-beige);
+  margin-top: 2px;
 }
 
-/* Río de fondo en el grid */
-.board-grid::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 400px;
-  background: url('img/rio.png') center / contain no-repeat;
-  z-index: 1;
-  opacity: 0.8;
-}
-
-/* ==================== RECINTOS - ESTILO ORGÁNICO ==================== */
-.enclosure {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: var(--border-radius-lg);
-  position: relative;
-  min-height: 140px;
+.dice-restriction {
   display: flex;
   flex-direction: column;
-  transition: all var(--transition-base);
-  cursor: pointer;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  z-index: 10;
-  border: none;
-}
-
-/* Imágenes específicas para cada tipo de recinto */
-.enclosure[data-type="bosque_iguales"] {
-  background-image: url('img/Bosque-de-la-Semejanza.png');
-}
-
-.enclosure[data-type="trio_bosque"] {
-  background-image: url('img/Trio-Frondoso.png');
-}
-
-.enclosure[data-type="pradera_diferentes"] {
-  background-image: url('img/Pradera-del-Amor-vs2.png');
-}
-
-.enclosure[data-type="pradera_amor"] {
-  background-image: url('img/Prado-de-la-Diferencia.png');
-}
-
-.enclosure[data-type="rey_selva"] {
-  background-image: url('img/recinto-t-rex.png');
-}
-
-.enclosure[data-type="isla_solitaria"] {
-  background-image: url('img/isla-solitaria.png');
-}
-
-/* Río central - diseño especial */
-.enclosure[data-type="rio"] {
-  background-image: url('img/rio.png');
-  grid-column: 2;
-  grid-row: 2;
-  background-size: cover;
-  border-radius: var(--border-radius-xl);
-  min-height: 180px;
-}
-
-/* ==================== DIAMANTES DECORATIVOS ==================== */
-.enclosure::before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(45deg, #D2691E, #CD853F);
-  transform: rotate(45deg);
-  border: 2px solid var(--color-blanco);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-  z-index: 15;
-}
-
-.enclosure::after {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 10px;
-  color: var(--color-blanco);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  z-index: 20;
+  gap: var(--space-sm);
+  background: rgba(220, 53, 69, 0.9);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius-lg);
+  border: 2px solid var(--color-blanco);
 }
 
-/* Números específicos por recinto */
-.enclosure[data-id="1"]::after { content: '1-6'; }
-.enclosure[data-id="2"]::after { content: '1-6'; }
-.enclosure[data-id="3"]::after { content: '3'; }
-.enclosure[data-id="4"]::after { content: '4'; }
-.enclosure[data-id="5"]::after { content: '5'; }
-.enclosure[data-id="6"]::after { content: '1-6'; }
-.enclosure[data-id="7"]::after { content: '1'; }
-.enclosure[data-id="8"]::after { content: '1'; }
-.enclosure[data-id="9"]::after { content: '∞'; }
-
-/* ==================== EFECTOS DE INTERACCIÓN ==================== */
-.enclosure:hover {
-  transform: scale(1.05) translateY(-3px);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4)) brightness(1.1) saturate(1.2);
-  z-index: 25;
-}
-
-.enclosure.drag-over {
-  transform: scale(1.08) translateY(-5px);
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5)) brightness(1.2) saturate(1.3);
-  animation: dragOverPulse 0.5s ease-in-out infinite alternate;
-  z-index: 30;
-}
-
-@keyframes dragOverPulse {
-  from { 
-    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5)) brightness(1.2) saturate(1.3);
-  }
-  to { 
-    filter: drop-shadow(0 16px 32px rgba(98, 129, 7, 0.6)) brightness(1.3) saturate(1.5);
-  }
-}
-
-.enclosure.restricted {
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6) saturate(0.5) grayscale(50%);
-  opacity: 0.7;
-  position: relative;
-}
-
-.enclosure.restricted::after {
-  content: '🚫' !important;
-  font-size: 16px;
-  top: -8px;
-  right: -8px;
-}
-
-/* ==================== HEADERS Y CONTENIDO DE RECINTOS ==================== */
-.enclosure-header {
-  background: linear-gradient(135deg, rgba(139, 69, 19, 0.9), rgba(92, 51, 23, 0.9));
-  color: var(--color-beige);
-  padding: 4px 8px;
-  border-radius: var(--border-radius-sm);
-  font-size: 10px;
+.restriction-title {
+  font-size: var(--font-size-sm);
   font-weight: 700;
-  text-align: center;
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  color: var(--color-blanco);
   text-transform: uppercase;
-  letter-spacing: 0.3px;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  max-width: 90px;
-  z-index: 12;
+  margin: 0;
 }
 
-.capacity-indicator {
-  position: absolute;
-  top: -12px;
-  right: 8px;
-  background: linear-gradient(135deg, var(--color-naranja), var(--color-naranja-light));
-  color: var(--color-blanco);
-  width: 22px;
-  height: 22px;
-  border-radius: var(--border-radius-circle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-  border: 2px solid var(--color-blanco);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  z-index: 12;
-}
-
-.enclosure-content {
-  flex: 1;
-  padding: var(--space-md);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: flex-start;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
-  backdrop-filter: blur(3px);
-  min-height: 80px;
-  z-index: 11;
-}
-
-.placed-dinosaur {
-  width: 36px;
-  height: 36px;
+.dice-face {
+  width: 40px;
+  height: 40px;
   border-radius: var(--border-radius-sm);
   background: var(--color-beige);
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid var(--color-marron-dark);
-  padding: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-  transition: all var(--transition-fast);
 }
 
-.placed-dinosaur:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
-.placed-dinosaur img {
+.dice-face img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
 }
 
-/* ==================== INDICADORES Y CONTROLES ==================== */
-.turn-indicator {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, var(--color-naranja), var(--color-naranja-light));
+.restriction-text {
+  font-size: var(--font-size-xs);
   color: var(--color-blanco);
-  padding: var(--space-lg) var(--space-3xl);
-  border-radius: var(--border-radius-lg);
-  font-weight: 700;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  z-index: 35;
-  font-size: var(--font-size-md);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  border: 3px solid var(--color-blanco);
-  backdrop-filter: blur(10px);
+  margin: 0;
+  line-height: 1.2;
 }
 
-.restriction-indicator {
-  position: absolute;
-  top: var(--space-lg);
-  right: var(--space-lg);
-  background: linear-gradient(135deg, rgba(220, 53, 69, 0.95), rgba(178, 34, 34, 0.95));
+/* ==================== BOTÓN FINALIZAR TURNO ==================== */
+.end-turn-btn {
+  background: var(--color-naranja);
   color: var(--color-blanco);
-  padding: var(--space-md) var(--space-lg);
+  border: none;
+  padding: var(--space-lg) var(--space-2xl);
   border-radius: var(--border-radius-lg);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  max-width: 250px;
-  z-index: 30;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  border: 2px solid var(--color-blanco);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-.action-buttons {
-  position: absolute;
-  bottom: var(--space-xl);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: var(--space-lg);
-  z-index: 30;
-}
-
-.action-buttons .btn {
-  min-width: 160px;
-  font-size: var(--font-size-sm);
   font-weight: 700;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* ==================== TIPOS DE DINOSAURIOS ==================== */
-.dino-triceratops { 
-  background: linear-gradient(135deg, #4CAF50, #45a049) !important; 
-  color: var(--color-blanco); 
+.end-turn-btn:hover {
+  background: var(--color-naranja-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-.dino-brachiosaurus { 
-  background: linear-gradient(135deg, #2196F3, #1976D2) !important; 
-  color: var(--color-blanco); 
+.end-turn-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.dino-stegosaurus { 
-  background: linear-gradient(135deg, #FF9800, #F57C00) !important; 
-  color: var(--color-blanco); 
+/* ==================== POPUP VER MAPA ==================== */
+.map-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
-.dino-parasaurolophus { 
-  background: linear-gradient(135deg, #9C27B0, #7B1FA2) !important; 
-  color: var(--color-blanco); 
+.map-popup-content {
+  background: var(--color-beige);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-.dino-compsognathus { 
-  background: linear-gradient(135deg, #795548, #5D4037) !important; 
-  color: var(--color-blanco); 
+.map-popup-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  color: var(--color-marron);
 }
 
-.dino-trex { 
-  background: linear-gradient(135deg, #F44336, #D32F2F) !important; 
-  color: var(--color-blanco); 
+.map-popup-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
 }
 
-/* ==================== RESPONSIVE PARA TABLERO ==================== */
-@media (max-width: 1400px) {
-  .board-container {
-    grid-template-columns: 220px 1fr 220px;
-  }
-  
-  .dinosaur-card {
-    width: 70px;
-    height: 70px;
+.map-popup .board-grid {
+  max-width: 400px;
+  margin: 0 auto var(--space-xl) auto;
+}
+
+.opponent-scores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.score-item {
+  background: var(--color-marron);
+  color: var(--color-beige);
+  padding: var(--space-md);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+}
+
+.score-item h4 {
+  font-size: var(--font-size-sm);
+  margin: 0 0 var(--space-xs) 0;
+  text-transform: uppercase;
+}
+
+.score-item .points {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .board-grid {
+    gap: var(--space-md);
+    padding: var(--space-md);
+    max-width: 100%;
   }
   
   .enclosure {
-    min-height: 120px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .board-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    gap: var(--space-md);
+    border-radius: var(--border-radius-md);
   }
   
-  .player-hand {
-    padding: var(--space-md);
+  .placed-dinosaur {
+    width: 28px;
+    height: 28px;
   }
   
-  .dinosaur-hand {
-    grid-template-columns: repeat(6, 1fr);
-    gap: var(--space-sm);
+  .capacity-indicator {
+    width: 24px;
+    height: 24px;
+    font-size: var(--font-size-xs);
   }
   
   .dinosaur-card {
@@ -570,53 +576,37 @@
     height: 60px;
   }
   
-  .board-grid {
-    padding: var(--space-lg);
-    gap: var(--space-md);
-  }
-  
-  .enclosure {
-    min-height: 100px;
-  }
-  
-  .game-header {
-    padding: var(--space-sm) var(--space-lg);
-  }
-  
-  .game-info {
-    gap: var(--space-md);
-  }
-  
-  .player-info {
-    gap: var(--space-sm);
-  }
-  
-  .turn-indicator {
-    font-size: var(--font-size-sm);
-    padding: var(--space-md) var(--space-lg);
-  }
-  
-  .restriction-indicator {
-    max-width: 200px;
-    font-size: var(--font-size-xs);
-  }
-}
-
-@media (max-width: 768px) {
-  .board-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(9, auto);
-    gap: var(--space-sm);
+  .game-header,
+  .game-footer {
     padding: var(--space-md);
   }
   
-  .enclosure[data-type="rio"] {
-    grid-column: 1;
-    grid-row: 5;
+  .opponent-avatar,
+  .current-player-avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .dice-face {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-container {
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+  
+  .board-grid {
+    gap: var(--space-sm);
+    padding: var(--space-sm);
   }
   
   .dinosaur-hand {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: var(--space-md);
   }
   
   .dinosaur-card {
@@ -624,44 +614,236 @@
     height: 50px;
   }
   
-  .enclosure {
-    min-height: 80px;
-  }
-  
-  .enclosure-header {
-    font-size: 9px;
-    padding: 3px 6px;
-  }
-  
-  .capacity-indicator {
-    width: 18px;
-    height: 18px;
-    font-size: 9px;
-    top: -9px;
-    right: 6px;
-  }
-  
-  .game-header {
+  .game-header,
+  .game-footer {
     flex-direction: column;
-    gap: var(--space-sm);
-    padding: var(--space-md);
+    gap: var(--space-md);
+    text-align: center;
   }
   
-  .player-info {
-    width: 100%;
-    justify-content: space-between;
+  .map-popup-content {
+    padding: var(--space-lg);
+    margin: var(--space-md);
   }
-  
-  .action-buttons {
-    position: static;
-    transform: none;
-    justify-content: center;
-    margin-top: var(--space-lg);
-    flex-wrap: wrap;
-  }
-  
-  .action-buttons .btn {
-    min-width: 140px;
+}
+
+/* ==================== ESTILOS PARA PANTALLAS DE RESUMEN ==================== */
+.round-summary {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: var(--space-xl) 0;
+    gap: var(--space-xl);
+}
+
+.player-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--color-marron);
+}
+
+.summary-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--border-radius-circle);
+    border: 3px solid var(--color-naranja);
+    object-fit: cover;
+}
+
+.summary-details h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-marron);
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.summary-score {
+    background: var(--color-naranja);
+    color: var(--color-blanco);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--border-radius-pill);
+    font-weight: 700;
+    font-size: var(--font-size-md);
+    text-align: center;
+    margin-top: var(--space-sm);
+}
+
+.round-info-box {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    background: var(--color-marron);
+    color: var(--color-beige);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-lg);
+    margin: var(--space-xl) 0;
+}
+
+.round-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.round-message h4 {
+    font-size: var(--font-size-md);
+    margin: 0 0 var(--space-xs) 0;
+    font-weight: 700;
+}
+
+.round-message p {
     font-size: var(--font-size-sm);
-  }
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* ==================== PANTALLA FIN DEL JUEGO ==================== */
+.final-podium {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: var(--space-xl);
+    margin: var(--space-xl) 0;
+}
+
+.podium-position {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.podium-position:first-child {
+    transform: scale(1.1);
+}
+
+.position-number {
+    background: var(--color-naranja);
+    color: var(--color-blanco);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+}
+
+.podium-position:first-child .position-number {
+    background: var(--color-primario);
+}
+
+.podium-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--border-radius-circle);
+    border: 4px solid var(--color-naranja);
+    object-fit: cover;
+}
+
+.podium-position:first-child .podium-avatar {
+    border-color: var(--color-primario);
+}
+
+.crown {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+}
+
+.final-scores {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin: var(--space-xl) 0;
+}
+
+.final-score-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    background: var(--color-beige);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--color-marron);
+}
+
+.score-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius-circle);
+    border: 2px solid var(--color-marron);
+    object-fit: cover;
+}
+
+.score-details {
+    flex: 1;
+}
+
+.score-details h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-marron);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.final-score {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--color-marron);
+    margin-top: var(--space-xs);
+}
+
+.final-buttons {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+.final-buttons .btn {
+    flex: 1;
+}
+
+/* ==================== RESPONSIVE PARA PANTALLAS DE RESUMEN ==================== */
+@media (max-width: 600px) {
+    .round-summary {
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+    
+    .final-podium {
+        gap: var(--space-lg);
+    }
+    
+    .podium-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .position-number {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-md);
+    }
+    
+    .final-buttons {
+        flex-direction: column;
+    }
+    
+    .round-info-box {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-md);
+    }
 }
