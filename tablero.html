@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +30,8 @@
             gap: 20px;
         }
 
-        .recintos-izquierda, .recintos-derecha {
+        .recintos-izquierda,
+        .recintos-derecha {
             display: grid;
             grid-template-rows: 1fr 1fr 1fr;
             gap: 20px;
@@ -79,10 +81,24 @@
         }
 
         .recinto.bloqueado {
-            background-color: rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .recinto.bloquead::before {
+            content: 'Bloqueado';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: rgb(243, 207, 8);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
         }
     </style>
 </head>
+
 <body>
     <div class="tablero-container">
         <!-- Recintos Izquierda -->
@@ -91,18 +107,20 @@
             <div class="recinto" id="recinto2" role="button" tabindex="0" aria-label="Recinto 2, vacío"></div>
             <div class="recinto" id="recinto3" role="button" tabindex="0" aria-label="Recinto 3, vacío"></div>
         </div>
-        
+
         <!-- Río Central -->
         <div class="rio-container">
             <div class="rio" id="rio" role="button" tabindex="0" aria-label="Río, vacío"></div>
         </div>
-        
+
         <!-- Recintos Derecha -->
         <div class="recintos-derecha">
-            <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1" aria-label="Recinto 4, bloqueado" aria-disabled="true"></div>
+            <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1" aria-label="Recinto 4, bloqueado"
+                aria-disabled="true"></div>
             <div class="recinto" id="recinto5" role="button" tabindex="0" aria-label="Recinto 5, vacío"></div>
             <div class="recinto" id="recinto6" role="button" tabindex="0" aria-label="Recinto 6, vacío"></div>
         </div>
     </div>
 </body>
+
 </html>
