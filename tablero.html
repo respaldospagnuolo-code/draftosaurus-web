@@ -12,6 +12,8 @@
         }
 
         body {
+            font-family: 'Arial', sans-serif;
+            background: url('img/bosque.jpg') center / cover no-repeat;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,76 +24,39 @@
         .tablero-container {
             width: 90vmin;
             height: 90vmin;
-            max-width: 700px;
-            max-height: 700px;
-            min-width: 320px;
-            min-height: 320px;
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
-            gap: 12px;
-            padding: 20px;
+            grid-template-columns: 33.33% 33.33% 33.33%;
+            gap: 20px;
         }
 
-        .recintos-izquierda {
-            grid-column: 1;
-            grid-row: 1 / -1;
+        .recintos-izquierda, .recintos-derecha {
             display: grid;
             grid-template-rows: 1fr 1fr 1fr;
-            gap: 12px;
+            gap: 20px;
         }
 
         .rio-container {
-            grid-column: 2;
-            grid-row: 1 / -1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 15px;
-        }
-
-        .recintos-derecha {
-            grid-column: 3;
-            grid-row: 1 / -1;
-            display: grid;
-            grid-template-rows: 1fr 1fr 1fr;
-            gap: 12px;
         }
 
         .recinto {
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            border-radius: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 8px;
-            position: relative;
-            min-height: 80px;
-        }
-
-        .recinto:hover:not(.bloqueado) {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 
-                0 10px 20px rgba(0, 0, 0, 0.4),
-                inset 0 1px 3px rgba(255, 255, 255, 0.3);
-            border-color: rgba(218, 165, 32, 0.8);
+            border-radius: 10px;
         }
 
         .rio {
-            width: 70px;
+            width: 80px;
             height: 100%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
+            background: url('img/rio.png') center / contain no-repeat;
+            border-radius: 40px;
         }
 
-        /* Asignación de imágenes de fondo */
         #recinto1 {
-            background-image: url('img/bosque.jpg');
+            background-image: url('img/Bosque-de-la-Semejanza.png');
         }
 
         #recinto2 {
@@ -99,155 +64,24 @@
         }
 
         #recinto3 {
-            background-image: url('img/isla-solitaria.png');
-        }
-
-        #rio {
-            background-image: url('img/rio.png');
+            background-image: url('img/Bosque-de-la-Semejanza.png');
         }
 
         #recinto4 {
-            background-image: url('img/Pradera-del-Amor-vs2.png');
+            background-image: url('img/Bosque-de-la-Semejanza.png');
         }
 
         #recinto5 {
-            background-image: url('img/Prado-de-la-Diferencia.png');
+            background-image: url('img/Bosque-de-la-Semejanza.png');
         }
 
         #recinto6 {
-            background-image: url('img/recinto-t-rex.png');
+            background-image: url('img/Bosque-de-la-Semejanza.png');
         }
-
-        .recinto .dinosaurio {
-            width: 22px;
-            height: auto;
-            display: block;
-            z-index: 10;
-            position: relative;
-        }
-
-
 
         .recinto.bloqueado {
-            background-color: rgba(0, 0, 0, 0.248) !important;
+            background-color: rgba(0, 0, 0, 0.8);
             background-image: none !important;
-            color: #F8C94E;
-            border: 3px dashed #F8C94E;
-            cursor: not-allowed;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .recinto.bloqueado::after {
-            content: "Bloqueado";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(248, 201, 78, 0.9);
-            color: #000;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            .tablero-container {
-                width: 95vmin;
-                height: 95vmin;
-                padding: 15px;
-                gap: 10px;
-            }
-            
-            .rio-container {
-                padding: 0 10px;
-            }
-            
-            .rio {
-                width: 50px;
-            }
-            
-            .recinto {
-                padding: 6px;
-                gap: 3px;
-                min-height: 70px;
-                border-width: 2px;
-            }
-            
-            .recinto .dinosaurio {
-                width: 18px;
-            }
-            
-            .recinto.bloqueado::after {
-                font-size: 9px;
-                padding: 3px 6px;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .tablero-container {
-                width: 98vmin;
-                height: 98vmin;
-                padding: 12px;
-                gap: 8px;
-            }
-            
-            .rio-container {
-                padding: 0 8px;
-            }
-            
-            .rio {
-                width: 40px;
-            }
-            
-            .recinto {
-                padding: 4px;
-                gap: 2px;
-                min-height: 60px;
-            }
-            
-            .recinto .dinosaurio {
-                width: 16px;
-            }
-        }
-
-        @media screen and (min-width: 769px) {
-            .recinto .dinosaurio {
-                width: 26px;
-            }
-            
-            .recinto {
-                gap: 6px;
-                padding: 10px;
-                min-height: 90px;
-            }
-        }
-
-        @media screen and (min-width: 1024px) {
-            .tablero-container {
-                max-width: 800px;
-                max-height: 800px;
-            }
-            
-            .rio {
-                width: 80px;
-            }
-            
-            .recinto .dinosaurio {
-                width: 30px;
-            }
-            
-            .recinto {
-                gap: 8px;
-                padding: 12px;
-                min-height: 100px;
-            }
         }
     </style>
 </head>
