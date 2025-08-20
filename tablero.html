@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #2d4a2b 0%, #4a6b47 50%, #6b8c66 100%);
+            background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2b 50%, #4a6b47 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -24,26 +24,19 @@
         .tablero-container {
             width: 90vmin;
             height: 90vmin;
-            max-width: 600px;
-            max-height: 600px;
-            min-width: 300px;
-            min-height: 300px;
-            background: rgba(139, 115, 85, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 3px solid rgba(139, 115, 85, 0.3);
-        }
-
-        .tablero-grid {
-            width: 100%;
-            height: 100%;
+            max-width: 700px;
+            max-height: 700px;
+            min-width: 320px;
+            min-height: 320px;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             grid-template-rows: 1fr 1fr 1fr;
-            gap: 10px;
-            align-items: stretch;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(26, 46, 26, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .recintos-izquierda {
@@ -51,7 +44,7 @@
             grid-row: 1 / -1;
             display: grid;
             grid-template-rows: 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .rio-container {
@@ -68,58 +61,70 @@
             grid-row: 1 / -1;
             display: grid;
             grid-template-rows: 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .recinto {
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
-            border-radius: 12px;
+            border-radius: 15px;
             display: flex;
             flex-wrap: wrap;
-            gap: 3px;
+            gap: 4px;
             justify-content: flex-start;
             align-items: center;
             padding: 8px;
             position: relative;
             transition: all 0.3s ease;
             cursor: pointer;
-            border: 2px solid rgba(139, 115, 85, 0.3);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(218, 165, 32, 0.6);
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            min-height: 80px;
         }
 
         .recinto:hover:not(.bloqueado) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-color: rgba(139, 115, 85, 0.6);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.4),
+                inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            border-color: rgba(218, 165, 32, 0.8);
         }
 
         .rio {
-            width: 60px;
+            width: 70px;
             height: 100%;
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
-            border-radius: 30px;
-            border: 2px solid rgba(139, 115, 85, 0.3);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 35px;
+            border: 3px solid rgba(64, 144, 208, 0.6);
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 3px rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .rio:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: scale(1.03);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.4),
+                inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            border-color: rgba(64, 144, 208, 0.8);
         }
 
         /* Asignación de imágenes de fondo */
         #recinto1 {
-            background-image: url('img/Bosque-de-la-Semejanza.png');
+            background-image: url('img/bosque.jpg');
         }
 
         #recinto2 {
-            background-image: url('img/Trío-Frondoso.png');
+            background-image: url('img/Bosque-de-la-Semejanza.png');
         }
 
         #recinto3 {
@@ -135,42 +140,41 @@
         }
 
         #recinto5 {
-            background-image: url('img/recinto-t-rex.png');
+            background-image: url('img/Prado-de-la-Diferencia.png');
         }
 
         #recinto6 {
-            background-image: url('img/recinto-t-rex-7.png');
+            background-image: url('img/recinto-t-rex.png');
         }
 
         .recinto .dinosaurio {
-            width: 20px;
+            width: 22px;
             height: auto;
             display: block;
             z-index: 10;
             position: relative;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
         }
 
         .dinosaurio:focus,
         .recinto:focus {
-            outline: 2px solid #007acc;
+            outline: 3px solid #007acc;
             outline-offset: 2px;
         }
 
         .dinosaurio:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
             transition: transform 0.2s ease;
         }
 
         .recinto.bloqueado {
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background-color: rgba(0, 0, 0, 0.78);
-            color: #F8C94E;
-            border: 2px dashed #F8C94E;
-            opacity: 1 !important;
-            cursor: not-allowed;
+            background-color: rgba(0, 0, 0, 0.85) !important;
             background-image: none !important;
+            color: #F8C94E;
+            border: 3px dashed #F8C94E;
+            cursor: not-allowed;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .recinto.bloqueado::after {
@@ -179,26 +183,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(248, 201, 78, 0.9);
+            color: #000;
             padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
         }
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 15px;
             }
             
             .tablero-container {
                 width: 95vmin;
                 height: 95vmin;
                 padding: 15px;
-            }
-            
-            .tablero-grid {
-                gap: 8px;
+                gap: 10px;
             }
             
             .rio-container {
@@ -211,16 +214,18 @@
             
             .recinto {
                 padding: 6px;
-                gap: 2px;
+                gap: 3px;
+                min-height: 70px;
+                border-width: 2px;
             }
             
             .recinto .dinosaurio {
-                width: 16px;
+                width: 18px;
             }
             
             .recinto.bloqueado::after {
-                font-size: 8px;
-                padding: 2px 4px;
+                font-size: 9px;
+                padding: 3px 6px;
             }
         }
 
@@ -228,11 +233,8 @@
             .tablero-container {
                 width: 98vmin;
                 height: 98vmin;
-                padding: 10px;
-            }
-            
-            .tablero-grid {
-                gap: 6px;
+                padding: 12px;
+                gap: 8px;
             }
             
             .rio-container {
@@ -245,67 +247,68 @@
             
             .recinto {
                 padding: 4px;
-                gap: 1px;
+                gap: 2px;
+                min-height: 60px;
             }
             
             .recinto .dinosaurio {
-                width: 14px;
+                width: 16px;
             }
         }
 
         @media screen and (min-width: 769px) {
             .recinto .dinosaurio {
-                width: 24px;
+                width: 26px;
             }
             
             .recinto {
-                gap: 5px;
+                gap: 6px;
                 padding: 10px;
+                min-height: 90px;
             }
         }
 
         @media screen and (min-width: 1024px) {
             .tablero-container {
-                max-width: 700px;
-                max-height: 700px;
+                max-width: 800px;
+                max-height: 800px;
             }
             
             .rio {
-                width: 70px;
+                width: 80px;
             }
             
             .recinto .dinosaurio {
-                width: 28px;
+                width: 30px;
             }
             
             .recinto {
-                gap: 6px;
+                gap: 8px;
                 padding: 12px;
+                min-height: 100px;
             }
         }
     </style>
 </head>
 <body>
     <div class="tablero-container">
-        <div class="tablero-grid">
-            <!-- Recintos Izquierda -->
-            <div class="recintos-izquierda">
-                <div class="recinto" id="recinto1" role="button" tabindex="0" aria-label="Recinto 1, vacío"></div>
-                <div class="recinto" id="recinto2" role="button" tabindex="0" aria-label="Recinto 2, vacío"></div>
-                <div class="recinto" id="recinto3" role="button" tabindex="0" aria-label="Recinto 3, vacío"></div>
-            </div>
-            
-            <!-- Río Central -->
-            <div class="rio-container">
-                <div class="rio" id="rio" role="button" tabindex="0" aria-label="Río, vacío"></div>
-            </div>
-            
-            <!-- Recintos Derecha -->
-            <div class="recintos-derecha">
-                <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1" aria-label="Recinto 4, bloqueado" aria-disabled="true"></div>
-                <div class="recinto" id="recinto5" role="button" tabindex="0" aria-label="Recinto 5, vacío"></div>
-                <div class="recinto" id="recinto6" role="button" tabindex="0" aria-label="Recinto 6, vacío"></div>
-            </div>
+        <!-- Recintos Izquierda -->
+        <div class="recintos-izquierda">
+            <div class="recinto" id="recinto1" role="button" tabindex="0" aria-label="Recinto 1, vacío"></div>
+            <div class="recinto" id="recinto2" role="button" tabindex="0" aria-label="Recinto 2, vacío"></div>
+            <div class="recinto" id="recinto3" role="button" tabindex="0" aria-label="Recinto 3, vacío"></div>
+        </div>
+        
+        <!-- Río Central -->
+        <div class="rio-container">
+            <div class="rio" id="rio" role="button" tabindex="0" aria-label="Río, vacío"></div>
+        </div>
+        
+        <!-- Recintos Derecha -->
+        <div class="recintos-derecha">
+            <div class="recinto bloqueado" id="recinto4" role="button" tabindex="-1" aria-label="Recinto 4, bloqueado" aria-disabled="true"></div>
+            <div class="recinto" id="recinto5" role="button" tabindex="0" aria-label="Recinto 5, vacío"></div>
+            <div class="recinto" id="recinto6" role="button" tabindex="0" aria-label="Recinto 6, vacío"></div>
         </div>
     </div>
 </body>
