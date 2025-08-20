@@ -90,7 +90,7 @@ class AppState {
         this.setLoading(true);
 
         try {
-            const response = await this.apiRequest('/api/auth/login.php', {
+            const response = await this.apiRequest('./api/auth/login.php', {
                 method: 'POST',
                 body: { username, password }
             });
@@ -142,7 +142,7 @@ class AppState {
         this.setLoading(true);
 
         try {
-            const response = await this.apiRequest('/api/auth/register.php', {
+            const response = await this.apiRequest('./api/auth/register.php', {
                 method: 'POST',
                 body: formData
             });
@@ -395,7 +395,7 @@ class AppState {
         this.setLoading(true);
 
         try {
-            const response = await this.apiRequest('/api/game/create.php', {
+            const response = await this.apiRequest('./api/game/create.php', {
                 method: 'POST',
                 body: gameData
             });
@@ -469,7 +469,7 @@ class AppState {
 
         try {
             // Pedir el resultado del dado al servidor
-            const response = await this.apiRequest('/api/game/roll-dice.php', {
+            const response = await this.apiRequest('./api/game/roll-dice.php', {
                 method: 'POST',
                 body: { game_id: this.gameSession?.id }
             });
@@ -514,7 +514,7 @@ class AppState {
     // ==================== INICIO DEL JUEGO ==================== 
     async iniciarJuego() {
         try {
-            const response = await this.apiRequest('/api/game/start.php', {
+            const response = await this.apiRequest('./api/game/start.php', {
                 method: 'POST',
                 body: { game_id: this.gameSession?.id }
             });
