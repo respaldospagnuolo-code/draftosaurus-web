@@ -323,7 +323,7 @@ set_exception_handler(function($exception) {
 // ==================== CONSTANTES DE CONFIGURACIÓN ==================== 
 
 // Configuración de entorno
-define('DEBUG', false); // Cambiar a true en desarrollo
+define('DEBUG', true); // Cambiar a true en desarrollo
 define('API_VERSION', '1.0');
 define('APP_NAME', 'Draftosaurus');
 define('TIMEZONE', 'America/Montevideo');
