@@ -215,7 +215,6 @@
         }
 
         .recinto.bloqueado {
-            border-radius: 10px;
             font-size: 0.75rem;
             font-weight: 600;
             position: relative;
@@ -233,6 +232,12 @@
             opacity: 1 !important;
             cursor: not-allowed;
             z-index: 1000;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
         }
 
         .recinto:hover:not(.bloqueado) {
@@ -373,27 +378,6 @@
                 <div class="contenedor">
                     <span class="nombre oswald">Anita</span>
                     <span class="puntos" aria-label="Puntos de Anita">0 ptos</span>
-                </div>
-            </li>
-            <li class="jugador">
-                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Juan Andrés" width="40" height="40">
-                <div class="contenedor">
-                    <span class="nombre oswald">Juan Andrés</span>
-                    <span class="puntos" aria-label="Puntos de Juan Andrés">0 ptos</span>
-                </div>
-            </li>
-            <li class="jugador">
-                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de José Luis" width="40" height="40">
-                <div class="contenedor">
-                    <span class="nombre oswald">José Luis</span>
-                    <span class="puntos" aria-label="Puntos de José Luis">0 ptos</span>
-                </div>
-            </li>
-            <li class="jugador">
-                <img src="img/icono_mapa.png" class="icono-mapa" alt="Avatar de Pepe King" width="40" height="40">
-                <div class="contenedor">
-                    <span class="nombre oswald">Pepe King</span>
-                    <span class="puntos" aria-label="Puntos de Pepe King">0 ptos</span>
                 </div>
             </li>
         </ul>
