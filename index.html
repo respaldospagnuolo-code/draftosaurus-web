@@ -62,9 +62,9 @@
                     </div>
                     <div class="form-divider"></div>
                     <div class="form-campo">
-                        <label class="form-label" for="login-username">Usuario</label>
-                        <input type="text" id="login-username" class="form-input" placeholder="Ingresá tu correo..."
-                            required autocomplete="username">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="Ingresá tu correo..."
+                            required autocomplete="email">
                     </div>
                 </div>
 
@@ -74,25 +74,25 @@
                     </div>
                     <div class="form-divider"></div>
                     <div class="form-campo">
-                        <label class="form-label" for="login-password">Contraseña</label>
-                        <input type="password" id="login-password" class="form-input"
+                        <label class="form-label" for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-input"
                             placeholder="Ingresa tu contraseña..." required autocomplete="current-password">
                     </div>
                 </div>
 
-                <button type="submit" class="btn" id="btn-login">
+                <button type="submit" class="btn" id="login-btn">
                     <span class="btn-text">Iniciar sesión</span>
                 </button>
             </form>
 
             <div class="footer">
-                ¿Aún no tenés cuenta? <a href="#" id="link-registro">Registrate ahora</a>
+                ¿Aún no tenés cuenta? <a href="#" id="register-link">Registrate ahora</a>
             </div>
         </div>
     </div>
 
     <!-- ==================== PANTALLA DE REGISTRO ==================== -->
-    <div id="pantalla-registro" class="pantalla fondo-inicio" style="display: none;">
+    <div id="pantalla-register" class="pantalla fondo-inicio" style="display: none;">
         <div class="botones-idioma">
             <button class="btn-idioma" data-lang="es" aria-label="Cambiar a español">
                 <img src="img/bandera-uruguay.png" alt="Español" loading="lazy">
@@ -164,26 +164,26 @@
                     </div>
                     <div class="form-divider"></div>
                     <div class="form-campo">
-                        <label class="form-label" for="register-password-confirm">Confirmar contraseña</label>
-                        <input type="password" id="register-password-confirm" class="form-input"
+                        <label class="form-label" for="register-confirm-password">Confirmar contraseña</label>
+                        <input type="password" id="register-confirm-password" class="form-input"
                             placeholder="Confirmá tu contraseña..." required autocomplete="new-password" minlength="6">
                     </div>
                 </div>
 
-                <button type="submit" class="btn" id="btn-registro">
+                <button type="submit" class="btn" id="register-btn">
                     <span class="btn-text">Crear cuenta</span>
                 </button>
             </form>
 
             <div class="footer">
-                ¿Ya tenés cuenta? <a href="#" id="link-login">Iniciá sesión</a>
+                ¿Ya tenés cuenta? <a href="#" id="login-link">Iniciá sesión</a>
             </div>
         </div>
     </div>
 
     <!-- ==================== PANTALLA PRINCIPAL / LOBBY ==================== -->
     <div id="pantalla-lobby" class="pantalla fondo-interfaz fade-in" style="display: none;">
-        <button class="btn-icon boton-salir" id="btn-logout" aria-label="Cerrar sesión">
+        <button class="btn-icon boton-salir" id="logout-btn" aria-label="Cerrar sesión">
             <img src="img/icono-salir.svg" alt="Cerrar sesión" loading="lazy">
         </button>
 
@@ -191,9 +191,9 @@
             <div class="perfil-lobby">
                 <div class="avatar">
                     <img src="img/marco_usuario.png" alt="Marco del avatar" class="avatar__marco" loading="lazy">
-                    <img src="img/foto_usuario-1.png" alt="Avatar del usuario" class="avatar__imagen" loading="lazy">
+                    <img src="img/foto_usuario-1.png" alt="Avatar del usuario" class="avatar__imagen user-avatar" loading="lazy">
                 </div>
-                <h2 class="titulo titulo--lg titulo--beige">PEPEKING</h2>
+                <h2 class="titulo titulo--lg titulo--beige user-name">PEPEKING</h2>
             </div>
 
             <div class="stats">
@@ -217,7 +217,7 @@
             </div>
 
             <div>
-                <button class="btn" id="btn-jugar-app">
+                <button class="btn" id="new-game-btn">
                     <span class="btn-text">Jugar en la app</span>
                 </button>
                 <button class="btn btn--naranja" id="btn-modo-asistente">
@@ -296,7 +296,7 @@
         <div class="contenedor-dado-animacion">
             <div class="dado-container">
                 <div class="dado-animado" id="dado-animado">
-                    <img src="img/dado-no-trex.png" alt="Dado" class="dado-imagen" id="dado-imagen">
+                    <img src="img/dado-1.png" alt="Dado" class="dado-imagen" id="dado-imagen">
                 </div>
             </div>
             <p class="texto texto--lg texto--blanco texto--weight-semibold dado-texto">
@@ -311,7 +311,7 @@
         <div class="popup-dado fade-in" id="popup-dado">
             <div class="popup-header">
                 <div class="dado-resultado-container">
-                    <img src="img/dado-no-trex.png" alt="Dado resultado" class="dado-resultado" id="dado-resultado-img">
+                    <img src="img/dado-1.png" alt="Dado resultado" class="dado-resultado" id="dado-resultado-img">
                 </div>
             </div>
 
@@ -356,88 +356,14 @@
             <!-- Mano del jugador 1 -->
             <div class="player-hand">
                 <div class="hand-title">Tu mano</div>
-                <div class="dinosaur-hand" id="player1-hand">
+                <div class="dinosaur-hand" id="player-hand">
                     <!-- Las cartas se generarán dinámicamente -->
                 </div>
             </div>
 
             <!-- Tablero central con layout orgánico -->
-            <div class="board-grid">
-                <!-- Fila superior - Bosques -->
-                <div class="enclosure" data-zone="bosques" data-type="bosque_iguales" data-id="1">
-                    <div class="enclosure-header">
-                        Bosque Iguales
-                        <div class="capacity-indicator">4</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-                
-                <div class="enclosure" data-zone="bosques" data-type="bosque_iguales" data-id="2">
-                    <div class="enclosure-header">
-                        Bosque Iguales
-                        <div class="capacity-indicator">6</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-                
-                <div class="enclosure" data-zone="bosques" data-type="trio_bosque" data-id="3">
-                    <div class="enclosure-header">
-                        Trío Bosque
-                        <div class="capacity-indicator">3</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-
-                <!-- Fila media -->
-                <div class="enclosure" data-zone="comidas" data-type="rey_selva" data-id="7">
-                    <div class="enclosure-header">
-                        Rey Selva
-                        <div class="capacity-indicator">1</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-                
-                <!-- Río (centro) -->
-                <div class="enclosure" data-zone="rio" data-type="rio" data-id="9">
-                    <div class="enclosure-header">
-                        Río
-                        <div class="capacity-indicator">∞</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-                
-                <div class="enclosure" data-zone="banos" data-type="isla_solitaria" data-id="8">
-                    <div class="enclosure-header">
-                        Isla Solitaria
-                        <div class="capacity-indicator">1</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-
-                <!-- Fila inferior - Praderas -->
-                <div class="enclosure" data-zone="praderas" data-type="pradera_diferentes" data-id="4">
-                    <div class="enclosure-header">
-                        Pradera Diferentes
-                        <div class="capacity-indicator">4</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-                
-                <div class="enclosure" data-zone="praderas" data-type="pradera_diferentes" data-id="5">
-                    <div class="enclosure-header">
-                        Pradera Diferentes
-                        <div class="capacity-indicator">5</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
-                
-                <div class="enclosure" data-zone="praderas" data-type="pradera_amor" data-id="6">
-                    <div class="enclosure-header">
-                        Pradera Amor
-                        <div class="capacity-indicator">6</div>
-                    </div>
-                    <div class="enclosure-content"></div>
-                </div>
+            <div id="tablero" class="board-grid">
+                <!-- Se generará dinámicamente desde JavaScript -->
             </div>
 
             <!-- Mano del jugador 2 -->
@@ -463,7 +389,52 @@
         <!-- Botones de acción -->
         <div class="action-buttons">
             <button class="btn btn-secondary" id="btn-roll-dice">🎲 Lanzar dado</button>
-            <button class="btn btn-primary" id="btn-end-turn" disabled>Finalizar turno</button>
+            <button class="btn btn-primary" id="finish-turn-btn" disabled>Finalizar turno</button>
+        </div>
+    </div>
+
+    <!-- ==================== PANTALLA RESUMEN RONDA ==================== -->
+    <div id="pantalla-resumen-ronda" class="pantalla fondo-interfaz" style="display: none;">
+        <div class="overlay-fondo"></div>
+        <div class="popup-dado fade-in">
+            <div class="popup-header">
+                <h2 class="titulo titulo--lg titulo--marron">RESUMEN DE LA RONDA</h2>
+            </div>
+
+            <div class="popup-content">
+                <div id="round-summary" class="round-summary">
+                    <!-- Se generará dinámicamente -->
+                </div>
+
+                <button class="btn btn--verde" id="next-round-btn">
+                    <span class="btn-text">Siguiente Ronda</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PANTALLA FIN DEL JUEGO ==================== -->
+    <div id="pantalla-final" class="pantalla fondo-interfaz" style="display: none;">
+        <div class="overlay-fondo"></div>
+        <div class="popup-dado fade-in">
+            <div class="popup-header">
+                <h2 class="titulo titulo--lg titulo--marron">FIN DEL JUEGO</h2>
+            </div>
+
+            <div class="popup-content">
+                <div id="final-results" class="final-results">
+                    <!-- Se generará dinámicamente -->
+                </div>
+
+                <div class="final-buttons">
+                    <button class="btn btn--naranja" id="final-new-game-btn">
+                        <span class="btn-text">Nueva Partida</span>
+                    </button>
+                    <button class="btn btn--verde" id="final-lobby-btn">
+                        <span class="btn-text">Volver al Lobby</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
