@@ -1465,3 +1465,40 @@ input[type="date"].form-input::-webkit-calendar-picker-indicator {
     box-shadow: var(--shadow-error);
   }
 }
+
+/* ==================== FIX PARA LA BARRA DE CARGA ==================== */
+
+/* Asegurar que la pantalla de carga esté visible */
+#pantalla-carga.active {
+  display: flex !important;
+}
+
+/* Animación de la barra de progreso */
+#barra-progreso {
+  width: 0%;
+  transition: width 2s ease-out;
+}
+
+/* Activar la animación cuando la pantalla esté activa */
+#pantalla-carga.active #barra-progreso {
+  width: 100%;
+  animation: progress-fill 2s ease-out forwards;
+}
+
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Asegurar que todas las pantallas estén ocultas por defecto */
+.pantalla {
+  display: none;
+}
+
+.pantalla.active {
+  display: flex;
+}
