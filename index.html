@@ -446,3 +446,149 @@
 </body>
 
 </html>
+
+<!-- CSS OVERRIDE FIX - Agregar antes del </body> -->
+<style>
+/* Override específico para solucionar el problema de pantallas */
+.pantalla {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10 !important;
+    /* Por defecto ocultar todas */
+    display: none !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+/* Cuando JavaScript cambia el display a flex, mostrar */
+.pantalla[style*="display: flex"] {
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+/* Asegurar que cuando se oculta, realmente se oculte */
+.pantalla[style*="display: none"] {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Fix específico para pantalla de carga */
+#pantalla-carga {
+    justify-content: flex-end !important;
+    padding: var(--space-3xl) var(--container-padding) !important;
+}
+
+/* Fix específico para pantalla de login */
+#pantalla-login {
+    background: url('img/Fondo_inicial.jpg') center / cover no-repeat !important;
+}
+
+/* Asegurar que el contenedor centrado se vea bien */
+#pantalla-login .contenedor-centrado,
+#pantalla-register .contenedor-centrado {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 100 !important;
+}
+</style>
+
+<script>
+// Script adicional para forzar el cambio de pantallas
+console.log('🔧 CSS Override Fix aplicado');
+
+// Función mejorada para cambiar pantallas
+function forceScreenChange() {
+    console.log('🔧 Ejecutando cambio forzado de pantalla...');
+    
+    // 1. Ocultar loader completamente
+    const loader = document.getElementById('pantalla-carga');
+    if (loader) {
+        loader.style.display = 'none';
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+        loader.style.zIndex = '-1';
+        console.log('✅ Loader completamente ocultado');
+    }
+    
+    // 2. Ocultar todas las otras pantallas
+    const allScreens = document.querySelectorAll('.pantalla');
+    allScreens.forEach(screen => {
+        if (screen.id !== 'pantalla-login') {
+            screen.style.display = 'none';
+            screen.style.opacity = '0';
+            screen.style.visibility = 'hidden';
+        }
+    });
+    
+    // 3. Mostrar login con máxima prioridad
+    const login = document.getElementById('pantalla-login');
+    if (login) {
+        login.style.display = 'flex';
+        login.style.opacity = '1';
+        login.style.visibility = 'visible';
+        login.style.zIndex = '1000';
+        login.style.position = 'fixed';
+        login.style.top = '0';
+        login.style.left = '0';
+        login.style.width = '100vw';
+        login.style.height = '100vh';
+        
+        console.log('✅ Login forzado a mostrar');
+        
+        // 4. Focus en email después de un momento
+        setTimeout(() => {
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.focus();
+                console.log('✅ Focus en email aplicado');
+            }
+        }, 200);
+    }
+    
+    // 5. Verificar el resultado
+    setTimeout(() => {
+        const loaderVisible = window.getComputedStyle(loader).display !== 'none';
+        const loginVisible = window.getComputedStyle(login).display === 'flex';
+        
+        console.log('🔍 Verificación:');
+        console.log('  - Loader visible:', loaderVisible);
+        console.log('  - Login visible:', loginVisible);
+        
+        if (loaderVisible || !loginVisible) {
+            console.log('⚠️ El cambio no funcionó completamente, reintentando...');
+            setTimeout(forceScreenChange, 1000);
+        } else {
+            console.log('✅ Cambio de pantalla exitoso');
+        }
+    }, 300);
+}
+
+// Ejecutar el cambio después de que se cargue todo
+setTimeout(() => {
+    console.log('🔧 Iniciando cambio forzado en 3 segundos...');
+    forceScreenChange();
+}, 3000);
+
+// También ejecutar si el loader sigue visible después de mucho tiempo
+setTimeout(() => {
+    const loader = document.getElementById('pantalla-carga');
+    if (loader && window.getComputedStyle(loader).display !== 'none') {
+        console.log('🚨 Loader aún visible después de 6 segundos - forzando cambio');
+        forceScreenChange();
+    }
+}, 6000);
+
+// Exponer función globalmente para debug manual
+window.forceScreenChange = forceScreenChange;
+window.showLogin = () => {
+    document.getElementById('pantalla-carga').style.display = 'none';
+    document.getElementById('pantalla-login').style.display = 'flex';
+};
+
+console.log('🔧 Para forzar manualmente: forceScreenChange() o showLogin()');
+</script>
