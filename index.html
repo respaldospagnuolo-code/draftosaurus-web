@@ -24,9 +24,7 @@
 
 <body>
     <!-- ==================== PANTALLA DE CARGA ==================== -->
-    <div id="pantalla-carga" class="pantalla-inicio fondo-inicio active">
-
-
+    <div id="pantalla-carga" class="pantalla-inicio fondo-inicio" style="display: flex;">
         <div class="superposicion">
             <img src="img/Logo-draftosaurus.png" alt="Draftosaurus" class="logo fade-in">
         </div>
@@ -298,7 +296,7 @@
         <div class="contenedor-dado-animacion">
             <div class="dado-container">
                 <div class="dado-animado" id="dado-animado">
-                    <img src="img/dado-1.png" alt="Dado" class="dado-imagen" id="dado-imagen">
+                    <img src="img/dado-baños.png" alt="Dado" class="dado-imagen" id="dado-imagen">
                 </div>
             </div>
             <p class="texto texto--lg texto--blanco texto--weight-semibold dado-texto">
@@ -313,7 +311,7 @@
         <div class="popup-dado fade-in" id="popup-dado">
             <div class="popup-header">
                 <div class="dado-resultado-container">
-                    <img src="img/dado-1.png" alt="Dado resultado" class="dado-resultado" id="dado-resultado-img">
+                    <img src="img/dado-baños.png" alt="Dado resultado" class="dado-resultado" id="dado-resultado-img">
                 </div>
             </div>
 
@@ -331,114 +329,216 @@
         </div>
     </div>
 
-    <!-- ==================== PANTALLA PARTIDA ==================== -->
-    <div id="pantalla-partida" class="pantalla fondo-interfaz" style="display: none;">
-        <!-- Header del juego -->
-        <div class="game-header">
-            <div class="player-info">
-                <img src="img/foto_usuario-1.png" alt="Jugador 1" class="player-avatar" id="player1-avatar">
-                <span class="player-name" id="player1-name">PEPEKING</span>
-                <div class="player-score" id="player1-score">0 puntos</div>
-            </div>
-            
-            <div class="game-info">
-                <div class="round-info" id="round-info">Ronda 1/2</div>
-                <div class="turn-info" id="turn-info">Turno 1</div>
-            </div>
-            
-            <div class="player-info">
-                <div class="player-score" id="player2-score">0 puntos</div>
-                <span class="player-name" id="player2-name">ANITA</span>
-                <img src="img/invitado.png" alt="Jugador 2" class="player-avatar" id="player2-avatar">
+<!-- ==================== PANTALLA PARTIDA - NUEVA ESTRUCTURA ==================== -->
+<div id="pantalla-partida" class="pantalla fondo-interfaz" style="display: none;">
+    <!-- Header con info del oponente -->
+    <div class="game-header">
+        <div class="opponent-info">
+            <img src="img/invitado.png" alt="Oponente" class="opponent-avatar" id="opponent-avatar">
+            <div class="opponent-details">
+                <h3 id="opponent-name">ANITA</h3>
+                <div class="opponent-score" id="opponent-score">0 puntos</div>
             </div>
         </div>
-
-        <!-- Contenedor principal del tablero -->
-        <div class="board-container">
-            <!-- Mano del jugador 1 -->
-            <div class="player-hand">
-                <div class="hand-title">Tu mano</div>
-                <div class="dinosaur-hand" id="player-hand">
-                    <!-- Las cartas se generarán dinámicamente -->
-                </div>
-            </div>
-
-            <!-- Tablero central con layout orgánico -->
-            <div id="tablero" class="board-grid">
-                <!-- Se generará dinámicamente desde JavaScript -->
-            </div>
-
-            <!-- Mano del jugador 2 -->
-            <div class="player-hand">
-                <div class="hand-title">Mano rival</div>
-                <div class="dinosaur-hand" id="player2-hand">
-                    <!-- Las cartas del rival se muestran ocultas -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Indicador de turno -->
-        <div class="turn-indicator" id="turn-indicator">
-            Es tu turno - Lanza el dado
-        </div>
-
-        <!-- Indicador de restricción -->
-        <div class="restriction-indicator" id="restriction-indicator" style="display: none;">
-            <strong>Restricción activa:</strong><br>
-            <span id="restriction-text"></span>
-        </div>
-
-        <!-- Botones de acción -->
-        <div class="action-buttons">
-            <button class="btn btn-secondary" id="btn-roll-dice">🎲 Lanzar dado</button>
-            <button class="btn btn-primary" id="finish-turn-btn" disabled>Finalizar turno</button>
+        
+        <div class="game-info">
+            <div class="round-info" id="round-info">Ronda 1/2</div>
+            <button class="view-map-btn" id="view-map-btn">Ver Mapa</button>
         </div>
     </div>
 
-    <!-- ==================== PANTALLA RESUMEN RONDA ==================== -->
-    <div id="pantalla-resumen-ronda" class="pantalla fondo-interfaz" style="display: none;">
-        <div class="overlay-fondo"></div>
-        <div class="popup-dado fade-in">
-            <div class="popup-header">
-                <h2 class="titulo titulo--lg titulo--marron">RESUMEN DE LA RONDA</h2>
+    <!-- Contenedor principal del tablero -->
+    <div class="board-container">
+        <!-- Tablero central - Grid 3x3 con río central -->
+        <div class="board-grid">
+            <!-- Fila Superior -->
+            <div class="enclosure" data-id="pradera-progresiva" data-zone="praderas" data-type="pradera_progresiva">
+                <div class="capacity-indicator">6</div>
+                <div class="enclosure-content"></div>
+            </div>
+            
+            <div class="enclosure" data-id="rey-selva" data-zone="comidas" data-type="rey_selva">
+                <div class="capacity-indicator">1</div>
+                <div class="enclosure-content"></div>
             </div>
 
-            <div class="popup-content">
-                <div id="round-summary" class="round-summary">
-                    <!-- Se generará dinámicamente -->
+            <!-- Fila Central -->
+            <div class="enclosure" data-id="trio-bosque" data-zone="bosques" data-type="trio_bosque">
+                <div class="capacity-indicator">3</div>
+                <div class="enclosure-content"></div>
+            </div>
+
+            <!-- Río Central (ocupa las 3 filas) -->
+            <div class="enclosure" data-id="rio" data-zone="rio" data-type="rio">
+                <div class="capacity-indicator">∞</div>
+                <div class="enclosure-content"></div>
+            </div>
+
+            <div class="enclosure" data-id="cine-comida" data-zone="comidas" data-type="cine_comida">
+                <div class="capacity-indicator">6</div>
+                <div class="enclosure-content"></div>
+            </div>
+
+            <!-- Fila Inferior -->
+            <div class="enclosure" data-id="pradera-amor" data-zone="praderas" data-type="pradera_amor">
+                <div class="capacity-indicator">6</div>
+                <div class="enclosure-content"></div>
+            </div>
+
+            <div class="enclosure" data-id="banos" data-zone="banos" data-type="banos">
+                <div class="capacity-indicator">1</div>
+                <div class="enclosure-content"></div>
+            </div>
+        </div>
+
+        <!-- Mano de dinosaurios del jugador actual -->
+        <div class="dinosaur-hand-container">
+            <div class="hand-title" id="hand-title">Tus Dinosaurios</div>
+            <div class="dinosaur-hand" id="current-player-hand">
+                <!-- Las cartas se generarán dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer con jugador actual y restricción -->
+    <div class="game-footer">
+        <div class="current-player-info">
+            <img src="img/foto_usuario-1.png" alt="Jugador Actual" class="current-player-avatar" id="current-player-avatar">
+            <div class="player-details">
+                <h3 id="current-player-name">PEPEKING</h3>
+                <div class="turn-status" id="turn-status">Es tu turno</div>
+            </div>
+        </div>
+
+        <div class="dice-restriction" id="dice-restriction" style="display: none;">
+            <p class="restriction-title">Restricción</p>
+            <div class="dice-face">
+                <img src="img/dado-1.png" alt="Restricción" id="restriction-dice-img">
+            </div>
+            <p class="restriction-text" id="restriction-text">Texto de la restricción</p>
+        </div>
+
+        <button class="end-turn-btn" id="end-turn-btn" disabled>
+            Finalizar Turno
+        </button>
+    </div>
+</div>
+
+<!-- ==================== POPUP VER MAPA ==================== -->
+<div id="map-popup" class="map-popup" style="display: none;">
+    <div class="map-popup-content">
+        <div class="map-popup-header">
+            <h2 id="map-popup-title">Tablero de ANITA</h2>
+        </div>
+        
+        <!-- Tablero del oponente (solo lectura) -->
+        <div class="board-grid" id="opponent-board-grid">
+            <!-- Se clonará la estructura del tablero principal -->
+        </div>
+        
+        <!-- Puntuaciones por recinto -->
+        <div class="opponent-scores" id="opponent-scores">
+            <!-- Se generarán dinámicamente -->
+        </div>
+    </div>
+</div>
+
+<!-- ==================== PANTALLA RESUMEN RONDA ==================== -->
+<div id="pantalla-resumen-ronda" class="pantalla fondo-interfaz" style="display: none;">
+    <div class="overlay-fondo"></div>
+    <div class="popup-dado fade-in">
+        <div class="popup-header">
+            <h2 class="titulo titulo--lg titulo--marron">RESUMEN DE LA RONDA</h2>
+        </div>
+
+        <div class="popup-content">
+            <div class="round-summary">
+                <div class="player-summary">
+                    <img src="img/foto_usuario-1.png" alt="Jugador 1" class="summary-avatar" id="summary-player1-avatar">
+                    <div class="summary-details">
+                        <h3 id="summary-player1-name">PEPEKING</h3>
+                        <div class="summary-score" id="summary-player1-score">20 puntos</div>
+                    </div>
                 </div>
 
-                <button class="btn btn--verde" id="next-round-btn">
-                    <span class="btn-text">Siguiente Ronda</span>
+                <div class="player-summary">
+                    <img src="img/invitado.png" alt="Jugador 2" class="summary-avatar" id="summary-player2-avatar">
+                    <div class="summary-details">
+                        <h3 id="summary-player2-name">ANITA</h3>
+                        <div class="summary-score" id="summary-player2-score">13 puntos</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="round-info-box">
+                <div class="round-icon">🔄</div>
+                <div class="round-message">
+                    <h4>Intercambio de dinosaurios</h4>
+                    <p>Los jugadores intercambiarán los dinosaurios</p>
+                </div>
+            </div>
+
+            <button class="btn btn--verde" id="btn-siguiente-ronda">
+                <span class="btn-text">Siguiente Ronda</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== PANTALLA FIN DEL JUEGO ==================== -->
+<div id="pantalla-fin-juego" class="pantalla fondo-interfaz" style="display: none;">
+    <div class="overlay-fondo"></div>
+    <div class="popup-dado fade-in">
+        <div class="popup-header">
+            <h2 class="titulo titulo--lg titulo--marron">FIN DEL JUEGO</h2>
+        </div>
+
+        <div class="popup-content">
+            <div class="final-podium">
+                <div class="podium-position" id="winner-position">
+                    <div class="position-number">1</div>
+                    <img src="img/foto_usuario-1.png" alt="Ganador" class="podium-avatar" id="winner-avatar">
+                    <div class="crown">👑</div>
+                </div>
+                
+                <div class="podium-position" id="runner-up-position">
+                    <div class="position-number">2</div>
+                    <img src="img/invitado.png" alt="Segundo lugar" class="podium-avatar" id="runner-up-avatar">
+                </div>
+            </div>
+
+            <div class="final-scores">
+                <div class="final-score-item">
+                    <img src="img/foto_usuario-1.png" alt="Jugador 1" class="score-avatar" id="final-player1-avatar">
+                    <div class="score-details">
+                        <h3 id="final-player1-name">PEPEKING</h3>
+                        <div class="final-score" id="final-player1-score">250 puntos</div>
+                    </div>
+                </div>
+
+                <div class="final-score-item">
+                    <img src="img/invitado.png" alt="Jugador 2" class="score-avatar" id="final-player2-avatar">
+                    <div class="score-details">
+                        <h3 id="final-player2-name">ANITA</h3>
+                        <div class="final-score" id="final-player2-score">202 puntos</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-buttons">
+                <button class="btn btn--naranja" id="btn-nueva-partida">
+                    <span class="btn-text">Nueva Partida</span>
+                </button>
+                <button class="btn btn--verde" id="btn-volver-lobby">
+                    <span class="btn-text">Volver al Lobby</span>
                 </button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- ==================== PANTALLA FIN DEL JUEGO ==================== -->
-    <div id="pantalla-final" class="pantalla fondo-interfaz" style="display: none;">
-        <div class="overlay-fondo"></div>
-        <div class="popup-dado fade-in">
-            <div class="popup-header">
-                <h2 class="titulo titulo--lg titulo--marron">FIN DEL JUEGO</h2>
-            </div>
 
-            <div class="popup-content">
-                <div id="final-results" class="final-results">
-                    <!-- Se generará dinámicamente -->
-                </div>
 
-                <div class="final-buttons">
-                    <button class="btn btn--naranja" id="final-new-game-btn">
-                        <span class="btn-text">Nueva Partida</span>
-                    </button>
-                    <button class="btn btn--verde" id="final-lobby-btn">
-                        <span class="btn-text">Volver al Lobby</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- ==================== TOAST NOTIFICATIONS ==================== -->
     <div id="toast-container" class="toast-container" aria-live="polite"></div>
@@ -448,3 +548,54 @@
 </body>
 
 </html>
+
+<!-- CSS OVERRIDE FIX - Agregar antes del </body> -->
+<style>
+/* Override específico para solucionar el problema de pantallas */
+.pantalla {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10 !important;
+    /* Por defecto ocultar todas */
+    display: none !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+/* Cuando JavaScript cambia el display a flex, mostrar */
+.pantalla[style*="display: flex"] {
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+/* Asegurar que cuando se oculta, realmente se oculte */
+.pantalla[style*="display: none"] {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Fix específico para pantalla de carga */
+#pantalla-carga {
+    justify-content: flex-end !important;
+    padding: var(--space-3xl) var(--container-padding) !important;
+}
+
+/* Fix específico para pantalla de login */
+#pantalla-login {
+    background: url('img/Fondo_inicial.jpg') center / cover no-repeat !important;
+}
+
+/* Asegurar que el contenedor centrado se vea bien */
+#pantalla-login .contenedor-centrado,
+#pantalla-register .contenedor-centrado {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 100 !important;
+}
+</style>
+
