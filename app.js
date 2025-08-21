@@ -474,7 +474,7 @@ class AppState {
 
     async dealDinosaurs() {
         try {
-            const response = await fetch('deal-dinosaurs.php', {
+            const response = await fetch('api/game/deal-dinosaurs.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
