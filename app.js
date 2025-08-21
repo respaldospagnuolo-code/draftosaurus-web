@@ -293,7 +293,7 @@ class AppState {
         
         try {
             // CORREGIDO: Usar la ruta correcta de la API
-            const response = await fetch('api/auth/login.php', {
+            const response = await fetch('login.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -356,7 +356,7 @@ class AppState {
         
         try {
             // CORREGIDO: Usar la ruta correcta de la API
-            const response = await fetch('api/auth/register.php', {
+            const response = await fetch('register.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password, birthdate })
