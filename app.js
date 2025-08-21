@@ -1329,3 +1329,16 @@ document.head.appendChild(style);
 
 console.log('📄 app.js completamente cargado - Versión corregida');
 
+// FORZAR INICIO MANUAL - Agregar al final de app.js
+console.log('🔧 Forzando inicio manual...');
+setTimeout(() => {
+    if (window.app && typeof window.app.init === 'function') {
+        console.log('🚀 Ejecutando app.init() manualmente...');
+        window.app.init();
+    } else {
+        console.error('❌ app.init no encontrado');
+        // Fallback de emergencia
+        document.getElementById('pantalla-carga').style.display = 'none';
+        document.getElementById('pantalla-login').style.display = 'flex';
+    }
+}, 1000);
