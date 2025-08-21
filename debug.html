@@ -1,443 +1,303 @@
-// debug-app.js - Versión simplificada para diagnosticar el problema
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Draftosaurus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #2d2d2d;
+            color: white;
+            padding: 20px;
+        }
+        .debug-section {
+            background: #1a1a1a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        .error { background: #4a1a1a; border-color: #ff6b6b; }
+        .success { background: #1a4a1a; border-color: #51cf66; }
+        .warning { background: #4a4a1a; border-color: #ffd43b; }
+        button {
+            background: #628107;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5a7305; }
+        .log-output {
+            background: #000;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🦕 Debug Draftosaurus - Loader Issue</h1>
+    
+    <div class="debug-section">
+        <h2>1. Verificar Archivos Principales</h2>
+        <button onclick="checkFiles()">Verificar Archivos</button>
+        <div id="file-check"></div>
+    </div>
 
-console.log('🦕 Debug app.js cargando...');
+    <div class="debug-section">
+        <h2>2. Test Conexión Base de Datos</h2>
+        <button onclick="testDatabase()">Test BD</button>
+        <div id="db-test"></div>
+    </div>
 
-class DebugAppState {
-    constructor() {
-        console.log('🔧 Creando DebugAppState...');
-        this.currentScreen = 'carga';
-        this.user = null;
-        this.loading = false;
-        
-        this.initializeEventListeners();
-    }
+    <div class="debug-section">
+        <h2>3. Verificar APIs</h2>
+        <button onclick="testAPIs()">Test APIs</button>
+        <div id="api-test"></div>
+    </div>
 
-    initializeEventListeners() {
-        console.log('🎧 Configurando event listeners...');
-        document.addEventListener('DOMContentLoaded', () => this.init());
-        window.addEventListener('error', (e) => this.handleGlobalError(e));
-    }
+    <div class="debug-section">
+        <h2>4. Debug JavaScript</h2>
+        <button onclick="testJS()">Test JavaScript</button>
+        <div id="js-test"></div>
+    </div>
 
-    async init() {
-        console.log('🚀 Iniciando DebugAppState...');
-        
-        try {
-            // Mostrar pantalla de carga
-            console.log('📺 Mostrando pantalla de carga...');
-            this.showScreen('carga');
-            
-            // Simular progreso de carga
-            this.updateProgress(10);
-            
-            // Verificar sesión existente
-            console.log('🔍 Verificando sesión existente...');
-            this.updateProgress(30);
-            await this.checkExistingSession();
-            
-            // Cargar configuración
-            console.log('⚙️ Cargando configuración...');
-            this.updateProgress(60);
-            await this.loadGameConfiguration();
-            
-            // Simular PWA
-            console.log('📱 Inicializando PWA...');
-            this.updateProgress(80);
-            this.initializePWA();
-            
-            // Mostrar pantalla de login
-            console.log('🔑 Mostrando pantalla de login...');
-            this.updateProgress(100);
-            
-            setTimeout(() => {
-                this.showScreen('login');
-                console.log('✅ Draftosaurus iniciado correctamente');
-            }, 1000);
-            
-        } catch (error) {
-            console.error('❌ Error al iniciar:', error);
-            this.showToast('Error al inicializar el juego: ' + error.message, 'error');
-            
-            // Intentar mostrar login de todas formas
-            setTimeout(() => {
-                this.showScreen('login');
-            }, 2000);
-        }
-    }
+    <div class="debug-section">
+        <h2>5. Simular Inicio de App</h2>
+        <button onclick="simulateAppStart()">Simular Inicio</button>
+        <div id="app-simulation"></div>
+    </div>
 
-    updateProgress(percent) {
-        const progressBar = document.getElementById('barra-progreso');
-        if (progressBar) {
-            progressBar.style.width = percent + '%';
-            progressBar.setAttribute('aria-valuenow', percent);
-        }
-        console.log(`📊 Progreso: ${percent}%`);
-    }
+    <div class="debug-section">
+        <h2>6. Console Logs</h2>
+        <div id="console-logs" class="log-output"></div>
+    </div>
 
-    showScreen(screenName) {
-        console.log(`📱 Mostrando pantalla: ${screenName}`);
+    <script>
+        // Capturar logs de consola
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
         
-        // Ocultar todas las pantallas
-        const screens = document.querySelectorAll('.pantalla');
-        screens.forEach(screen => {
-            screen.classList.remove('active');
-            screen.style.display = 'none';
-        });
+        function addToConsoleLog(type, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.getElementById('console-logs');
+            logElement.innerHTML += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
         
-        // Mostrar pantalla específica
-        const targetScreen = document.getElementById(`pantalla-${screenName}`);
-        if (targetScreen) {
-            targetScreen.style.display = 'flex';
-            setTimeout(() => {
-                targetScreen.classList.add('active');
-            }, 50);
+        console.log = function(...args) {
+            addToConsoleLog('log', args.join(' '));
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            addToConsoleLog('error', args.join(' '));
+            originalError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            addToConsoleLog('warn', args.join(' '));
+            originalWarn.apply(console, args);
+        };
+
+        // 1. Verificar archivos
+        async function checkFiles() {
+            const output = document.getElementById('file-check');
+            output.innerHTML = '<p>🔍 Verificando archivos...</p>';
             
-            this.currentScreen = screenName;
-            this.configureScreen(screenName);
-        } else {
-            console.error(`❌ No se encontró la pantalla: pantalla-${screenName}`);
-        }
-    }
-
-    configureScreen(screenName) {
-        console.log(`🔧 Configurando pantalla: ${screenName}`);
-        
-        switch (screenName) {
-            case 'login':
-                this.setupLoginScreen();
-                break;
-            case 'register':
-                this.setupRegisterScreen();
-                break;
-            case 'lobby':
-                this.setupLobbyScreen();
-                break;
-        }
-    }
-
-    setupLoginScreen() {
-        console.log('🔑 Configurando pantalla de login...');
-        
-        const form = document.getElementById('login-form');
-        const registerLink = document.getElementById('register-link');
-        
-        if (form) {
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                console.log('📝 Formulario de login enviado');
-                this.handleLogin(e);
-            };
-        }
-        
-        if (registerLink) {
-            registerLink.onclick = (e) => {
-                e.preventDefault();
-                console.log('🔗 Enlace a registro clickeado');
-                this.showScreen('register');
-            };
-        }
-        
-        // Auto-focus en email
-        const emailInput = document.getElementById('email');
-        if (emailInput) {
-            emailInput.focus();
-        }
-    }
-
-    setupRegisterScreen() {
-        console.log('📝 Configurando pantalla de registro...');
-        
-        const form = document.getElementById('register-form');
-        const loginLink = document.getElementById('login-link');
-        
-        if (form) {
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                console.log('📝 Formulario de registro enviado');
-                this.handleRegister(e);
-            };
-        }
-        
-        if (loginLink) {
-            loginLink.onclick = (e) => {
-                e.preventDefault();
-                console.log('🔗 Enlace a login clickeado');
-                this.showScreen('login');
-            };
-        }
-    }
-
-    setupLobbyScreen() {
-        console.log('🏠 Configurando pantalla de lobby...');
-        
-        const newGameBtn = document.getElementById('new-game-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        
-        if (newGameBtn) {
-            newGameBtn.onclick = () => {
-                console.log('🎮 Botón nueva partida clickeado');
-                this.showToast('Nueva partida - En desarrollo', 'info');
-            };
-        }
-        
-        if (logoutBtn) {
-            logoutBtn.onclick = () => {
-                console.log('🚪 Botón logout clickeado');
-                this.logout();
-            };
-        }
-        
-        this.updateUserInfo();
-    }
-
-    async handleLogin(e) {
-        console.log('🔑 Procesando login...');
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        if (!email || !password) {
-            this.showToast('Email y contraseña son requeridos', 'error');
-            return;
-        }
-        
-        this.setLoading(true);
-        
-        try {
-            const response = await fetch('login.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+            const files = [
+                'index.html',
+                'app.js',
+                'estilos.css',
+                'tablero.css',
+                'config.php',
+                'login.php',
+                'register.php'
+            ];
             
-            const data = await response.json();
-            console.log('📥 Respuesta login:', data);
+            let results = [];
             
-            if (data.success) {
-                this.user = data.user;
-                this.showToast('¡Bienvenido!', 'success');
-                this.saveUserSession();
-                this.showScreen('lobby');
-            } else {
-                this.showToast(data.message || 'Error al iniciar sesión', 'error');
+            for (const file of files) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    const status = response.ok ? '✅' : '❌';
+                    results.push(`${status} ${file} (${response.status})`);
+                } catch (error) {
+                    results.push(`❌ ${file} (Error: ${error.message})`);
+                }
             }
-        } catch (error) {
-            console.error('❌ Error en login:', error);
-            this.showToast('Error de conexión', 'error');
-        } finally {
-            this.setLoading(false);
-        }
-    }
-
-    async handleRegister(e) {
-        console.log('📝 Procesando registro...');
-        
-        const username = document.getElementById('register-username').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-        const confirmPassword = document.getElementById('register-confirm-password').value;
-        const birthdate = document.getElementById('register-fecha').value;
-        
-        // Validaciones básicas
-        if (!username || !email || !password || !confirmPassword || !birthdate) {
-            this.showToast('Todos los campos son requeridos', 'error');
-            return;
-        }
-        
-        if (password !== confirmPassword) {
-            this.showToast('Las contraseñas no coinciden', 'error');
-            return;
-        }
-        
-        this.setLoading(true);
-        
-        try {
-            const response = await fetch('register.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, birthdate })
-            });
             
-            const data = await response.json();
-            console.log('📥 Respuesta registro:', data);
-            
-            if (data.success) {
-                this.showToast('¡Cuenta creada exitosamente!', 'success');
-                this.showScreen('login');
-                // Pre-llenar el email
-                document.getElementById('email').value = email;
-            } else {
-                this.showToast(data.message || 'Error al registrar usuario', 'error');
-            }
-        } catch (error) {
-            console.error('❌ Error en registro:', error);
-            this.showToast('Error de conexión', 'error');
-        } finally {
-            this.setLoading(false);
+            output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
         }
-    }
 
-    async checkExistingSession() {
-        console.log('🔍 Verificando sesión existente...');
-        
-        const savedUser = localStorage.getItem('draftosaurus_user');
-        if (savedUser) {
+        // 2. Test base de datos
+        async function testDatabase() {
+            const output = document.getElementById('db-test');
+            output.innerHTML = '<p>🔍 Probando conexión BD...</p>';
+            
             try {
-                this.user = JSON.parse(savedUser);
-                console.log('👤 Usuario guardado encontrado:', this.user);
+                const response = await fetch('test.php');
+                const text = await response.text();
                 
-                // Verificar si la sesión sigue siendo válida
-                const response = await fetch('verify-session.php');
-                const data = await response.json();
-                
-                console.log('📥 Verificación sesión:', data);
-                
-                if (data.success && data.valid) {
-                    console.log('✅ Sesión válida, ir a lobby');
-                    this.showScreen('lobby');
-                    return;
+                if (response.ok) {
+                    output.innerHTML = `<div class="success">✅ Conexión BD exitosa</div><div class="log-output">${text}</div>`;
                 } else {
-                    console.log('❌ Sesión inválida, limpiar datos');
-                    localStorage.removeItem('draftosaurus_user');
-                    this.user = null;
+                    output.innerHTML = `<div class="error">❌ Error BD (${response.status})</div><div class="log-output">${text}</div>`;
                 }
             } catch (error) {
-                console.error('❌ Error verificando sesión:', error);
-                localStorage.removeItem('draftosaurus_user');
-                this.user = null;
+                output.innerHTML = `<div class="error">❌ Error de conexión: ${error.message}</div>`;
             }
         }
-    }
 
-    async loadGameConfiguration() {
-        console.log('⚙️ Cargando configuración del juego...');
-        
-        try {
-            const response = await fetch('config.php');
+        // 3. Test APIs
+        async function testAPIs() {
+            const output = document.getElementById('api-test');
+            output.innerHTML = '<p>🔍 Probando APIs...</p>';
             
-            if (response.ok) {
-                const text = await response.text();
-                console.log('📄 Respuesta config.php:', text.substring(0, 200) + '...');
-                
-                // Intentar parsear como JSON si es posible
+            const apis = [
+                { name: 'Config', url: 'config.php' },
+                { name: 'Login', url: 'login.php', method: 'POST' },
+                { name: 'Register', url: 'register.php', method: 'POST' }
+            ];
+            
+            let results = [];
+            
+            for (const api of apis) {
                 try {
-                    const config = JSON.parse(text);
-                    console.log('✅ Configuración cargada como JSON:', config);
-                } catch (jsonError) {
-                    console.log('⚠️ config.php no retorna JSON válido, pero está disponible');
+                    const options = {
+                        method: api.method || 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    };
+                    
+                    if (api.method === 'POST') {
+                        options.body = JSON.stringify({ test: true });
+                    }
+                    
+                    const response = await fetch(api.url, options);
+                    const text = await response.text();
+                    
+                    let status = '✅';
+                    if (response.status >= 400 && response.status !== 400) {
+                        status = '❌';
+                    } else if (response.status === 400 && api.method === 'POST') {
+                        status = '⚠️'; // 400 es esperado para POST sin datos válidos
+                    }
+                    
+                    results.push(`${status} ${api.name} (${response.status})`);
+                } catch (error) {
+                    results.push(`❌ ${api.name} (Error: ${error.message})`);
                 }
-            } else {
-                console.warn('⚠️ config.php respondió con status:', response.status);
             }
-        } catch (error) {
-            console.error('❌ Error cargando configuración:', error);
-            // No lanzar error, usar configuración por defecto
+            
+            output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
         }
-    }
 
-    initializePWA() {
-        console.log('📱 Inicializando PWA...');
-        // Implementación simplificada
-        if ('serviceWorker' in navigator) {
-            console.log('✅ Service Worker disponible');
-        } else {
-            console.log('❌ Service Worker no disponible');
+        // 4. Test JavaScript
+        function testJS() {
+            const output = document.getElementById('js-test');
+            output.innerHTML = '<p>🔍 Probando JavaScript...</p>';
+            
+            let results = [];
+            
+            // Verificar variables globales
+            results.push(typeof window !== 'undefined' ? '✅ window disponible' : '❌ window no disponible');
+            results.push(typeof document !== 'undefined' ? '✅ document disponible' : '❌ document no disponible');
+            results.push(typeof fetch !== 'undefined' ? '✅ fetch disponible' : '❌ fetch no disponible');
+            
+            // Verificar localStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                results.push('✅ localStorage funcional');
+            } catch (error) {
+                results.push(`❌ localStorage error: ${error.message}`);
+            }
+            
+            // Verificar JSON
+            try {
+                JSON.parse('{"test": true}');
+                results.push('✅ JSON funcional');
+            } catch (error) {
+                results.push(`❌ JSON error: ${error.message}`);
+            }
+            
+            // Verificar Promises
+            try {
+                new Promise(resolve => resolve(true));
+                results.push('✅ Promises disponibles');
+            } catch (error) {
+                results.push(`❌ Promises error: ${error.message}`);
+            }
+            
+            output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
         }
-    }
 
-    saveUserSession() {
-        if (this.user) {
-            localStorage.setItem('draftosaurus_user', JSON.stringify(this.user));
-            console.log('💾 Sesión de usuario guardada');
+        // 5. Simular inicio de app
+        async function simulateAppStart() {
+            const output = document.getElementById('app-simulation');
+            output.innerHTML = '<p>🔍 Simulando inicio de app...</p>';
+            
+            let steps = [];
+            
+            try {
+                // Paso 1: DOMContentLoaded
+                steps.push('✅ Simulando DOMContentLoaded');
+                
+                // Paso 2: Crear instancia AppState
+                steps.push('✅ Creando instancia AppState (simulado)');
+                
+                // Paso 3: Verificar sesión existente
+                steps.push('🔍 Verificando sesión existente...');
+                try {
+                    const response = await fetch('verify-session.php');
+                    if (response.ok) {
+                        steps.push('✅ verify-session.php responde');
+                    } else {
+                        steps.push(`⚠️ verify-session.php status: ${response.status}`);
+                    }
+                } catch (error) {
+                    steps.push(`❌ verify-session.php error: ${error.message}`);
+                }
+                
+                // Paso 4: Cargar configuración
+                steps.push('🔍 Cargando configuración...');
+                try {
+                    const response = await fetch('config.php');
+                    if (response.ok) {
+                        steps.push('✅ config.php cargado');
+                    } else {
+                        steps.push(`❌ config.php error: ${response.status}`);
+                    }
+                } catch (error) {
+                    steps.push(`❌ config.php error: ${error.message}`);
+                }
+                
+                // Paso 5: Mostrar pantalla login
+                steps.push('✅ Debería mostrar pantalla login');
+                
+            } catch (error) {
+                steps.push(`❌ Error general: ${error.message}`);
+            }
+            
+            output.innerHTML = `<div class="log-output">${steps.join('\n')}</div>`;
         }
-    }
 
-    logout() {
-        console.log('🚪 Cerrando sesión...');
-        this.user = null;
-        localStorage.removeItem('draftosaurus_user');
-        this.showToast('Sesión cerrada', 'info');
-        this.showScreen('login');
-    }
-
-    updateUserInfo() {
-        if (!this.user) return;
-        
-        const userElements = document.querySelectorAll('.user-name');
-        userElements.forEach(el => {
-            el.textContent = this.user.username || this.user.name;
+        // Auto-ejecutar algunos tests al cargar
+        window.addEventListener('load', () => {
+            console.log('🦕 Debug page loaded');
+            setTimeout(() => {
+                checkFiles();
+            }, 1000);
         });
-        
-        console.log('👤 Información de usuario actualizada');
-    }
-
-    setLoading(isLoading) {
-        console.log('⏳ Loading:', isLoading);
-        this.loading = isLoading;
-        
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach(btn => {
-            if (isLoading) {
-                btn.classList.add('btn--loading');
-                btn.disabled = true;
-            } else {
-                btn.classList.remove('btn--loading');
-                btn.disabled = false;
-            }
-        });
-    }
-
-    showToast(message, type = 'info') {
-        console.log(`🍞 Toast [${type}]: ${message}`);
-        
-        // Crear container si no existe
-        let container = document.getElementById('toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'toast-container';
-            container.className = 'toast-container';
-            document.body.appendChild(container);
-        }
-        
-        // Crear toast
-        const toast = document.createElement('div');
-        toast.className = `toast toast--${type}`;
-        toast.innerHTML = `
-            <div class="toast__content">
-                <div class="toast__message">${message}</div>
-                <button class="toast__close" onclick="this.parentElement.parentElement.remove()">✕</button>
-            </div>
-        `;
-        
-        container.appendChild(toast);
-        
-        // Mostrar con animación
-        setTimeout(() => toast.classList.add('fade-in'), 100);
-        
-        // Auto-remover
-        setTimeout(() => {
-            if (toast.parentElement) {
-                toast.remove();
-            }
-        }, 4000);
-    }
-
-    handleGlobalError(event) {
-        console.error('🚨 Error global:', event.error);
-        this.showToast('Error inesperado: ' + (event.error?.message || 'Error desconocido'), 'error');
-    }
-}
-
-// Inicialización
-let debugApp;
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🦕 DOM cargado, iniciando DebugAppState...');
-    debugApp = new DebugAppState();
-    window.debugApp = debugApp; // Para debug en consola
-});
-
-window.addEventListener('load', () => {
-    console.log('🦕 Window load completo');
-});
-
-console.log('📄 debug-app.js cargado completamente');
+    </script>
+</body>
+</html>
