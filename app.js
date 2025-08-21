@@ -938,7 +938,7 @@ class AppState {
             this.updateLocalBoardState(enclosureId, dinoData);
             
             // Enviar al servidor
-            const response = await fetch('place-dinosaur.php', {
+            const response = await fetch('api/game/place-dinosaur.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
