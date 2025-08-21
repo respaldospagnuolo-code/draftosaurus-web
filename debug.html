@@ -205,11 +205,8 @@
                 'app.js',
                 'config.php',
                 'verify-session.php',
-                'login.php',
-                'register.php',
                 'api/auth/login.php',
-                'api/auth/register.php',
-                'test.php'
+                'api/auth/register.php'
             ];
             
             let results = [];
@@ -409,6 +406,24 @@
             `;
             
             try {
+                // Ensure debug containers exist so TestApp doesn't crash
+                (function ensureDebugContainers(){
+                    const styles = "display:flex;align-items:center;justify-content:center;height:120px;margin:8px 0;border-radius:8px;color:#fff;";
+                    if(!document.getElementById('pantalla-carga')){
+                        const a=document.createElement('div');
+                        a.id='pantalla-carga';
+                        a.style.cssText=styles+"background:#222;";
+                        a.textContent='Pantalla de CARGA (debug)';
+                        document.body.appendChild(a);
+                    }
+                    if(!document.getElementById('pantalla-login')){
+                        const b=document.createElement('div');
+                        b.id='pantalla-login';
+                        b.style.cssText=styles+"background:#333;display:none;";
+                        b.textContent='Pantalla de LOGIN (debug)';
+                        document.body.appendChild(b);
+                    }
+                })();
                 eval(testCode);
                 output.innerHTML = `<div class="success">✅ App de prueba creada. Revisa la consola y la app.</div>`;
             } catch (error) {
