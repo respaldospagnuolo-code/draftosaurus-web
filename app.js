@@ -2669,3 +2669,44 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log('📝 app.js completamente cargado - Versión 1.0.0');
+
+// --- Hotfix solo para debug.html: forzar mostrar login si no hay sesión ---
+(function debugForceLogin() {
+  try {
+    const isDebug = location.pathname.endsWith('debug.html');
+    if (!isDebug) return;
+
+    // Detectar si hay sesión (adaptalo si tenés otro getter)
+    const hasSession = !!(window.AppState?.session || window.AppState?.get?.('session'));
+
+    // Router de pantallas: carga -> login
+    const mostrarPantalla = (id) => {
+      ['pantalla-carga','pantalla-login','pantalla-tablero','pantalla-lobby'].forEach(k => {
+        const el = document.getElementById(k);
+        if (!el) return;
+        el.style.display = (k === id) ? 'flex' : 'none';
+      });
+    };
+
+    if (!hasSession) {
+      // Asegurar que login quede visible y 'carga' oculta
+      mostrarPantalla('pantalla-login');
+
+      // (Opcional) reflejar también en el state persistido
+      try {
+        const key = 'draftosaurus_state';
+        const prev = JSON.parse(localStorage.getItem(key) || '{}');
+        const next = {
+          ...prev,
+          gameState: {
+            ...(prev.gameState || {}),
+            currentScreen: 'login'
+          }
+        };
+        localStorage.setItem(key, JSON.stringify(next));
+      } catch (e) { /* sin ruido si falla */ }
+    }
+  } catch (e) {
+    console.warn('debugForceLogin error:', e);
+  }
+})();
