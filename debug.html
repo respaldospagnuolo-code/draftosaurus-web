@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debug Draftosaurus</title>
+    <title>Debug Completo - Draftosaurus</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #2d2d2d;
+            background: #1a1a1a;
             color: white;
             padding: 20px;
+            margin: 0;
         }
         .debug-section {
-            background: #1a1a1a;
+            background: #2d2d2d;
             padding: 15px;
             margin: 10px 0;
             border-radius: 8px;
@@ -25,103 +26,190 @@
             background: #628107;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 5px;
             cursor: pointer;
             margin: 5px;
+            font-size: 14px;
         }
         button:hover { background: #5a7305; }
         .log-output {
             background: #000;
             padding: 10px;
             border-radius: 5px;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #333;
+            border-radius: 5px;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
             max-height: 200px;
             overflow-y: auto;
             white-space: pre-wrap;
+            margin-top: 10px;
         }
+        h1 { color: #628107; }
+        h2 { color: #ffd43b; }
+        .critical { color: #ff6b6b; font-weight: bold; }
+        .info { color: #51cf66; }
+        .warning-text { color: #ffd43b; }
     </style>
 </head>
 <body>
-    <h1>🦕 Debug Draftosaurus - Loader Issue</h1>
-    
+    <h1>🦕 Debug Completo - Draftosaurus</h1>
+    <p class="info">Diagnóstico avanzado para encontrar por qué la app se queda en el loader</p>
+
     <div class="debug-section">
-        <h2>1. Verificar Archivos Principales</h2>
-        <button onclick="checkFiles()">Verificar Archivos</button>
-        <div id="file-check"></div>
+        <h2>🔍 1. Verificación de Console Logs en Tiempo Real</h2>
+        <p>Abre las Herramientas de Desarrollador (F12) y observa:</p>
+        <div id="console-capture" class="console-output">
+            [Console logs aparecerán aquí...]
+        </div>
+        <button onclick="clearConsole()">Limpiar Console</button>
     </div>
 
     <div class="debug-section">
-        <h2>2. Test Conexión Base de Datos</h2>
-        <button onclick="testDatabase()">Test BD</button>
-        <div id="db-test"></div>
+        <h2>🌐 2. Test de Red y Conectividad</h2>
+        <button onclick="testNetworkConnectivity()">Test Conectividad</button>
+        <div id="network-test"></div>
     </div>
 
     <div class="debug-section">
-        <h2>3. Verificar APIs</h2>
-        <button onclick="testAPIs()">Test APIs</button>
-        <div id="api-test"></div>
+        <h2>📁 3. Verificación de Estructura de Archivos</h2>
+        <button onclick="checkFileStructure()">Verificar Estructura</button>
+        <div id="file-structure"></div>
     </div>
 
     <div class="debug-section">
-        <h2>4. Debug JavaScript</h2>
-        <button onclick="testJS()">Test JavaScript</button>
-        <div id="js-test"></div>
+        <h2>🐘 4. Test PHP y Base de Datos</h2>
+        <button onclick="testPHPAndDatabase()">Test PHP/BD</button>
+        <div id="php-test"></div>
     </div>
 
     <div class="debug-section">
-        <h2>5. Simular Inicio de App</h2>
-        <button onclick="simulateAppStart()">Simular Inicio</button>
-        <div id="app-simulation"></div>
+        <h2>⚙️ 5. Test Configuración</h2>
+        <button onclick="testConfiguration()">Test Config</button>
+        <div id="config-test"></div>
     </div>
 
     <div class="debug-section">
-        <h2>6. Console Logs</h2>
-        <div id="console-logs" class="log-output"></div>
+        <h2>🔄 6. Simular Flujo de Inicio Paso a Paso</h2>
+        <button onclick="simulateStartupFlow()">Simular Inicio</button>
+        <div id="startup-simulation"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🚨 7. Test de App.js Simplificado</h2>
+        <button onclick="testSimplifiedApp()">Test App Básico</button>
+        <div id="app-test"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🛠️ 8. Soluciones Rápidas</h2>
+        <div class="step">
+            <h3>Opciones de solución:</h3>
+            <button onclick="createMinimalApp()">Crear App Mínima</button>
+            <button onclick="bypassLoader()">Saltar Loader</button>
+            <button onclick="forceLogin()">Forzar Login</button>
+        </div>
+        <div id="solutions"></div>
     </div>
 
     <script>
-        // Capturar logs de consola
+        // Capturar console logs
         const originalLog = console.log;
         const originalError = console.error;
         const originalWarn = console.warn;
         
-        function addToConsoleLog(type, message) {
+        function addToConsoleCapture(type, message) {
             const timestamp = new Date().toLocaleTimeString();
-            const logElement = document.getElementById('console-logs');
-            logElement.innerHTML += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
-            logElement.scrollTop = logElement.scrollHeight;
+            const consoleElement = document.getElementById('console-capture');
+            consoleElement.innerHTML += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            consoleElement.scrollTop = consoleElement.scrollHeight;
         }
         
         console.log = function(...args) {
-            addToConsoleLog('log', args.join(' '));
+            addToConsoleCapture('log', args.join(' '));
             originalLog.apply(console, args);
         };
         
         console.error = function(...args) {
-            addToConsoleLog('error', args.join(' '));
+            addToConsoleCapture('error', args.join(' '));
             originalError.apply(console, args);
         };
         
         console.warn = function(...args) {
-            addToConsoleLog('warn', args.join(' '));
+            addToConsoleCapture('warn', args.join(' '));
             originalWarn.apply(console, args);
         };
 
-        // 1. Verificar archivos
-        async function checkFiles() {
-            const output = document.getElementById('file-check');
-            output.innerHTML = '<p>🔍 Verificando archivos...</p>';
+        function clearConsole() {
+            document.getElementById('console-capture').innerHTML = '[Console limpiado]\n';
+        }
+
+        // 1. Test de conectividad
+        async function testNetworkConnectivity() {
+            const output = document.getElementById('network-test');
+            output.innerHTML = '<p>🔍 Probando conectividad...</p>';
+            
+            let results = [];
+            
+            // Test básico de conectividad
+            try {
+                const start = Date.now();
+                const response = await fetch('index.html', { cache: 'no-cache' });
+                const time = Date.now() - start;
+                results.push(`✅ Servidor web respondiendo (${time}ms)`);
+                results.push(`📡 Status: ${response.status} ${response.statusText}`);
+            } catch (error) {
+                results.push(`❌ Error de conectividad: ${error.message}`);
+            }
+            
+            // Test de protocolos
+            results.push(`🌐 Protocolo: ${window.location.protocol}`);
+            results.push(`🏠 Host: ${window.location.host}`);
+            results.push(`📂 Path: ${window.location.pathname}`);
+            
+            // Test de CORS
+            try {
+                await fetch('config.php', { method: 'HEAD' });
+                results.push(`✅ CORS: OK`);
+            } catch (error) {
+                results.push(`❌ CORS: Error - ${error.message}`);
+            }
+            
+            output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
+        }
+
+        // 2. Verificar estructura de archivos
+        async function checkFileStructure() {
+            const output = document.getElementById('file-structure');
+            output.innerHTML = '<p>📁 Verificando estructura...</p>';
             
             const files = [
                 'index.html',
                 'app.js',
-                'estilos.css',
-                'tablero.css',
                 'config.php',
+                'verify-session.php',
                 'login.php',
-                'register.php'
+                'register.php',
+                'api/auth/login.php',
+                'api/auth/register.php',
+                'test.php'
             ];
             
             let results = [];
@@ -130,173 +218,253 @@
                 try {
                     const response = await fetch(file, { method: 'HEAD' });
                     const status = response.ok ? '✅' : '❌';
-                    results.push(`${status} ${file} (${response.status})`);
+                    const size = response.headers.get('content-length') || 'unknown';
+                    results.push(`${status} ${file} (${response.status}) [${size} bytes]`);
                 } catch (error) {
-                    results.push(`❌ ${file} (Error: ${error.message})`);
+                    results.push(`❌ ${file} (No encontrado)`);
                 }
             }
             
             output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
         }
 
-        // 2. Test base de datos
-        async function testDatabase() {
-            const output = document.getElementById('db-test');
-            output.innerHTML = '<p>🔍 Probando conexión BD...</p>';
+        // 3. Test PHP y BD
+        async function testPHPAndDatabase() {
+            const output = document.getElementById('php-test');
+            output.innerHTML = '<p>🐘 Probando PHP y BD...</p>';
             
+            let results = [];
+            
+            // Test config.php
+            try {
+                const response = await fetch('config.php');
+                const text = await response.text();
+                
+                if (response.ok) {
+                    results.push(`✅ config.php responde (${response.status})`);
+                    if (text.includes('<?php')) {
+                        results.push(`✅ Archivo PHP válido`);
+                    } else {
+                        results.push(`⚠️ No parece un archivo PHP válido`);
+                    }
+                } else {
+                    results.push(`❌ config.php error: ${response.status}`);
+                }
+            } catch (error) {
+                results.push(`❌ config.php error: ${error.message}`);
+            }
+            
+            // Test test.php
             try {
                 const response = await fetch('test.php');
                 const text = await response.text();
                 
                 if (response.ok) {
-                    output.innerHTML = `<div class="success">✅ Conexión BD exitosa</div><div class="log-output">${text}</div>`;
+                    results.push(`✅ test.php responde`);
+                    results.push(`📄 Contenido: ${text.substring(0, 100)}...`);
                 } else {
-                    output.innerHTML = `<div class="error">❌ Error BD (${response.status})</div><div class="log-output">${text}</div>`;
+                    results.push(`❌ test.php error: ${response.status}`);
                 }
             } catch (error) {
-                output.innerHTML = `<div class="error">❌ Error de conexión: ${error.message}</div>`;
-            }
-        }
-
-        // 3. Test APIs
-        async function testAPIs() {
-            const output = document.getElementById('api-test');
-            output.innerHTML = '<p>🔍 Probando APIs...</p>';
-            
-            const apis = [
-                { name: 'Config', url: 'config.php' },
-                { name: 'Login', url: 'login.php', method: 'POST' },
-                { name: 'Register', url: 'register.php', method: 'POST' }
-            ];
-            
-            let results = [];
-            
-            for (const api of apis) {
-                try {
-                    const options = {
-                        method: api.method || 'GET',
-                        headers: { 'Content-Type': 'application/json' }
-                    };
-                    
-                    if (api.method === 'POST') {
-                        options.body = JSON.stringify({ test: true });
-                    }
-                    
-                    const response = await fetch(api.url, options);
-                    const text = await response.text();
-                    
-                    let status = '✅';
-                    if (response.status >= 400 && response.status !== 400) {
-                        status = '❌';
-                    } else if (response.status === 400 && api.method === 'POST') {
-                        status = '⚠️'; // 400 es esperado para POST sin datos válidos
-                    }
-                    
-                    results.push(`${status} ${api.name} (${response.status})`);
-                } catch (error) {
-                    results.push(`❌ ${api.name} (Error: ${error.message})`);
-                }
+                results.push(`❌ test.php no encontrado`);
             }
             
             output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
         }
 
-        // 4. Test JavaScript
-        function testJS() {
-            const output = document.getElementById('js-test');
-            output.innerHTML = '<p>🔍 Probando JavaScript...</p>';
+        // 4. Test configuración
+        async function testConfiguration() {
+            const output = document.getElementById('config-test');
+            output.innerHTML = '<p>⚙️ Probando configuración...</p>';
             
             let results = [];
             
-            // Verificar variables globales
-            results.push(typeof window !== 'undefined' ? '✅ window disponible' : '❌ window no disponible');
-            results.push(typeof document !== 'undefined' ? '✅ document disponible' : '❌ document no disponible');
-            results.push(typeof fetch !== 'undefined' ? '✅ fetch disponible' : '❌ fetch no disponible');
-            
-            // Verificar localStorage
+            // Test localStorage
             try {
-                localStorage.setItem('test', 'test');
+                localStorage.setItem('test', 'ok');
                 localStorage.removeItem('test');
-                results.push('✅ localStorage funcional');
+                results.push(`✅ localStorage funcional`);
             } catch (error) {
                 results.push(`❌ localStorage error: ${error.message}`);
             }
             
-            // Verificar JSON
-            try {
-                JSON.parse('{"test": true}');
-                results.push('✅ JSON funcional');
-            } catch (error) {
-                results.push(`❌ JSON error: ${error.message}`);
+            // Test fetch API
+            if (typeof fetch !== 'undefined') {
+                results.push(`✅ Fetch API disponible`);
+            } else {
+                results.push(`❌ Fetch API no disponible`);
             }
             
-            // Verificar Promises
+            // Test Promises
+            if (typeof Promise !== 'undefined') {
+                results.push(`✅ Promises disponibles`);
+            } else {
+                results.push(`❌ Promises no disponibles`);
+            }
+            
+            // Test JSON
             try {
-                new Promise(resolve => resolve(true));
-                results.push('✅ Promises disponibles');
+                JSON.parse('{"test": true}');
+                results.push(`✅ JSON funcional`);
             } catch (error) {
-                results.push(`❌ Promises error: ${error.message}`);
+                results.push(`❌ JSON error`);
+            }
+            
+            // Verificar si app.js está cargado
+            if (typeof AppState !== 'undefined') {
+                results.push(`✅ AppState class disponible`);
+            } else {
+                results.push(`❌ AppState class no encontrada`);
             }
             
             output.innerHTML = `<div class="log-output">${results.join('\n')}</div>`;
         }
 
-        // 5. Simular inicio de app
-        async function simulateAppStart() {
-            const output = document.getElementById('app-simulation');
-            output.innerHTML = '<p>🔍 Simulando inicio de app...</p>';
+        // 5. Simular flujo de inicio
+        async function simulateStartupFlow() {
+            const output = document.getElementById('startup-simulation');
+            output.innerHTML = '<p>🔄 Simulando inicio...</p>';
             
             let steps = [];
+            let currentStep = 0;
+            
+            const addStep = (message, success = true) => {
+                steps.push(`${success ? '✅' : '❌'} Paso ${++currentStep}: ${message}`);
+                output.innerHTML = `<div class="log-output">${steps.join('\n')}</div>`;
+            };
             
             try {
-                // Paso 1: DOMContentLoaded
-                steps.push('✅ Simulando DOMContentLoaded');
+                addStep('DOMContentLoaded disparado');
+                await new Promise(resolve => setTimeout(resolve, 100));
                 
-                // Paso 2: Crear instancia AppState
-                steps.push('✅ Creando instancia AppState (simulado)');
+                addStep('Creando instancia AppState...');
+                // Simular creación de AppState
                 
-                // Paso 3: Verificar sesión existente
-                steps.push('🔍 Verificando sesión existente...');
+                addStep('Mostrando pantalla de carga...');
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                addStep('Verificando sesión existente...');
                 try {
                     const response = await fetch('verify-session.php');
                     if (response.ok) {
-                        steps.push('✅ verify-session.php responde');
+                        addStep('verify-session.php responde');
                     } else {
-                        steps.push(`⚠️ verify-session.php status: ${response.status}`);
+                        addStep(`verify-session.php error: ${response.status}`, false);
                     }
                 } catch (error) {
-                    steps.push(`❌ verify-session.php error: ${error.message}`);
+                    addStep(`verify-session.php error: ${error.message}`, false);
                 }
                 
-                // Paso 4: Cargar configuración
-                steps.push('🔍 Cargando configuración...');
+                addStep('Cargando configuración...');
                 try {
                     const response = await fetch('config.php');
                     if (response.ok) {
-                        steps.push('✅ config.php cargado');
+                        addStep('config.php cargado');
                     } else {
-                        steps.push(`❌ config.php error: ${response.status}`);
+                        addStep(`config.php error: ${response.status}`, false);
                     }
                 } catch (error) {
-                    steps.push(`❌ config.php error: ${error.message}`);
+                    addStep(`config.php error: ${error.message}`, false);
                 }
                 
-                // Paso 5: Mostrar pantalla login
-                steps.push('✅ Debería mostrar pantalla login');
+                addStep('Inicializando PWA...');
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                addStep('✅ DEBERÍA mostrar pantalla de login ahora');
                 
             } catch (error) {
-                steps.push(`❌ Error general: ${error.message}`);
+                addStep(`❌ Error crítico: ${error.message}`, false);
             }
-            
-            output.innerHTML = `<div class="log-output">${steps.join('\n')}</div>`;
         }
 
-        // Auto-ejecutar algunos tests al cargar
+        // 6. Test app simplificado
+        function testSimplifiedApp() {
+            const output = document.getElementById('app-test');
+            output.innerHTML = '<p>🚨 Creando app simplificada...</p>';
+            
+            // Crear una versión ultra simplificada
+            const testCode = `
+            class TestApp {
+                constructor() {
+                    console.log('🧪 TestApp iniciando...');
+                    this.init();
+                }
+                
+                init() {
+                    console.log('🧪 TestApp.init()');
+                    setTimeout(() => {
+                        this.showLogin();
+                    }, 1000);
+                }
+                
+                showLogin() {
+                    console.log('🧪 Mostrando login...');
+                    document.getElementById('pantalla-carga').style.display = 'none';
+                    document.getElementById('pantalla-login').style.display = 'flex';
+                }
+            }
+            
+            console.log('🧪 Creando TestApp...');
+            window.testApp = new TestApp();
+            `;
+            
+            try {
+                eval(testCode);
+                output.innerHTML = `<div class="success">✅ App de prueba creada. Revisa la consola y la app.</div>`;
+            } catch (error) {
+                output.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // 7. Soluciones rápidas
+        function createMinimalApp() {
+            const output = document.getElementById('solutions');
+            
+            const minimalCode = `
+            // App mínima que funciona
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🔧 App mínima iniciando...');
+                setTimeout(() => {
+                    document.getElementById('pantalla-carga').style.display = 'none';
+                    document.getElementById('pantalla-login').style.display = 'flex';
+                    console.log('🔧 Login mostrado');
+                }, 2000);
+            });
+            `;
+            
+            try {
+                eval(minimalCode);
+                output.innerHTML = `<div class="success">✅ App mínima creada. Debería funcionar en 2 segundos.</div>`;
+            } catch (error) {
+                output.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function bypassLoader() {
+            try {
+                document.getElementById('pantalla-carga').style.display = 'none';
+                document.getElementById('pantalla-login').style.display = 'flex';
+                document.getElementById('solutions').innerHTML = `<div class="success">✅ Loader saltado. Login mostrado.</div>`;
+            } catch (error) {
+                document.getElementById('solutions').innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function forceLogin() {
+            try {
+                const screens = document.querySelectorAll('.pantalla');
+                screens.forEach(s => s.style.display = 'none');
+                document.getElementById('pantalla-login').style.display = 'flex';
+                document.getElementById('solutions').innerHTML = `<div class="success">✅ Login forzado.</div>`;
+            } catch (error) {
+                document.getElementById('solutions').innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-ejecutar algunos tests
         window.addEventListener('load', () => {
-            console.log('🦕 Debug page loaded');
-            setTimeout(() => {
-                checkFiles();
-            }, 1000);
+            console.log('🧪 Debug page cargada');
+            setTimeout(testNetworkConnectivity, 500);
         });
     </script>
 </body>
