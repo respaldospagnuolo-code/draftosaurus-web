@@ -286,7 +286,7 @@ class AppState {
         this.setLoading(true);
         
         try {
-            const response = await fetch('login.php', {
+            const response = await fetch('api/auth/login.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -342,7 +342,7 @@ class AppState {
         this.setLoading(true);
         
         try {
-            const response = await fetch('register.php', {
+            const response = await fetch('api/auth/register.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password })
@@ -416,7 +416,7 @@ class AppState {
             const player2Name = prompt('Nombre del Jugador 2:') || 'Jugador 2';
             
             // Crear sesión de juego
-            const response = await fetch('start.php', {
+            const response = await fetch('api/game/start.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
